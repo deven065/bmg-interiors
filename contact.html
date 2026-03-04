@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact | BMG Interiors — Book a Consultation</title>
+<meta name="description" content="Start your project with BMG Interiors. Book a free consultation, call us or visit our Mumbai studio. We&apos;d love to hear your vision."/>
+<link rel="stylesheet" href="css/bmg.css"/>
+<style>
+/* ── CONTACT LAYOUT ──────────────────────────────────── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+@media(max-width:860px){.contact-layout{grid-template-columns:1fr;gap:4rem}}
+
+/* ── FORM SECTION ────────────────────────────────────── */
+.form-head{margin-bottom:3rem}
+.form-head h2{font-family:var(--fh);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;
+  line-height:1.2;margin-bottom:1rem}
+.form-head p{font-size:.9rem;line-height:1.75;color:var(--fg2)}
+
+.cf-inner{display:flex;flex-direction:column;gap:1.2rem}
+.ff{position:relative}
+.ff label{position:absolute;top:50%;left:1.2rem;transform:translateY(-50%);
+  font-size:.85rem;color:var(--fg2);pointer-events:none;
+  transition:top .2s,font-size .2s,color .2s,transform .2s;z-index:1}
+.ff.textarea label{top:1.4rem;transform:none}
+.ff input,.ff select,.ff textarea{
+  width:100%;background:var(--s1);border:1px solid var(--border);border-radius:3px;
+  color:var(--fg);font-family:var(--fb);font-size:.88rem;padding:1.6rem 1.2rem .6rem;
+  outline:none;transition:border-color .3s,background .3s;-webkit-appearance:none}
+.ff textarea{min-height:130px;resize:vertical;padding-top:2rem}
+.ff select{cursor:pointer}
+.ff input:focus,.ff select:focus,.ff textarea:focus{border-color:rgba(255,204,0,.5);background:var(--s2)}
+.ff.focused label,.ff.filled label{top:.55rem;font-size:.68rem;letter-spacing:.05em;transform:none;color:var(--brand)}
+.ff.textarea.focused label,.ff.textarea.filled label{top:.55rem}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:540px){.form-row{grid-template-columns:1fr}}
+
+.cf-submit{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.cf-note{font-size:.78rem;color:var(--fg2)}
+
+.form-success{display:none;text-align:center;padding:4rem 2rem;
+  background:var(--s1);border:1px solid var(--border);border-radius:4px}
+.form-success-ico{font-size:3rem;margin-bottom:1.2rem}
+.form-success h3{font-family:var(--fh);font-size:1.8rem;margin-bottom:.8rem}
+.form-success p{font-size:.9rem;color:var(--fg2)}
+
+/* ── CONTACT INFO PANEL ──────────────────────────────── */
+.ci-head h2{font-family:var(--fh);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.2;margin-bottom:1rem}
+.ci-head p{font-size:.9rem;line-height:1.75;color:var(--fg2);margin-bottom:3rem}
+
+.ci-list{display:flex;flex-direction:column;gap:0;margin-bottom:3rem}
+.ci-item{display:flex;align-items:flex-start;gap:1.5rem;padding:1.8rem 0;border-bottom:1px solid var(--border)}
+.ci-item:first-child{padding-top:0}
+.ci-ico{width:44px;height:44px;background:rgba(255,204,0,.09);border:1px solid rgba(255,204,0,.18);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.ci-body{}
+.ci-lbl{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:.35rem}
+.ci-val{font-size:.9rem;color:var(--fg);line-height:1.6}
+.ci-val a{color:var(--fg);text-decoration:none;transition:color .25s}
+.ci-val a:hover{color:var(--brand)}
+
+.ci-hours{background:var(--s1);border:1px solid var(--border);border-radius:3px;padding:1.8rem;margin-bottom:2.5rem}
+.ci-hours-title{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand);margin-bottom:1.2rem}
+.ci-hour-row{display:flex;justify-content:space-between;font-size:.85rem;color:var(--fg2);padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ci-hour-row:last-child{border-bottom:none}
+.ci-hour-row span:last-child{color:var(--fg);font-weight:500}
+
+/* ── MAP PLACEHOLDER ─────────────────────────────────── */
+.map-ph{margin-top:2rem;aspect-ratio:1.6/1;background:var(--s1);border:1px solid var(--border);
+  border-radius:3px;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative}
+.map-ph-label{text-align:center}
+.map-ph-ico{font-size:2.5rem;margin-bottom:.8rem}
+.map-ph-title{font-family:var(--fh);font-size:1.2rem;font-weight:400;margin-bottom:.3rem}
+.map-ph-addr{font-size:.78rem;color:var(--fg2)}
+.map-ph::before{content:'';position:absolute;inset:0;background:
+  repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,204,0,.03) 40px,rgba(255,204,0,.03) 41px),
+  repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,204,0,.03) 40px,rgba(255,204,0,.03) 41px)}
+.map-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.map-dot-core{width:12px;height:12px;background:var(--brand);border-radius:50%;position:relative}
+.map-dot-ring{position:absolute;inset:-6px;border:2px solid rgba(255,204,0,.4);border-radius:50%;animation:apulse 2s ease-in-out infinite}
+.map-dot-ring2{position:absolute;inset:-14px;border:1px solid rgba(255,204,0,.2);border-radius:50%;animation:apulse 2s ease-in-out infinite .6s}
+
+/* ── QUICK BOOK STRIP ────────────────────────────────── */
+.qb-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.qb-item{background:var(--s1);padding:2rem;display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:.8rem;transition:background .35s;text-decoration:none;color:var(--fg)}
+.qb-item:hover{background:var(--s2)}
+.qb-ico{font-size:1.8rem}
+.qb-title{font-weight:600;font-size:.9rem}
+.qb-sub{font-size:.78rem;color:var(--fg2)}
+@media(max-width:600px){.qb-strip{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="wipe"></div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+    <ul class="nav-ul">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="contact.html" class="cur">Contact</a></li>
+    </ul>
+    <div class="nav-r">
+      <a href="#contact-form" class="btn btn-g"><span>Get in Touch</span><span class="btn-arr">→</span></a>
+    </div>
+    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mob" id="nav-mob">
+  <a href="services.html">Services</a><a href="portfolio.html">Portfolio</a>
+  <a href="about.html">About</a><a href="clients.html">Clients</a><a href="contact.html">Contact</a>
+  <a href="#contact-form" style="color:var(--brand)">Get in Touch</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="phero">
+  <div class="phero-bg"></div><div class="phero-grid" id="hero-pg"></div><div class="phero-rule"></div>
+  <div class="gspot" style="width:600px;height:600px;top:-10%;left:50%;transform:translateX(-50%);opacity:.45"></div>
+  <div class="wrap">
+    <div class="phero-ey" data-fade="0"><div class="phero-ey-line"></div><span class="lbl">Let&apos;s Create</span></div>
+    <h1 class="t-disp" data-words="Start|Your|Story" data-wd="0.1"></h1>
+    <p class="phero-sub" data-fade="0.7">Every extraordinary space begins with a conversation. Share your vision — we&apos;ll tell you exactly how we can bring it to life, on budget and on schedule.</p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqband"><div class="mqtrack" data-mq='["Free Consultation","No Obligation","Mumbai Studio","hello@bmginteriors.in","+91 63567 86046","Mon–Sat 10am–7pm","Book a Site Visit","Trusted by 150+ Clients"]'></div></div>
+
+<!-- QUICK CONTACT STRIP -->
+<section class="sec" style="padding-block:3rem">
+  <div class="wrap">
+    <div class="qb-strip" data-r>
+      <a href="tel:+916356786046" class="qb-item">
+        <div class="qb-ico">📞</div>
+        <div class="qb-title">Call Us</div>
+        <div class="qb-sub">+91 63567 86046<br>Mon–Sat, 10am–7pm</div>
+      </a>
+      <a href="mailto:hello@bmginteriors.in" class="qb-item">
+        <div class="qb-ico">✉️</div>
+        <div class="qb-title">Email Us</div>
+        <div class="qb-sub">hello@bmginteriors.in<br>Reply within 24 hours</div>
+      </a>
+      <a href="#" class="qb-item">
+        <div class="qb-ico">📍</div>
+        <div class="qb-title">Visit Studio</div>
+        <div class="qb-sub">Bandra West, Mumbai<br>By appointment only</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- CONTACT MAIN -->
+<section class="sec" id="contact-form">
+  <div class="wrap">
+    <div class="contact-layout">
+
+      <!-- FORM -->
+      <div>
+        <div class="form-head" data-r>
+          <div class="lbl">Project Enquiry</div>
+          <h2 style="margin-top:1rem">Tell Us About<br><em class="gt">Your Project</em></h2>
+          <p>Fill out the form below and our team will get back to you within 24 hours with a tailored response.</p>
+        </div>
+        <div id="form-wrap">
+          <form id="cf" class="cf-inner" novalidate>
+            <div class="form-row">
+              <div class="ff" data-r data-d="1">
+                <label for="cf-name">Your Name *</label>
+                <input type="text" id="cf-name" name="name" autocomplete="name" required/>
+              </div>
+              <div class="ff" data-r data-d="2">
+                <label for="cf-email">Email Address *</label>
+                <input type="email" id="cf-email" name="email" autocomplete="email" required/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="ff" data-r data-d="2">
+                <label for="cf-phone">Phone Number</label>
+                <input type="tel" id="cf-phone" name="phone" autocomplete="tel"/>
+              </div>
+              <div class="ff" data-r data-d="3">
+                <label for="cf-city">City / Location</label>
+                <input type="text" id="cf-city" name="city"/>
+              </div>
+            </div>
+            <div class="ff" data-r data-d="3">
+              <label for="cf-type">Project Type *</label>
+              <select id="cf-type" name="type" required>
+                <option value=""></option>
+                <option>Luxury Residential</option>
+                <option>Premium Commercial</option>
+                <option>Hospitality / Restaurant</option>
+                <option>Retail Space</option>
+                <option>Turnkey Execution</option>
+                <option>Design Consulting</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="ff" data-r data-d="3">
+                <label for="cf-area">Approximate Area (sqft)</label>
+                <input type="text" id="cf-area" name="area" placeholder=" " />
+              </div>
+              <div class="ff" data-r data-d="4">
+                <label for="cf-budget">Estimated Budget</label>
+                <select id="cf-budget" name="budget">
+                  <option value=""></option>
+                  <option>₹25L – ₹50L</option>
+                  <option>₹50L – ₹1Cr</option>
+                  <option>₹1Cr – ₹3Cr</option>
+                  <option>₹3Cr+</option>
+                  <option>To be discussed</option>
+                </select>
+              </div>
+            </div>
+            <div class="ff textarea" data-r data-d="4">
+              <label for="cf-msg">Project Brief / Message *</label>
+              <textarea id="cf-msg" name="message" required></textarea>
+            </div>
+            <div class="cf-submit" data-r data-d="5">
+              <button type="submit" class="btn btn-g btn-xl"><span>Send Enquiry</span><span class="btn-arr">→</span></button>
+              <span class="cf-note">✓ We&apos;ll reply within 24 hours<br>✓ No obligation, completely free</span>
+            </div>
+          </form>
+          <div class="form-success" id="form-success">
+            <div class="form-success-ico">✓</div>
+            <h3>Message Received!</h3>
+            <p>Thank you for reaching out. Our team will review your enquiry and get back to you within 24 hours.<br><br>
+            In the meantime, feel free to explore our <a href="portfolio.html" style="color:var(--brand)">portfolio</a> or <a href="services.html" style="color:var(--brand)">services</a>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT INFO -->
+      <div>
+        <div class="ci-head" data-r>
+          <div class="lbl">Find Us</div>
+          <h2 style="margin-top:1rem">Let&apos;s Meet &amp;<br><em class="gt">Create Together</em></h2>
+          <p>Our studio is located in the heart of Bandra West, Mumbai. We&apos;d love to show you our material library and discuss your project in person.</p>
+        </div>
+        <div class="ci-list" data-r data-d="1">
+          <div class="ci-item">
+            <div class="ci-ico">📍</div>
+            <div class="ci-body">
+              <div class="ci-lbl">Studio Address</div>
+              <div class="ci-val">14th Floor, Pali Hill Tower<br>Bandra West, Mumbai 400050<br>Maharashtra, India</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-ico">📞</div>
+            <div class="ci-body">
+              <div class="ci-lbl">Phone</div>
+              <div class="ci-val"><a href="tel:+916356786046">+91 63567 86046</a><br><a href="tel:+916356786046">+91 63567 86046</a></div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-ico">✉️</div>
+            <div class="ci-body">
+              <div class="ci-lbl">Email</div>
+              <div class="ci-val"><a href="mailto:hello@bmginteriors.in">hello@bmginteriors.in</a><br><a href="mailto:projects@bmginteriors.in">projects@bmginteriors.in</a></div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-ico">📸</div>
+            <div class="ci-body">
+              <div class="ci-lbl">Instagram</div>
+              <div class="ci-val"><a href="#">@bmginteriors</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="ci-hours" data-r data-d="2">
+          <div class="ci-hours-title">Studio Hours</div>
+          <div class="ci-hour-row"><span>Monday – Friday</span><span>10:00 AM – 7:00 PM</span></div>
+          <div class="ci-hour-row"><span>Saturday</span><span>10:00 AM – 5:00 PM</span></div>
+          <div class="ci-hour-row"><span>Sunday</span><span>By Appointment</span></div>
+          <div class="ci-hour-row"><span>Public Holidays</span><span>Closed</span></div>
+        </div>
+        <div class="map-ph" data-r data-d="3">
+          <div class="map-dot">
+            <div class="map-dot-core"></div>
+            <div class="map-dot-ring"></div>
+            <div class="map-dot-ring2"></div>
+          </div>
+          <div class="map-ph-label" style="position:relative;z-index:1;background:rgba(6,6,6,.8);padding:1.5rem 2rem;border-radius:3px;">
+            <div class="map-ph-ico">📍</div>
+            <div class="map-ph-title">BMG Interiors Studio</div>
+            <div class="map-ph-addr">Pali Hill Tower, Bandra West<br>Mumbai, Maharashtra</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- CONTACT STRIP -->
+<section class="sec" style="padding-block:4rem">
+  <div class="wrap">
+    <div class="cstrip" data-r>
+      <div class="cstrip-item"><div class="lbl">Email</div><a href="mailto:hello@bmginteriors.in">hello@bmginteriors.in</a></div>
+      <div class="cstrip-item"><div class="lbl">Phone</div><a href="tel:+916356786046">+91 63567 86046</a></div>
+      <div class="cstrip-item"><div class="lbl">Instagram</div><a href="#">@bmginteriors</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="sec cta-band">
+  <div class="wrap"><div class="cta-inner">
+    <span class="lbl">Not Sure Where to Start?</span>
+    <h2 class="t-xl" data-r data-d="1" style="margin:1.2rem 0 1rem">See What We&apos;ve<br><em class="gt">Already Built</em></h2>
+    <p data-r data-d="2">Browse our portfolio of 150+ completed projects across residential, commercial and hospitality sectors for inspiration.</p>
+    <div class="cta-btns" data-r data-d="3">
+      <a href="portfolio.html" class="btn btn-g btn-xl"><span>View Portfolio</span><span class="btn-arr">→</span></a>
+      <a href="services.html" class="btn btn-o btn-xl"><span>Our Services</span></a>
+    </div>
+  </div></div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div>
+        <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+        <p class="ftr-desc">Crafting extraordinary spaces since 2014. Award-winning interior design with precision, artistry and on-time delivery.</p>
+        <div class="ftr-award">★ 40+ Design Awards</div>
+        <div class="socials">
+          <a href="#" class="soc-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="#" class="soc-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+      <div class="ftr-col"><h4>Services</h4><ul>
+        <li><a href="services.html">Luxury Residential</a></li>
+        <li><a href="services.html">Premium Commercial</a></li>
+        <li><a href="services.html">Turnkey Projects</a></li>
+        <li><a href="services.html">Custom Furniture</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Company</h4><ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Careers</a></li>
+        <li><a href="contact.html">Press</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Contact</h4><ul>
+        <li><a href="mailto:hello@bmginteriors.in">hello@bmginteriors.in</a></li>
+        <li><a href="tel:+916356786046">+91 63567 86046</a></li>
+        <li><a href="#">Mumbai, Maharashtra</a></li>
+        <li><a href="#">Mon–Sat, 10am–7pm</a></li>
+      </ul></div>
+    </div>
+    <div class="divider" style="margin-bottom:2rem"></div>
+    <div class="ftr-bot">
+      <div class="ftr-copy">&copy; 2026 BMG Interiors Pvt. Ltd. All rights reserved.</div>
+      <div class="ftr-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+<script src="js/bmg.js"></script>
+</body>
+</html>
