@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Portfolio | BMG Interiors — Luxury Interior Design Projects</title>
+<meta name="description" content="Explore 150+ award-winning interior design projects by BMG Interiors — luxury residences, corporate offices, hospitality and retail spaces across India."/>
+<link rel="stylesheet" href="css/bmg.css"/>
+<style>
+/* ── FEATURED PROJECT ─────────────────────────────────── */
+.feat-proj{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:7rem}
+.feat-img{aspect-ratio:1.1/1;border-radius:3px;overflow:hidden;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.feat-img-bg{width:100%;height:100%;position:relative;overflow:hidden}
+.feat-img-bg::before{content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom right,transparent calc(50% - .7px),rgba(255,204,0,.16) calc(50% - .7px),rgba(255,204,0,.16) calc(50% + .7px),transparent calc(50% + .7px)),
+    linear-gradient(to bottom left,transparent calc(50% - .7px),rgba(255,204,0,.16) calc(50% - .7px),rgba(255,204,0,.16) calc(50% + .7px),transparent calc(50% + .7px)),
+    linear-gradient(to bottom,transparent 70%,rgba(255,204,0,.1) 70% calc(70% + 1px),transparent calc(70% + 1px));z-index:1}
+.feat-img-bg::after{content:'';position:absolute;z-index:2;
+  inset:8% 8% 5% 8%;border:1px solid rgba(255,204,0,.2);border-radius:2px;
+  background-image:linear-gradient(rgba(255,204,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,204,0,.06) 1px,transparent 1px);
+  background-size:60px 60px}
+.feat-info{}
+.feat-num{font-family:var(--fh);font-size:7rem;font-weight:300;
+  color:rgba(255,204,0,.06);line-height:1;margin-bottom:.5rem}
+.feat-tag{display:inline-flex;align-items:center;gap:.6rem;margin-bottom:1.4rem}
+.feat-dot{width:6px;height:6px;background:var(--brand);border-radius:50%}
+.feat-title{font-family:var(--fh);font-size:clamp(2rem,3.5vw,3.2rem);font-weight:300;
+  line-height:1.15;margin-bottom:1.2rem}
+.feat-meta{display:flex;gap:2rem;flex-wrap:wrap;margin:2rem 0;
+  padding-top:1.5rem;border-top:1px solid var(--border)}
+.feat-meta-item{}
+.fmt-l{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-bottom:.3rem}
+.fmt-v{font-size:.9rem;font-weight:600;color:var(--fg)}
+@media(max-width:860px){.feat-proj{grid-template-columns:1fr;gap:3rem}}
+
+/* ── FULL PORTFOLIO GRID ──────────────────────────────── */
+.pgrid-full{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.pif{position:relative;border-radius:2px;overflow:hidden;cursor:none;
+  transition:opacity .45s var(--e1),transform .5s var(--e1)}
+.pif.hide{opacity:0;transform:scale(.94);pointer-events:none}
+.pif-thumb{aspect-ratio:4/3;width:100%;overflow:hidden;position:relative}
+.pif-bg{width:100%;height:100%;transition:transform .7s var(--e1);position:relative;overflow:hidden}
+.pif-bg::before{content:'';position:absolute;inset:0;z-index:1;
+  background:
+    linear-gradient(to bottom right,transparent calc(50% - .5px),rgba(255,204,0,.14) calc(50% - .5px),rgba(255,204,0,.14) calc(50% + .5px),transparent calc(50% + .5px)),
+    linear-gradient(to bottom left,transparent calc(50% - .5px),rgba(255,204,0,.14) calc(50% - .5px),rgba(255,204,0,.14) calc(50% + .5px),transparent calc(50% + .5px)),
+    linear-gradient(to bottom,transparent 68%,rgba(255,204,0,.08) 68% calc(68% + 1px),transparent calc(68% + 1px))}
+.pif-bg::after{content:'';position:absolute;inset:0;z-index:2;
+  background-image:linear-gradient(rgba(255,204,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,204,0,.05) 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:radial-gradient(ellipse 75% 75% at 50% 45%,black 20%,transparent 100%)}
+.pif:hover .pif-bg{transform:scale(1.07)}
+.pif-over{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,transparent 55%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;
+  opacity:0;transition:opacity .4s}
+.pif:hover .pif-over{opacity:1}
+.pif-name{font-family:var(--fh);font-size:1.2rem;font-weight:400;color:#fff;margin-bottom:.2rem}
+.pif-type{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand)}
+@media(max-width:760px){.pgrid-full{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.pgrid-full{grid-template-columns:1fr}}
+
+/* ── PROCESS STRIP ────────────────────────────────────── */
+.pstrips{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden}
+.pstrip-item{background:var(--s1);padding:2rem 1.5rem;text-align:center;transition:background .35s}
+.pstrip-item:hover{background:var(--s2)}
+.pstrip-n{font-family:var(--fh);font-size:2.5rem;font-weight:300;color:var(--brand);line-height:1}
+.pstrip-l{font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--fg2);margin-top:.5rem}
+@media(max-width:760px){.pstrips{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="wipe"></div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+    <ul class="nav-ul">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="portfolio.html" class="cur">Portfolio</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-r">
+      <a href="contact.html" class="btn btn-g"><span>Start a Project</span><span class="btn-arr">→</span></a>
+    </div>
+    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mob" id="nav-mob">
+  <a href="services.html">Services</a><a href="portfolio.html">Portfolio</a>
+  <a href="about.html">About</a><a href="clients.html">Clients</a><a href="contact.html">Contact</a>
+  <a href="contact.html" style="color:var(--brand)">Start a Project</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="phero">
+  <div class="phero-bg"></div><div class="phero-grid" id="hero-pg"></div><div class="phero-rule"></div>
+  <div class="gspot" style="width:500px;height:500px;top:5%;right:8%;opacity:.65"></div>
+  <div class="wrap">
+    <div class="phero-ey" data-fade="0"><div class="phero-ey-line"></div><span class="lbl">Our Work</span></div>
+    <h1 class="t-disp" data-words="Selected|Projects" data-wd="0.1"></h1>
+    <p class="phero-sub" data-fade="0.7">150+ extraordinary spaces crafted across luxury residential, commercial and hospitality sectors. Every project a story of craft, precision and obsession.</p>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:2.5rem" data-fade="0.9">
+      <div class="num-item"><div class="num-val">150<span style="font-size:.6em">+</span></div><div class="num-lbl">Total Projects</div></div>
+      <div class="num-item"><div class="num-val">12<span style="font-size:.6em">+</span></div><div class="num-lbl">Years</div></div>
+      <div class="num-item"><div class="num-val">40<span style="font-size:.6em">+</span></div><div class="num-lbl">Awards Won</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqband"><div class="mqtrack" data-mq='["Residential","Commercial","Hospitality","Retail","Turnkey","Award-Winning","150+ Projects","Mumbai Studio","Est. 2014"]'></div></div>
+
+<!-- FEATURED PROJECT -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sh"><div class="lbl" data-r>Featured Project</div></div>
+    <div class="feat-proj">
+      <div data-r>
+        <div class="feat-img">
+          <div class="feat-img-bg g1" style="aspect-ratio:1.1/1;min-height:460px;display:block"></div>
+          <div class="pover" style="opacity:0;position:absolute;inset:0;background:none;display:flex;align-items:center;justify-content:center">
+            <span class="pill-g" style="padding:.5rem 1.2rem;font-size:10px">Residential</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="feat-num" data-r>01</div>
+        <div class="feat-tag" data-r data-d="1">
+          <div class="feat-dot"></div>
+          <span class="lbl">Flagship Residence</span>
+        </div>
+        <h2 class="feat-title" data-r data-d="2">The Mehta Residence<br><em>Bandra West, Mumbai</em></h2>
+        <p class="body-l" data-r data-d="3">A 4,200 sq.ft masterpiece layering rich Italian marble, hand-woven textiles and bespoke joinery into a home that breathes luxury and warmth simultaneously.</p>
+        <div class="feat-meta" data-r data-d="4">
+          <div class="feat-meta-item"><div class="fmt-l">Category</div><div class="fmt-v">Luxury Residential</div></div>
+          <div class="feat-meta-item"><div class="fmt-l">Area</div><div class="fmt-v">4,200 sq.ft</div></div>
+          <div class="feat-meta-item"><div class="fmt-l">Duration</div><div class="fmt-v">18 months</div></div>
+          <div class="feat-meta-item"><div class="fmt-l">Year</div><div class="fmt-v">2025</div></div>
+        </div>
+        <a href="contact.html" class="btn btn-g" data-r data-d="5"><span>Discuss Your Project</span><span class="btn-arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- FULL PORTFOLIO -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sh-row">
+      <div>
+        <div class="lbl" data-r>All Projects</div>
+        <h2 class="t-xl" data-r data-d="2" style="margin-top:.9rem">150+ Spaces<br><em class="gt">Transformed</em></h2>
+      </div>
+    </div>
+    <div class="fbtns" data-r>
+      <button class="fbtn on" data-filter="all">All Projects</button>
+      <button class="fbtn" data-filter="residential">Residential</button>
+      <button class="fbtn" data-filter="commercial">Commercial</button>
+      <button class="fbtn" data-filter="hospitality">Hospitality</button>
+      <button class="fbtn" data-filter="retail">Retail</button>
+    </div>
+    <div class="pgrid-full">
+      <div class="pif" data-cat="residential" data-r>
+        <div class="pif-thumb"><div class="pif-bg g1"></div>
+          <div class="pif-over"><div class="pif-name">The Mehta Residence</div><div class="pif-type">Residential &bull; 4200 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="commercial" data-r data-d="1">
+        <div class="pif-thumb"><div class="pif-bg g2"></div>
+          <div class="pif-over"><div class="pif-name">Vertex HQ</div><div class="pif-type">Corporate &bull; 6800 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="hospitality" data-r data-d="2">
+        <div class="pif-thumb"><div class="pif-bg g3"></div>
+          <div class="pif-over"><div class="pif-name">Aurum Bistro</div><div class="pif-type">Hospitality &bull; 2400 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="residential" data-r data-d="1">
+        <div class="pif-thumb"><div class="pif-bg g4"></div>
+          <div class="pif-over"><div class="pif-name">Sky Penthouse</div><div class="pif-type">Residential &bull; 3600 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="retail" data-r data-d="2">
+        <div class="pif-thumb"><div class="pif-bg g5"></div>
+          <div class="pif-over"><div class="pif-name">Soleil Boutique</div><div class="pif-type">Retail &bull; 1800 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="residential" data-r data-d="3">
+        <div class="pif-thumb"><div class="pif-bg g6"></div>
+          <div class="pif-over"><div class="pif-name">The Kapoor Villa</div><div class="pif-type">Residential &bull; 7500 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="commercial" data-r>
+        <div class="pif-thumb"><div class="pif-bg g7"></div>
+          <div class="pif-over"><div class="pif-name">Nexus Workspace</div><div class="pif-type">Commercial &bull; 4200 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="hospitality" data-r data-d="1">
+        <div class="pif-thumb"><div class="pif-bg g8"></div>
+          <div class="pif-over"><div class="pif-name">The Ivory Spa</div><div class="pif-type">Hospitality &bull; 3100 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="residential" data-r data-d="2">
+        <div class="pif-thumb"><div class="pif-bg g1"></div>
+          <div class="pif-over"><div class="pif-name">Regal Apartments</div><div class="pif-type">Residential &bull; 2800 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="retail" data-r>
+        <div class="pif-thumb"><div class="pif-bg g4"></div>
+          <div class="pif-over"><div class="pif-name">Aura Showroom</div><div class="pif-type">Retail &bull; 2200 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="commercial" data-r data-d="1">
+        <div class="pif-thumb"><div class="pif-bg g3"></div>
+          <div class="pif-over"><div class="pif-name">Zen Corporate Hub</div><div class="pif-type">Commercial &bull; 5400 sqft</div></div></div>
+      </div>
+      <div class="pif" data-cat="hospitality" data-r data-d="2">
+        <div class="pif-thumb"><div class="pif-bg g2"></div>
+          <div class="pif-over"><div class="pif-name">Elara Suites</div><div class="pif-type">Hospitality &bull; 8200 sqft</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<!-- STATS STRIP -->
+<section class="sec" style="padding-block:4rem">
+  <div class="wrap">
+    <div class="pstrips" data-r>
+      <div class="pstrip-item"><div class="pstrip-n"><span data-count="150">0</span>+</div><div class="pstrip-l">Projects</div></div>
+      <div class="pstrip-item"><div class="pstrip-n"><span data-count="12">0</span>+</div><div class="pstrip-l">Years</div></div>
+      <div class="pstrip-item"><div class="pstrip-n"><span data-count="98">0</span>%</div><div class="pstrip-l">Satisfaction</div></div>
+      <div class="pstrip-item"><div class="pstrip-n"><span data-count="40">0</span>+</div><div class="pstrip-l">Awards</div></div>
+      <div class="pstrip-item"><div class="pstrip-n">1Cr+</div><div class="pstrip-l">Avg. Value</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="sec cta-band">
+  <div class="wrap"><div class="cta-inner">
+    <span class="lbl">Start Your Project</span>
+    <h2 class="t-xl" data-r data-d="1" style="margin:1.2rem 0 1rem">Your Vision.<br><em class="gt">Our Obsession.</em></h2>
+    <p data-r data-d="2">Every project begins with a conversation. Let&apos;s talk about what you want to create.</p>
+    <div class="cta-btns" data-r data-d="3">
+      <a href="contact.html" class="btn btn-g btn-xl"><span>Book a Consultation</span><span class="btn-arr">→</span></a>
+      <a href="services.html" class="btn btn-o btn-xl"><span>Our Services</span></a>
+    </div>
+  </div></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div>
+        <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+        <p class="ftr-desc">Crafting extraordinary spaces since 2014. Award-winning interior design with precision, artistry and on-time delivery.</p>
+        <div class="ftr-award">★ 40+ Design Awards</div>
+        <div class="socials">
+          <a href="#" class="soc-btn" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="#" class="soc-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+      <div class="ftr-col"><h4>Services</h4><ul>
+        <li><a href="services.html">Luxury Residential</a></li>
+        <li><a href="services.html">Premium Commercial</a></li>
+        <li><a href="services.html">Turnkey Projects</a></li>
+        <li><a href="services.html">Custom Furniture</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Company</h4><ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Careers</a></li>
+        <li><a href="contact.html">Press</a></li>
+      </ul></div>
+      <div class="ftr-col"><h4>Contact</h4><ul>
+        <li><a href="mailto:hello@bmginteriors.in">hello@bmginteriors.in</a></li>
+        <li><a href="tel:+916356786046">+91 63567 86046</a></li>
+        <li><a href="#">Mumbai, Maharashtra</a></li>
+        <li><a href="#">Mon–Sat, 10am–7pm</a></li>
+      </ul></div>
+    </div>
+    <div class="divider" style="margin-bottom:2rem"></div>
+    <div class="ftr-bot">
+      <div class="ftr-copy">&copy; 2026 BMG Interiors Pvt. Ltd. All rights reserved.</div>
+      <div class="ftr-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+<script src="js/bmg.js"></script>
+</body>
+</html>
