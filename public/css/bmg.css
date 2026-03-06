@@ -198,6 +198,7 @@ em{font-style:italic}
 
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 .ftr{background:var(--bg);border-top:1px solid var(--border);padding-top:5.5rem;padding-bottom:2.8rem}
+.ftr .nav-logo img{height:110px}
 .ftr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:3.5rem;margin-bottom:4.5rem}
 .ftr-desc{color:var(--fg2);font-size:.875rem;line-height:1.82;margin-top:1rem;max-width:265px}
 .ftr-award{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.4rem;
@@ -210,6 +211,8 @@ em{font-style:italic}
 .soc-btn:hover{border-color:var(--brand);background:var(--b10);transform:translateY(-3px)}
 .soc-btn svg{width:14px;height:14px;stroke:var(--fg2);fill:none;stroke-width:1.8;transition:stroke .3s}
 .soc-btn:hover svg{stroke:var(--brand)}
+.soc-btn-ig svg,.soc-btn-li svg,.soc-btn-wa svg{fill:var(--fg2);stroke:none}
+.soc-btn-ig:hover svg,.soc-btn-li:hover svg,.soc-btn-wa:hover svg{fill:var(--brand);stroke:none}
 .ftr-col h4{font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
   color:var(--fg);margin-bottom:1.5rem}
 .ftr-col ul{list-style:none;display:flex;flex-direction:column;gap:.8rem}
@@ -471,6 +474,7 @@ em{font-style:italic}
 .acc-item{border-bottom:1px solid var(--border)}
 .acc-btn{width:100%;display:flex;align-items:center;justify-content:space-between;
   padding:1.8rem 0;background:none;border:none;cursor:none;text-align:left;
+  color:var(--fg);
   transition:color .3s}
 .acc-btn:hover,.acc-btn.open{color:var(--brand)}
 .acc-q{font-family:var(--fh);font-size:1.3rem;font-weight:400}
