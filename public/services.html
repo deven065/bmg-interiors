@@ -38,12 +38,12 @@
   box-shadow:0 0 0 4px rgba(255,204,0,.1);transition:box-shadow .4s}
 .proc-step2:hover .proc-dot2{box-shadow:0 0 0 8px rgba(255,204,0,.14)}
 .proc-step-body{padding-left:2.5rem}
-.proc-step-num{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);margin-bottom:.6rem}
+.proc-step-num{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--brand);margin-bottom:.6rem}
 .proc-step-title{font-family:var(--fh);font-size:1.4rem;font-weight:400;margin-bottom:.6rem}
 .proc-step-desc{font-size:.87rem;color:var(--fg2);line-height:1.75}
 .proc-step-dur{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;
   padding:.35rem .9rem;border:1px solid var(--border);border-radius:2rem;
-  font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
 
 /* ── FAQ ─────────────────────────────────────────────── */
 .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 4rem;align-items:start}
@@ -55,9 +55,9 @@
   padding:2.5rem 2rem;position:relative;overflow:hidden;transition:border-color .4s,background .4s}
 .price-card.featured{background:var(--bg2);border-color:rgba(255,204,0,.35)}
 .price-card.featured::before{content:'Most Popular';position:absolute;top:1.2rem;right:1.2rem;
-  font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
   background:var(--brand);color:#000;padding:.25rem .7rem;border-radius:2rem}
-.price-name{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--fg2);margin-bottom:.8rem}
+.price-name{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--fg2);margin-bottom:.8rem}
 .price-val{font-family:var(--fh);font-size:clamp(1.8rem,2.5vw,2.5rem);font-weight:300;
   color:var(--fg);line-height:1;margin-bottom:.4rem}
 .price-unit{font-size:.78rem;color:var(--fg2);margin-bottom:1.6rem;padding-bottom:1.6rem;border-bottom:1px solid var(--border)}
@@ -65,6 +65,10 @@
 .price-features li{font-size:.84rem;color:var(--fg2);display:flex;align-items:center;gap:.6rem}
 .price-features li::before{content:'✓';color:var(--brand);font-weight:700;font-size:.8rem;flex-shrink:0}
 @media(max-width:700px){.price-grid{grid-template-columns:1fr}}
+
+/* ── PROCESS LAYOUT ──────────────────────────────────── */
+.proc-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:5rem;align-items:start}
+@media(max-width:760px){.proc-layout{grid-template-columns:1fr;gap:3rem}}
 </style>
 </head>
 <body>
@@ -73,7 +77,7 @@
 
 <nav class="nav">
   <div class="wrap">
-    <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+    <a href="index.html" class="nav-logo"><img src="images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
     <ul class="nav-ul">
       <li><a href="services.html" class="cur">Services</a></li>
       <li><a href="portfolio.html">Portfolio</a></li>
@@ -201,7 +205,7 @@
 <!-- PROCESS SECTION -->
 <section class="sec">
   <div class="wrap">
-    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:5rem;align-items:start">
+    <div class="proc-layout">
       <div>
         <div class="lbl" data-r>Our Process</div>
         <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">How We Bring<br><em class="gt">Ideas to Life</em></h2>
@@ -375,7 +379,7 @@
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a href="index.html" class="nav-logo"><img src="bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
+        <a href="index.html" class="nav-logo"><img src="images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
         <p class="ftr-desc">Crafting extraordinary spaces since 2014. Award-winning interior design with precision, artistry and on-time delivery.</p>
         <div class="ftr-award">★ 40+ Design Awards</div>
         <div class="socials">

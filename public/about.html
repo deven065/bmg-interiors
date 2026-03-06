@@ -25,7 +25,7 @@
   background:var(--s2);border:1px solid var(--border);border-radius:3px;
   padding:1.5rem 2rem;min-width:180px}
 .story-img-float-n{font-family:var(--fh);font-size:2.8rem;font-weight:300;color:var(--brand);line-height:1}
-.story-img-float-l{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--fg2);margin-top:.3rem}
+.story-img-float-l{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--fg2);margin-top:.3rem}
 .story-text .lbl{margin-bottom:1.2rem}
 .story-text h2{font-family:var(--fh);font-size:clamp(2.2rem,3.5vw,3.5rem);font-weight:300;
   line-height:1.2;margin-bottom:2rem}
@@ -40,7 +40,7 @@
 .founder-av{width:120px;height:120px;border-radius:50%;overflow:hidden}
 .founder-av-bg{width:100%;height:100%;background:linear-gradient(135deg,rgba(255,204,0,.2),rgba(255,204,0,.05))}
 .founder-name{font-family:var(--fh);font-size:1.6rem;font-weight:400;margin-bottom:.2rem}
-.founder-role{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:1rem}
+.founder-role{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:1rem}
 .founder-quote{font-size:.88rem;line-height:1.8;color:var(--fg2);font-style:italic}
 @media(max-width:600px){.founder-card{grid-template-columns:1fr}}
 
@@ -65,7 +65,7 @@
   opacity:0;transition:opacity .4s}
 .team-card:hover .team-av-overlay{opacity:1}
 .team-name{font-family:var(--fh);font-size:1.15rem;font-weight:400;margin-bottom:.2rem}
-.team-role{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand)}
+.team-role{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brand)}
 .team-exp{font-size:.8rem;color:var(--fg2);margin-top:.4rem}
 @media(max-width:760px){.team-grid{grid-template-columns:1fr 1fr}}
 
@@ -74,7 +74,7 @@
   background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden}
 .award-cell{background:var(--s1);padding:2rem 1.8rem;transition:background .35s}
 .award-cell:hover{background:var(--s2)}
-.award-yr{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:.5rem}
+.award-yr{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:.5rem}
 .award-ttl{font-family:var(--fh);font-size:1.05rem;font-weight:400;margin-bottom:.3rem}
 .award-org{font-size:.8rem;color:var(--fg2)}
 @media(max-width:700px){.awards-grid{grid-template-columns:1fr 1fr}}
@@ -85,16 +85,17 @@
 .tl-grid::before{content:'';position:absolute;top:14px;left:0;right:0;height:1px;background:var(--brand);opacity:.2}
 .tl-item{position:relative;padding-top:3rem}
 .tl-dot{width:10px;height:10px;background:var(--brand);border-radius:50%;position:absolute;top:9px;left:0}
-.tl-yr{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand);margin-bottom:.5rem}
+.tl-yr{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand);margin-bottom:.5rem}
 .tl-txt{font-size:.85rem;line-height:1.7;color:var(--fg2)}
 @media(max-width:760px){.tl-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.tl-grid{grid-template-columns:1fr}}
 
 /* ── NUM ROW ─────────────────────────────────────────── */
 .num-row{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center}
 .num-item{text-align:center}
 .num-val{font-family:var(--fh);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:200;
   color:var(--fg);line-height:1}
-.num-lbl{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-top:.4rem}
+.num-lbl{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-top:.4rem}
 </style>
 </head>
 <body>
@@ -103,7 +104,7 @@
 
 <nav class="nav">
   <div class="wrap">
-    <a href="index.html" class="nav-logo"><div class="nav-mark">B</div>BMG Interiors</a>
+    <a href="index.html" class="nav-logo"><img src="images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
     <ul class="nav-ul">
       <li><a href="services.html">Services</a></li>
       <li><a href="portfolio.html">Portfolio</a></li>
@@ -142,7 +143,7 @@
   <div class="wrap">
     <div class="story-split">
       <div class="story-img" data-r>
-        <div class="story-img-main"><div class="g2" style="aspect-ratio:.9/1;min-height:420px;display:block"></div></div>
+        <div class="story-img-main"><img src="images/team/bharat.png" alt="Bharat Gadhiya — Founder, BMG Interiors" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:.9/1"/></div>
         <div class="story-img-float" data-r data-d="3">
           <div class="story-img-float-n">2014</div>
           <div class="story-img-float-l">Founded in Mumbai</div>
@@ -168,7 +169,7 @@
     <div class="sh"><div class="lbl" data-r>The Founder</div></div>
     <div style="max-width:820px;margin:0 auto">
       <div class="founder-card" data-r data-d="1">
-        <div class="founder-av"><img src="public/Bharat.png" alt="Bharat Gadhiya" loading="eager" decoding="async" width="400" height="400" style="width:100%;height:100%;object-fit:cover"/></div>
+        <div class="founder-av"><img src="images/team/bharat.png" alt="Bharat Gadhiya" loading="eager" decoding="async" width="400" height="400" style="width:100%;height:100%;object-fit:cover"/></div>
         <div>
           <div class="founder-name">Bharat Gadhiya</div>
           <div class="founder-role">Founder &amp; Principal Designer</div>
@@ -227,7 +228,7 @@
     <div class="team-grid">
       <div class="team-card" data-r>
         <div class="team-av" style="overflow:hidden">
-          <img src="public/Bharat.png" alt="Bharat Gadhiya" loading="lazy" decoding="async" width="300" height="300" style="width:100%;height:100%;object-fit:cover"/>
+          <img src="images/team/bharat.png" alt="Bharat Gadhiya" loading="lazy" decoding="async" width="300" height="300" style="width:100%;height:100%;object-fit:cover"/>
         </div>
         <div class="team-name">Bharat Gadhiya</div>
         <div class="team-role">Founder &amp; Principal</div>
@@ -328,7 +329,7 @@
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a href="index.html" class="nav-logo"><img src="bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
+        <a href="index.html" class="nav-logo"><img src="images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"></a>
         <p class="ftr-desc">Crafting extraordinary spaces since 2014. Award-winning interior design with precision, artistry and on-time delivery.</p>
         <div class="ftr-award">★ 40+ Design Awards</div>
         <div class="socials">
