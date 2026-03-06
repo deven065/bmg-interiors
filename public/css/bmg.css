@@ -133,17 +133,18 @@ em{font-style:italic}
 .btn{display:inline-flex;align-items:center;gap:.65rem;padding:.85rem 2.2rem;
   border-radius:2px;font-family:var(--fb);font-size:11px;font-weight:700;
   letter-spacing:.18em;text-transform:uppercase;text-decoration:none;cursor:none;
-  border:1px solid transparent;transition:all .38s var(--e1);
+  border:1px solid transparent;
+  transition:border-color .32s var(--e1),color .32s var(--e1),background .32s var(--e1);
   position:relative;overflow:hidden;white-space:nowrap;flex-shrink:0}
 .btn span{position:relative;z-index:1}
 .btn-g{background:var(--brand);color:#000;border-color:var(--brand)}
 .btn-g::before{content:'';position:absolute;inset:0;background:#fff;
-  transform:translateX(-101%);transition:transform .5s var(--e1)}
+  transform:translateX(-101%);transition:transform .42s var(--e1);will-change:transform}
 .btn-g:hover::before{transform:translateX(0)}
 .btn-o{background:transparent;color:var(--fg);border-color:rgba(255,255,255,.16)}
 .btn-o:hover{border-color:var(--brand);color:var(--brand)}
 .btn-xl{padding:1.05rem 2.8rem;font-size:12px}
-.btn-arr{transition:transform .35s var(--e1);display:inline-block}
+.btn-arr{transition:transform .32s var(--e1);display:inline-block;will-change:transform}
 .btn-o:hover .btn-arr,.btn-g:hover .btn-arr{transform:translateX(4px)}
 .btn-txt{background:none;border:none;color:var(--fg2);font-family:var(--fb);
   font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
