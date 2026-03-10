@@ -19,7 +19,7 @@
   mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 35%,transparent 100%)}
 .hero .wrap{position:relative;z-index:2;width:100%}
 .hero-layout{display:grid;grid-template-columns:1.12fr .88fr;gap:3.5rem;align-items:center}
-.hero-content{}
+.hero-content { position: relative; }
 .hero-ey{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem}
 .hero-ey-line{width:40px;height:1px;background:var(--brand)}
 .hero-h1{margin-bottom:1.2rem;max-width:700px}
@@ -40,6 +40,60 @@
   z-index:3;opacity:0;transition:opacity 1s 1.4s}
 .hero-scroll.on{opacity:1}
 .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--brand),transparent)}
+    /* ── LIGHTBOX ────────────────────────────────────────── */
+    .lb {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      inset: 0;
+      background: rgba(0,0,0,.96);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      opacity: 0;
+      transition: opacity .4s ease;
+      backdrop-filter: blur(8px)
+    }
+    .lb.on { display: flex; opacity: 1; }
+    .lb-img { 
+      max-width: 90%; 
+      max-height: 85%; 
+      object-fit: contain; 
+      border-radius: 4px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.8);
+      transform: scale(.95);
+      transition: transform .4s cubic-bezier(.16,1,.3,1)
+    }
+    .lb.on .lb-img { transform: scale(1); }
+    .lb-close {
+      position: absolute;
+      top: 2rem;
+      right: 2.5rem;
+      color: #fff;
+      font-size: 3.5rem;
+      font-weight: 200;
+      line-height: 1;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      transition: transform .3s, color .3s;
+      z-index: 2001;
+    }
+    .lb-close:hover { color: var(--brand); transform: rotate(90deg); }
+    .lb-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      opacity: .6;
+    }
+
 @media(max-width:960px){
   .hero-layout{grid-template-columns:1fr}
   .hero-panel{display:none}
@@ -92,7 +146,7 @@
   </div>
   <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
   <div class="ld-info">
-    <span>Luxury Interior Design</span>
+    
     <span class="ld-num">0%</span>
   </div>
 </div>
@@ -111,9 +165,9 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-r">
-      <a href="contact.html" class="btn btn-g btn-xl"><span>Start a Project</span><span class="btn-arr">→</span></a>
+      <a href="contact.html" class="btn btn-g btn-xl"><span class="btn-arr">→</span></a>
     </div>
-    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="ham" id="ham" aria-label="Menu"></button>
   </div>
 </nav>
 
@@ -146,8 +200,8 @@
           aesthetics with purposeful living — every detail,<br>obsessed over.
         </p>
         <div class="hero-acts" data-fade="1.35">
-          <a href="portfolio.html" class="btn btn-g btn-xl"><span>View Our Work</span><span class="btn-arr">→</span></a>
-          <a href="contact.html"   class="btn btn-o btn-xl"><span>Book Consultation</span></a>
+          <a href="portfolio.html" class="btn btn-g btn-xl"><span class="btn-arr">→</span></a>
+          <a href="contact.html"   class="btn btn-o btn-xl"></a>
         </div>
       </div>
 
@@ -277,25 +331,20 @@
     </div>
 
     <div class="pgrid">
-      <div class="pi" data-cat="residential" data-r>
-        <div class="pthumb"><div class="pthumb-bg"><img src="images/mehta-residence/photo-1.JPG" alt="The Mehta Residence Living Room" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover;"></div>
-          <div class="pover"><div class="pover-name">The Mehta Residence</div><div class="pover-type">Residential &bull; 4200 sq.ft</div></div></div>
+      <div class="pi" data-r>
+        <div class="pthumb"><div class="pthumb-bg"><img src="images/mehta-residence/photo-1.JPG" alt="The Mehta Residence Living Room" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div></div>
       </div>
-      <div class="pi" data-cat="commercial" data-r data-d="1">
-        <div class="pthumb"><div class="pthumb-bg"><img src="images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ Corporate Office" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover;"></div>
-          <div class="pover"><div class="pover-name">Vertex HQ</div><div class="pover-type">Corporate Office &bull; 6800 sq.ft</div></div></div>
+      <div class="pi" data-r data-d="1">
+        <div class="pthumb"><div class="pthumb-bg"><img src="images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ Corporate Office" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div></div>
       </div>
-      <div class="pi" data-cat="hospitality" data-r data-d="2">
-        <div class="pthumb"><div class="pthumb-bg"><img src="2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum's Office Corporate Interior" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:cover;"></div>
-          <div class="pover"><div class="pover-name">Aurum's Office</div><div class="pover-type">Corporate &bull; 2400 sq.ft</div></div></div>
+      <div class="pi" data-r data-d="2">
+        <div class="pthumb"><div class="pthumb-bg"><img src="2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum's Office Corporate Interior" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:cover; cursor:pointer;"></div></div>
       </div>
-      <div class="pi" data-cat="residential" data-r data-d="3">
-        <div class="pthumb"><div class="pthumb-bg"><img src="images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse Residential" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover;"></div>
-          <div class="pover"><div class="pover-name">Sky Penthouse</div><div class="pover-type">Residential &bull; 3600 sq.ft</div></div></div>
+      <div class="pi" data-r data-d="3">
+        <div class="pthumb"><div class="pthumb-bg"><img src="images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse Residential" loading="eager" decoding="async" width="1920" height="1080" style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div></div>
       </div>
-      <div class="pi" data-cat="commercial" data-r data-d="4">
-        <div class="pthumb"><div class="pthumb-bg"><img src="office - 11.JPG" alt="Soleil's Office Corporate Interior" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;"></div>
-          <div class="pover"><div class="pover-name">Soleil's Office</div><div class="pover-type">Corporate &bull; 1800 sq.ft</div></div></div>
+      <div class="pi" data-r data-d="4">
+        <div class="pthumb"><div class="pthumb-bg"><img src="office - 11.JPG" alt="Soleil's Office Corporate Interior" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover; cursor:pointer;"></div></div>
       </div>
     </div>
   </div>
@@ -328,7 +377,7 @@
           Over a decade and 150+ projects later, we remain obsessively detail-driven — blending global design sensibilities with a deeply personal approach to each client&apos;s vision and lifestyle.
         </p>
         <a href="about.html" class="btn btn-o" data-r data-d="5">
-          <span>Our Story</span><span class="btn-arr">→</span>
+          <span class="btn-arr">→</span>
         </a>
       </div>
     </div>
@@ -385,38 +434,38 @@
       <p class="body-l" data-r data-d="2" style="max-width:520px;margin-inline:auto">From Fortune-500 corporations to landmark residences — a portfolio of clients who demand nothing but excellence.</p>
     </div>
     <div class="client-grid" data-r data-d="3">
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://bsmedia.business-standard.com/_media/bs/img/article/2021-04/07/full/20210407111055.jpg" alt="Hiranandani" loading="lazy" style="object-fit:contain"/></div><span>Hiranandani</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://jayco.in/wp-content/uploads/2024/06/sapoor.png" alt="Shapoorji Pallonji" loading="lazy" style="object-fit:contain"/></div><span>Shapoorji Pallonji</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://download.logo.wine/logo/Hikvision/Hikvision-Logo.wine.png" alt="HIKVISION" loading="lazy" style="object-fit:contain"/></div><span>HIKVISION</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/coconut-mediabox-logo.jpg" alt="Coconut Media Box" loading="lazy" style="object-fit:contain"/></div><span>Coconut Media Box</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://is1-2.housingcdn.com/0b8ad14c/09c9f16a41314ab752947b70298b27a3/v1/medium.jpg" alt="Dattani Estate" loading="lazy" style="object-fit:contain"/></div><span>Dattani Estate</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/rp-enterprises-logo.jpg" alt="RP Enterprises" loading="lazy" style="object-fit:contain"/></div><span>RP Enterprises</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/sai-construction-logo.png" alt="Sai Construction Co." loading="lazy" style="object-fit:contain"/></div><span>Sai Construction Co.</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/shraddha-landmark-logo.jpg" alt="Shraddha Landmark" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div><span>Shraddha Landmark</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://www.navbharattrading.com/images/logo.png" alt="Navbharat Trading" loading="lazy" style="object-fit:contain" onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='block'"/></div><span>Navbharat Trading</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s" alt="Tanna Infra Developers" loading="lazy" style="object-fit:contain"/></div><span>Tanna Infra Developers</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/spice-telecom-logo.jpg" alt="Spice Telecom" loading="lazy" style="object-fit:contain"/></div><span>Spice Telecom</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://gemscience.net/wp-content/uploads/2021/07/GSI-Logo-1.png" alt="Gemological Science Intl." loading="lazy" style="object-fit:contain"/></div><span>Gemological Science Intl.</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem" loading="lazy" style="object-fit:contain"/></div><span>Shree Raj Chem</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://orenkitchenworld.com/wp-content/uploads/2021/06/Oren-Logo.png" alt="Oren Kitchenworld" loading="lazy" style="object-fit:contain"/></div><span>Oren Kitchenworld</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties" loading="lazy" style="object-fit:contain"/></div><span>Chaudhary Properties</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/canara-bank-logo.png" alt="Canara Bank" loading="lazy" style="object-fit:contain"/></div><span>Canara Bank</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/central-bank-of-india-logo.jpg" alt="Central Bank of India" loading="lazy" style="object-fit:contain"/></div><span>Central Bank of India</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited" loading="lazy" style="object-fit:contain"/></div><span>TPL Plastech Limited</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/godrej-logo.svg" alt="Godrej" loading="lazy" style="object-fit:contain"/></div><span>Godrej</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s" alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div><span>Oheya</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://aecpvtltd.com/wp-content/uploads/2021/04/aec-logo.png" alt="AEC Pvt. Ltd." loading="lazy" style="object-fit:contain"/></div><span>AEC Pvt. Ltd.</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/shari-academy-logo.png" alt="Shari Academy" loading="lazy" style="object-fit:contain"/></div><span>Shari Academy</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://www.ecplaza.net/img/logo.png" alt="Ecplaza" loading="lazy" style="object-fit:contain"/></div><span>Ecplaza</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Mz4SGMY2RJZdwPMjAHsUveyE28N5tLO5Bg&s" alt="B&amp;M Buildcon" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div><span>B&amp;M Buildcon</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://imgcdn.houssed.com/assets/Files/Developer/FirmLogos/0b5016fb08a168e27315a5f010161934.webp" alt="Khatri Constructions" loading="lazy" style="object-fit:contain"/></div><span>Khatri Constructions</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/fairfield-logo.jpg" alt="Fairfield" loading="lazy" style="object-fit:contain"/></div><span>Fairfield</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/dmart-logo.png" alt="D-Mart" loading="lazy" style="object-fit:contain"/></div><span>D-Mart</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://www.hirect.com/wp-content/uploads/2020/03/Logo.png" alt="Hind Rectifiers Ltd." loading="lazy" style="object-fit:contain"/></div><span>Hind Rectifiers Ltd.</span></div>
-      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy" style="object-fit:contain"/></div><span>Tax2Win</span></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://bsmedia.business-standard.com/_media/bs/img/article/2021-04/07/full/20210407111055.jpg" alt="Hiranandani" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://jayco.in/wp-content/uploads/2024/06/sapoor.png" alt="Shapoorji Pallonji" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://download.logo.wine/logo/Hikvision/Hikvision-Logo.wine.png" alt="HIKVISION" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/coconut.png" alt="Coconut Media Box" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://is1-2.housingcdn.com/0b8ad14c/09c9f16a41314ab752947b70298b27a3/v1/medium.jpg" alt="Dattani Estate" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/rp-enterprises-logo.jpg" alt="RP Enterprises" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/sai-construction-logo.png" alt="Sai Construction Co." loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/shraddha-landmark-logo.jpg" alt="Shraddha Landmark" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/navbharat.png" alt="Navbharat Trading" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s" alt="Tanna Infra Developers" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/spice-telecom-logo.jpg" alt="Spice Telecom" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/gsi.webp" alt="Gemological Science Intl." loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/oren.png" alt="Oren Kitchenworld" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/canara-bank-logo.png" alt="Canara Bank" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/central-bank-of-india-logo.jpg" alt="Central Bank of India" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/godrej-logo.svg" alt="Godrej" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s" alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/aec.png" alt="AEC Pvt. Ltd." loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/shari.png" alt="Shari Academy" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/ecplaza.png" alt="Ecplaza" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Mz4SGMY2RJZdwPMjAHsUveyE28N5tLO5Bg&s" alt="B&amp;M Buildcon" loading="lazy" style="object-fit:contain;background:#fff;padding:6px"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="https://imgcdn.houssed.com/assets/Files/Developer/FirmLogos/0b5016fb08a168e27315a5f010161934.webp" alt="Khatri Constructions" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/fairfield-logo.jpg" alt="Fairfield" loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/dmart-logo.png" alt="D-Mart" loading="lazy" style="object-fit:contain;transform:scale(1.5)"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/clients/hind.png" alt="Hind Rectifiers Ltd." loading="lazy" style="object-fit:contain"/></div></div>
+      <div class="client-card"><div class="cl-logo-wrap"><img class="cl-logo" src="images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy" style="object-fit:contain"/></div></div>
     </div>
     <div style="text-align:center;margin-top:3rem" data-r data-d="4">
-      <a href="clients.html" class="btn btn-o"><span>View Full Clientele</span><span class="btn-arr">→</span></a>
+      <a href="clients.html" class="btn btn-o"><span class="btn-arr">→</span></a>
     </div>
   </div>
 </section>
@@ -431,8 +480,8 @@
       </h2>
       <p data-r data-d="2">Every extraordinary project starts with a single conversation. No obligation — just inspiration and clarity.</p>
       <div class="cta-btns" data-r data-d="3">
-        <a href="contact.html" class="btn btn-g btn-xl"><span>Book a Consultation</span><span class="btn-arr">→</span></a>
-        <a href="portfolio.html" class="btn btn-o btn-xl"><span>See Portfolio</span></a>
+        <a href="contact.html" class="btn btn-g btn-xl"><span class="btn-arr">→</span></a>
+        <a href="portfolio.html" class="btn btn-o btn-xl"></a>
       </div>
       <div class="cstrip">
         <a href="mailto:info@bmginteriors.com" class="cstrip-item">
@@ -520,9 +569,31 @@ window.addEventListener('load',()=>{
   }, 1200);
 });
 </script>
-<script src="js/bmg.js"></script>
+  <div id="lb" class="lb">
+    <div class="lb-close">&times;</div>
+    <div class="lb-hint">Click outside or press Escape to close</div>
+    <img src="" alt="" class="lb-img" id="lb-img">
+  </div>
+
+  <script src="js/bmg.js"></script>
+  <script>
+    // Lightbox Functionality
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lb-img');
+    const lbClose = document.querySelector('.lb-close');
+
+    document.querySelectorAll('.pthumb img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lb.classList.add('on');
+      });
+    });
+
+    const closeLB = () => lb.classList.remove('on');
+    lb.onclick = (e) => { if(e.target !== lbImg) closeLB(); };
+    lbClose.onclick = closeLB;
+    window.onkeydown = (e) => { if(e.key === 'Escape') closeLB(); };
+  </script>
 </body>
 </html>
-
-
-

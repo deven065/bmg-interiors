@@ -209,43 +209,67 @@
       z-index: 2;
       background-image: linear-gradient(rgba(255, 204, 0, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 204, 0, .05) 1px, transparent 1px);
       background-size: 45px 45px;
-      mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, black 20%, transparent 100%)
+      mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, black 20%, transparent 100%);
+      pointer-events: none
     }
 
+    .pif { cursor: pointer; }
     .pif:hover .pif-bg {
       transform: scale(1.07)
     }
 
-    .pif-over {
-      position: absolute;
+    /* ── LIGHTBOX ────────────────────────────────────────── */
+    .lb {
+      display: none;
+      position: fixed;
+      z-index: 2000;
       inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, .9) 0%, transparent 55%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
+      background: rgba(0,0,0,.96);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
       opacity: 0;
-      transition: opacity .4s
+      transition: opacity .4s ease;
+      backdrop-filter: blur(8px)
     }
-
-    .pif:hover .pif-over {
-      opacity: 1
+    .lb.on { display: flex; opacity: 1; }
+    .lb-img { 
+      max-width: 90%; 
+      max-height: 85%; 
+      object-fit: contain; 
+      border-radius: 4px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.8);
+      transform: scale(.95);
+      transition: transform .4s cubic-bezier(.16,1,.3,1)
     }
-
-    .pif-name {
-      font-family: var(--fh);
-      font-size: 1.2rem;
-      font-weight: 400;
+    .lb.on .lb-img { transform: scale(1); }
+    .lb-close {
+      position: absolute;
+      top: 2rem;
+      right: 2.5rem;
       color: #fff;
-      margin-bottom: .2rem
+      font-size: 3.5rem;
+      font-weight: 200;
+      line-height: 1;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      transition: transform .3s, color .3s;
+      z-index: 2001;
     }
-
-    .pif-type {
+    .lb-close:hover { color: var(--brand); transform: rotate(90deg); }
+    .lb-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .18em;
+      letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--brand)
+      color: var(--fg2);
+      opacity: .6;
     }
 
     @media(max-width:760px) {
@@ -663,129 +687,124 @@
           </h2>
         </div>
       </div>
-      <div class="fbtns" data-r>
-        <button class="fbtn on" data-filter="all">All Projects</button>
-        <button class="fbtn" data-filter="residential">Residential</button>
-        <button class="fbtn" data-filter="commercial">Commercial</button>
-        <button class="fbtn" data-filter="hospitality">Hospitality</button>
-        <button class="fbtn" data-filter="retail">Retail</button>
-      </div>
+      <div style="margin-bottom: 2rem;"></div>
       <div class="pgrid-full">
-        <div class="pif" data-cat="residential" data-r>
-          <div class="pif-thumb">
-            <div class="pif-bg g1"></div>
-            <div class="pif-over">
-              <div class="pif-name">The Mehta Residence</div>
-              <div class="pif-type">Residential &bull; 4200 sqft</div>
-            </div>
-          </div>
-        </div>
-        <div class="pif" data-cat="commercial" data-r data-d="1">
-          <div class="pif-thumb">
-            <div class="pif-bg g2"></div>
-            <div class="pif-over">
-              <div class="pif-name">Vertex HQ</div>
-              <div class="pif-type">Corporate &bull; 6800 sqft</div>
-            </div>
-          </div>
-        </div>
-        <div class="pif" data-cat="commercial" data-r data-d="2">
+        <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg"
-                alt="Aurum's Office — Corporate Interior" style="width:100%;height:100%;object-fit:cover;display:block;"
+              <img src="/images/projects/1.jpg" alt="The Mehta Residence interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/2.jpg" alt="Vertex HQ interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg"
+                alt="Aurum's Office — Corporate Interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;"
                 loading="lazy">
             </div>
-            <div class="pif-over">
-              <div class="pif-name">Aurum's Office</div>
-              <div class="pif-type">Corporate &bull; 2400 sqft</div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/3.jpg" alt="Sky Penthouse interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="residential" data-r data-d="1">
+        <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
-            <div class="pif-bg g4"></div>
-            <div class="pif-over">
-              <div class="pif-name">Sky Penthouse</div>
-              <div class="pif-type">Residential &bull; 3600 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/4.jpg" alt="Soleil Boutique retail store" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="retail" data-r data-d="2">
+        <div class="pif" data-r data-d="3">
           <div class="pif-thumb">
-            <div class="pif-bg g5"></div>
-            <div class="pif-over">
-              <div class="pif-name">Soleil Boutique</div>
-              <div class="pif-type">Retail &bull; 1800 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/5.jpg" alt="The Kapoor Villa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="residential" data-r data-d="3">
+        <div class="pif" data-r>
           <div class="pif-thumb">
-            <div class="pif-bg g6"></div>
-            <div class="pif-over">
-              <div class="pif-name">The Kapoor Villa</div>
-              <div class="pif-type">Residential &bull; 7500 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/6.JPG" alt="Nexus Workspace interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="commercial" data-r>
+        <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
-            <div class="pif-bg g7"></div>
-            <div class="pif-over">
-              <div class="pif-name">Nexus Workspace</div>
-              <div class="pif-type">Commercial &bull; 4200 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/7.JPG" alt="The Ivory Spa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="hospitality" data-r data-d="1">
+        <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
-            <div class="pif-bg g8"></div>
-            <div class="pif-over">
-              <div class="pif-name">The Ivory Spa</div>
-              <div class="pif-type">Hospitality &bull; 3100 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/8.jpg" alt="Regal Apartments interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="residential" data-r data-d="2">
+        <div class="pif" data-r>
           <div class="pif-thumb">
-            <div class="pif-bg g1"></div>
-            <div class="pif-over">
-              <div class="pif-name">Regal Apartments</div>
-              <div class="pif-type">Residential &bull; 2800 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/9.jpg" alt="Aura Showroom interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="retail" data-r>
+        <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
-            <div class="pif-bg g4"></div>
-            <div class="pif-over">
-              <div class="pif-name">Aura Showroom</div>
-              <div class="pif-type">Retail &bull; 2200 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/10.JPG" alt="Zen Corporate Hub interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="commercial" data-r data-d="1">
+        <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
-            <div class="pif-bg g3"></div>
-            <div class="pif-over">
-              <div class="pif-name">Zen Corporate Hub</div>
-              <div class="pif-type">Commercial &bull; 5400 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/11.JPG" alt="Elara Suites interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
-        <div class="pif" data-cat="hospitality" data-r data-d="2">
+        <div class="pif" data-r>
           <div class="pif-thumb">
-            <div class="pif-bg g2"></div>
-            <div class="pif-over">
-              <div class="pif-name">Elara Suites</div>
-              <div class="pif-type">Hospitality &bull; 8200 sqft</div>
+            <div class="pif-bg">
+              <img src="/images/projects/12.JPG" alt="Oasis Wellness interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/13.JPG" alt="Heritage Villa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/14.JPG" alt="Skyline Offices interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <div id="lb" class="lb">
+    <div class="lb-close">&times;</div>
+    <div class="lb-hint">Click outside or press Escape to close</div>
+    <img src="" alt="" class="lb-img" id="lb-img">
+  </div>
 
   <div class="wrap">
     <div class="divider"></div>
@@ -1029,6 +1048,27 @@
   </footer>
   <script src="js/bmg.js"></script>
   <script>
+    // Lightbox Functionality
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lb-img');
+    const lbClose = document.querySelector('.lb-close');
+
+    document.querySelectorAll('.pif').forEach(pif => {
+      pif.addEventListener('click', (e) => {
+        const img = pif.querySelector('img');
+        if (img) {
+          lbImg.src = img.src;
+          lbImg.alt = img.alt;
+          lb.classList.add('on');
+        }
+      });
+    });
+
+    const closeLB = () => lb.classList.remove('on');
+    lb.onclick = (e) => { if(e.target !== lbImg) closeLB(); };
+    lbClose.onclick = closeLB;
+    window.onkeydown = (e) => { if(e.key === 'Escape') closeLB(); };
+
     // Scroll reveal animations for testimonials and team sections
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
