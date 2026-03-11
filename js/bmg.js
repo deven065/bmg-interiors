@@ -158,6 +158,20 @@
       });
       requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; });
     });
+
+    // hero scroll click
+    const scrollBtn = document.getElementById('hero-scroll');
+    if (scrollBtn) {
+      scrollBtn.addEventListener('click', () => {
+        const target = document.getElementById('projects');
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop - 80, // adjust for sticky nav
+            behavior: 'smooth'
+          });
+        }
+      });
+    }
   }
 
   /* ── COUNTERS ───────────────────────────────────────────────────── */

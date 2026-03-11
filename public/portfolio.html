@@ -213,7 +213,10 @@
       pointer-events: none
     }
 
-    .pif { cursor: pointer; }
+    .pif {
+      cursor: pointer;
+    }
+
     .pif:hover .pif-bg {
       transform: scale(1.07)
     }
@@ -224,7 +227,7 @@
       position: fixed;
       z-index: 2000;
       inset: 0;
-      background: rgba(0,0,0,.96);
+      background: rgba(0, 0, 0, .96);
       align-items: center;
       justify-content: center;
       cursor: zoom-out;
@@ -232,17 +235,26 @@
       transition: opacity .4s ease;
       backdrop-filter: blur(8px)
     }
-    .lb.on { display: flex; opacity: 1; }
-    .lb-img { 
-      max-width: 90%; 
-      max-height: 85%; 
-      object-fit: contain; 
-      border-radius: 4px;
-      box-shadow: 0 30px 90px rgba(0,0,0,.8);
-      transform: scale(.95);
-      transition: transform .4s cubic-bezier(.16,1,.3,1)
+
+    .lb.on {
+      display: flex;
+      opacity: 1;
     }
-    .lb.on .lb-img { transform: scale(1); }
+
+    .lb-img {
+      max-width: 90%;
+      max-height: 85%;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .8);
+      transform: scale(.95);
+      transition: transform .4s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .lb.on .lb-img {
+      transform: scale(1);
+    }
+
     .lb-close {
       position: absolute;
       top: 2rem;
@@ -259,7 +271,12 @@
       transition: transform .3s, color .3s;
       z-index: 2001;
     }
-    .lb-close:hover { color: var(--brand); transform: rotate(90deg); }
+
+    .lb-close:hover {
+      color: var(--brand);
+      transform: rotate(90deg);
+    }
+
     .lb-hint {
       position: absolute;
       bottom: 2rem;
@@ -692,14 +709,16 @@
         <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/1.jpg" alt="The Mehta Residence interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/1.jpg" alt="The Mehta Residence interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/2.jpg" alt="Vertex HQ interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/2.jpg" alt="Vertex HQ interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
@@ -707,92 +726,104 @@
           <div class="pif-thumb">
             <div class="pif-bg">
               <img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg"
-                alt="Aurum's Office — Corporate Interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;"
-                loading="lazy">
+                alt="Aurum's Office — Corporate Interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/3.jpg" alt="Sky Penthouse interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/3.jpg" alt="Sky Penthouse interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/4.jpg" alt="Soleil Boutique retail store" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/4.jpg" alt="Soleil Boutique retail store"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="3">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/5.jpg" alt="The Kapoor Villa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/5.jpg" alt="The Kapoor Villa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/6.JPG" alt="Nexus Workspace interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/6.JPG" alt="Nexus Workspace interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/7.JPG" alt="The Ivory Spa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/7.JPG" alt="The Ivory Spa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/8.jpg" alt="Regal Apartments interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/8.jpg" alt="Regal Apartments interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/9.jpg" alt="Aura Showroom interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/9.jpg" alt="Aura Showroom interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/10.JPG" alt="Zen Corporate Hub interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/10.JPG" alt="Zen Corporate Hub interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/11.JPG" alt="Elara Suites interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/11.JPG" alt="Elara Suites interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/12.JPG" alt="Oasis Wellness interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/12.JPG" alt="Oasis Wellness interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="1">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/13.JPG" alt="Heritage Villa interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/13.JPG" alt="Heritage Villa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
         <div class="pif" data-r data-d="2">
           <div class="pif-thumb">
             <div class="pif-bg">
-              <img src="/images/projects/14.JPG" alt="Skyline Offices interior" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+              <img src="/images/projects/14.JPG" alt="Skyline Offices interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
             </div>
           </div>
         </div>
@@ -1065,9 +1096,9 @@
     });
 
     const closeLB = () => lb.classList.remove('on');
-    lb.onclick = (e) => { if(e.target !== lbImg) closeLB(); };
+    lb.onclick = (e) => { if (e.target !== lbImg) closeLB(); };
     lbClose.onclick = closeLB;
-    window.onkeydown = (e) => { if(e.key === 'Escape') closeLB(); };
+    window.onkeydown = (e) => { if (e.key === 'Escape') closeLB(); };
 
     // Scroll reveal animations for testimonials and team sections
     const scrollObserver = new IntersectionObserver((entries) => {
