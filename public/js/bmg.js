@@ -82,6 +82,7 @@ function boot(){
   initForms();
   initMagnetic();
   initParallax();
+  initCTA();
 }
 
 /* ── NAVBAR ─────────────────────────────────────────────────────── */
@@ -292,6 +293,70 @@ function initParallax(){
   window.addEventListener('scroll',()=>{
     pg.style.transform = `translateY(${scrollY*.28}px)`;
   },{passive:true});
+}
+
+/* ── CTA MODAL TIMED ────────────────────────────────────────────── */
+function initCTA() {
+  const modal = document.getElementById('cta-modal');
+  if(!modal) return;
+
+  // Show after 5 seconds
+  const ctaTimer = setTimeout(() => {
+    // Only show if user hasn't already closed it in this session
+    if (!sessionStorage.getItem('bmg_cta_shown')) {
+      modal.classList.add('on');
+      document.body.style.overflow = 'hidden'; // prevent scroll
+    }
+  }, 5000);
+
+  const close = () => {
+    modal.classList.remove('on');
+    document.body.style.overflow = '';
+    sessionStorage.setItem('bmg_cta_shown', 'true');
+  };
+
+  const closeBtn = document.getElementById('cta-close-btn');
+  const closeOverlay = document.getElementById('cta-close-overlay');
+
+  if(closeBtn) closeBtn.onclick = close;
+  if(closeOverlay) closeOverlay.onclick = close;
+
+  // Form Handling
+  const form = document.getElementById('cta-lead-form');
+  const success = document.getElementById('cta-success');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button');
+      btn.disabled = true;
+      btn.innerHTML = '<span>Processing...</span>';
+
+      // Simulate API call
+      setTimeout(() => {
+        form.style.display = 'none';
+        if (success) success.style.display = 'block';
+        
+        // Auto-close after 3 seconds on success
+        setTimeout(close, 3000);
+      }, 1500);
+    });
+
+    // Re-initialize form floating labels for the new form
+    form.querySelectorAll('.ff').forEach(ff => {
+      const input = ff.querySelector('input,textarea,select');
+      if (!input) return;
+      function chk() { ff.classList.toggle('filled', input.value.length > 0); }
+      input.addEventListener('focus', () => ff.classList.add('focused'));
+      input.addEventListener('blur', () => { ff.classList.remove('focused'); chk(); });
+      input.addEventListener('input', chk);
+      chk(); // init
+    });
+  }
+
+  // ESC key to close
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && modal.classList.contains('on')) close();
+  });
 }
 
 })();

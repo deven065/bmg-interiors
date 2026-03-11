@@ -519,14 +519,14 @@ em{font-style:italic}
 
 /* ── NUMBERS ROW ─────────────────────────────────────────────────── */
 .num-row{display:flex;gap:3rem;flex-wrap:wrap}
-.num-item{}
+.num-item{ flex: 1; min-width: 140px; }
 .num-val{font-family:var(--fh);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;
   color:var(--brand);line-height:1}
 .num-lbl{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-top:.4rem}
 
 /* ── MISC UTIL ───────────────────────────────────────────────────── */
 .fmt-l{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-bottom:.3rem}
-.feat-meta-item{}
+.feat-meta-item{ flex: 1; }
 
 /* ── MAP PLACEHOLDER ─────────────────────────────────────────────── */
 .map-ph{width:100%;aspect-ratio:16/7;background:var(--s1);border-radius:2px;
@@ -594,4 +594,177 @@ em{font-style:italic}
 }
 @media(max-width:520px){
   .client-grid,.client-grid-full{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── WA FLOAT ────────────────────────────────────────────────────── */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2.5rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem;
+  background: rgba(11, 11, 11, .85);
+  border: 1px solid var(--brgold);
+  border-radius: 100px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+  transition: all .4s var(--e1);
+  text-decoration: none;
+  cursor: none;
+}
+
+.wa-ico {
+  width: 44px;
+  height: 44px;
+  background: var(--brand);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  animation: apulse 3s infinite;
+  transition: transform .4s var(--e1);
+}
+
+.wa-ico svg {
+  width: 22px;
+  height: 22px;
+  fill: #000;
+}
+
+.wa-txt {
+  padding-right: 1.2rem;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width .5s var(--e1), opacity .4s var(--e1);
+}
+
+.wa-lbl {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 2px;
+}
+
+.wa-msg {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.wa-float:hover {
+  background: var(--brand);
+  border-color: #fff;
+  transform: translateY(-5px);
+}
+
+.wa-float:hover .wa-ico {
+  animation: none;
+  background: #fff;
+  transform: scale(1.05);
+}
+
+.wa-float:hover .wa-ico svg {
+  fill: var(--brand);
+}
+
+.wa-float:hover .wa-txt {
+  max-width: 200px;
+  opacity: 1;
+}
+
+/* expand label on desktop initially? No, let's keep it minimal and expand on hover. 
+   On mobile, we might want it always collapsed or slightly different. 
+*/
+
+@media (max-width: 768px) {
+  .wa-float {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+  /* On mobile, show text after 2 seconds to grab attention */
+  .wa-float .wa-txt {
+    animation: wa-expand 1s 2s var(--e1) forwards;
+  }
+}
+
+@keyframes wa-expand {
+  to { max-width: 200px; opacity: 1; }
+}
+
+/* ── CTA MODAL ────────────────────────────────────────────── */
+.cta-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s var(--e1);
+}
+
+.cta-modal.on {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.cta-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cta-modal-box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  padding: 3.5rem 3rem;
+  border-radius: 4px;
+  transform: translateY(30px) scale(.96);
+  transition: transform .6s var(--e1);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .6);
+}
+
+.cta-modal.on .cta-modal-box {
+  transform: none;
+}
+
+.cta-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--fg2);
+  font-size: 2.2rem;
+  font-weight: 200;
+  cursor: none;
+  line-height: 1;
+  transition: color .3s, transform .3s;
+}
+
+.cta-modal-close:hover {
+  color: var(--brand);
+  transform: rotate(90deg);
+}
+
+@media (max-width: 520px) {
+  .cta-modal-box {
+    padding: 2.5rem 1.8rem;
+  }
 }
