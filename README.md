@@ -2,7 +2,7 @@
 
 ![BMG Interiors Logo](public/images/bmg-logo.png)
 
-> **Crafting extraordinary spaces since 2014.** 
+> **Crafting extraordinary spaces since 1988.** 
 > Award-winning luxury interior design studio based in Mumbai, specializing in residential, commercial, and turnkey projects across India.
 
 ---

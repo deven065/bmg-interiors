@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BMG Interiors | Luxury Interior Design Studio — Mumbai",
-  description: "Award-winning luxury interior design studio crafting extraordinary spaces since 2014. Specializing in residential, commercial, and turnkey projects across India.",
+  description: "Award-winning luxury interior design studio crafting extraordinary spaces since 1988. Specializing in residential, commercial, and turnkey projects across India.",
   keywords: ["interior design Mumbai", "luxury interior design", "residential designers India", "commercial interiors", "turnkey interior solutions", "BMG Interiors"],
   openGraph: {
     title: "BMG Interiors | Luxury Interior Design Studio",
-    description: "Crafting extraordinary spaces since 2014. Residential, commercial, and turnkey projects.",
+    description: "Crafting extraordinary spaces since 1988. Residential, commercial, and turnkey projects.",
     url: "https://bmginteriors.com",
     siteName: "BMG Interiors",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "BMG Interiors | Luxury Interior Design Studio",
-    description: "Award-winning luxury interior design studio crafting extraordinary spaces since 2014.",
+    description: "Award-winning luxury interior design studio crafting extraordinary spaces since 1988.",
     images: ["/images/og-image.jpg"],
   },
   robots: {
