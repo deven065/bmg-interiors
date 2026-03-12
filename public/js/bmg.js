@@ -50,7 +50,50 @@ const loader = document.getElementById('loader');
 const ldBar  = document.querySelector('.ld-bar');
 const ldNum  = document.querySelector('.ld-num');
 if(loader){
-  const duration = 2000;
+  /* ── Letter-cycle animation via GSAP ── */
+  const chars = loader.querySelectorAll('.ld-char');
+  if(window.gsap && chars.length){
+    const G = gsap;
+    /* initial state already set by CSS (opacity:0, y:20, blur:8px) */
+
+    function revealIn(onDone){
+      G.to(chars,{
+        opacity:1, y:0, filter:'blur(0px)',
+        duration:.6, stagger:.055,
+        ease:'power3.out',
+        onComplete: onDone
+      });
+    }
+    function dissolveOut(onDone){
+      G.to(chars,{
+        opacity:0, y:-18, filter:'blur(6px)',
+        duration:.5, stagger:.045,
+        ease:'power2.in',
+        onComplete: onDone
+      });
+    }
+    function resetDown(onDone){
+      G.set(chars,{y:20, filter:'blur(8px)'});
+      onDone();
+    }
+
+    /* cycle: reveal → hold → dissolve → reset → reveal … */
+    function cycle(){
+      revealIn(()=>{
+        G.delayedCall(.65, ()=>{
+          dissolveOut(()=>{
+            G.delayedCall(.12, ()=>{
+              resetDown(cycle);
+            });
+          });
+        });
+      });
+    }
+    cycle();
+  }
+
+  /* ── Progress bar ── */
+  const duration = 2800;
   const start = performance.now();
   const iv = setInterval(()=>{
     const elapsed = performance.now() - start;
@@ -74,11 +117,13 @@ if(loader){
 }
 
 function boot(){
+  initGSAP();   // must be first — removes data-r from elements it controls
   initReveal();
   initHero();
   initCounters();
   initMarquees();
   initPortfolio();
+  initShowcase();
   initTestimonials();
   initAccordions();
   initForms();
@@ -199,6 +244,20 @@ function initPortfolio(){
         it.classList.toggle('hide',!show);
       });
     });
+  });
+}
+
+/* ── PROJECT ACCORDION ───────────────────────────────────────────── */
+function initShowcase(){
+  const cols = document.querySelectorAll('.pw-col');
+  if(!cols.length) return;
+  function activate(i){
+    cols.forEach(c=>c.classList.remove('active'));
+    cols[i].classList.add('active');
+  }
+  cols.forEach((col,i)=>{
+    col.addEventListener('mouseenter',()=>activate(i));
+    col.addEventListener('click',()=>{ location.href='portfolio.html'; });
   });
 }
 
@@ -359,6 +418,120 @@ function initCTA() {
   window.addEventListener('keydown', (e) => {
     if(e.key === 'Escape' && modal.classList.contains('on')) close();
   });
+}
+
+/* ── GSAP ANIMATIONS ────────────────────────────────────────────── */
+function initGSAP(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  const G = gsap;
+  G.registerPlugin(ScrollTrigger);
+
+  /* Hand key elements off from IntersectionObserver to GSAP */
+  document.querySelectorAll(
+    '.stat-cell,.svc-card,.pi,.client-card,.cta-inner > *,.divider'
+  ).forEach(el=>{
+    el.removeAttribute('data-r');
+    el.removeAttribute('data-d');
+    el.classList.remove('on');
+    el.style.opacity = el.style.transform = el.style.transition = '';
+  });
+
+  /* ── HERO entrance timeline ─────────────────────────────── */
+  const heroImg = document.getElementById('hero-img');
+  const eyLine  = document.querySelector('.hero-ey-line');
+  if(eyLine) G.set(eyLine, {scaleX:0, transformOrigin:'left center'});
+  if(heroImg){ heroImg.classList.remove('on'); G.set(heroImg,{clipPath:'inset(0 100% 0 0)',opacity:1}); }
+
+  const tl = G.timeline({delay:2.4});
+  tl
+    .to('.hero-ey-line',         {scaleX:1, duration:.75, ease:'power3.inOut'}, 0)
+    .from('.hero-ey .lbl',       {opacity:0, y:12, duration:.6, ease:'power3.out'}, .18)
+    .from('.hero-h1 .line-inner',{yPercent:110, opacity:0, stagger:.07, duration:.88, ease:'power4.out'}, .36)
+    .from('.hero-sub',           {opacity:0, y:22, duration:.72, ease:'power3.out'}, .88)
+    .from('.hero-acts > *',      {opacity:0, y:16, stagger:.1, duration:.6, ease:'power3.out'}, 1.02)
+    .to(heroImg||{},             {clipPath:'inset(0 0% 0 0)', duration:1.35, ease:'power4.inOut'}, .48)
+    .from('.hero-badge1',        {opacity:0, scale:.7, y:22, duration:.72, ease:'back.out(1.7)'}, 1.42)
+    .from('.hero-badge2',        {opacity:0, scale:.7, y:-18, duration:.72, ease:'back.out(1.7)'}, 1.58)
+    .from('#hero-scroll',        {opacity:0, y:16, duration:.6, ease:'power2.out'}, 1.72);
+
+  /* ── Scroll-scrub parallax ──────────────────────────────── */
+  G.to('#hero-pg',{
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.4},
+    y:'30%', ease:'none'
+  });
+  G.to('.hero-img-bg',{
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true},
+    y:'13%', ease:'none'
+  });
+  const asImgBg = document.querySelector('.as-img-bg');
+  if(asImgBg) G.to(asImgBg,{
+    scrollTrigger:{trigger:'.about-strip', start:'top bottom', end:'bottom top', scrub:1},
+    y:'10%', ease:'none'
+  });
+
+  /* ── Marquee band ───────────────────────────────────────── */
+  G.from('.mqband',{
+    scrollTrigger:{trigger:'.mqband', start:'top 91%', once:true},
+    opacity:0, y:20, duration:.7, ease:'power2.out'
+  });
+
+  /* ── Stats ──────────────────────────────────────────────── */
+  G.from('.stat-cell',{
+    scrollTrigger:{trigger:'.stat-grid', start:'top 82%', once:true},
+    y:50, opacity:0, stagger:.1, duration:.78, ease:'power3.out'
+  });
+
+  /* ── Service cards – clip from bottom ──────────────────── */
+  G.from('.svc-card',{
+    scrollTrigger:{trigger:'.fsvc-grid', start:'top 80%', once:true},
+    clipPath:'inset(0 0 100% 0)', opacity:0,
+    stagger:.14, duration:1, ease:'power4.out'
+  });
+
+  /* ── Portfolio grid (portfolio.html) ───────────────────── */
+  if(document.querySelector('.pgrid')){
+    G.from('.pi',{
+      scrollTrigger:{trigger:'.pgrid', start:'top 90%', once:true},
+      y:60, opacity:0,
+      stagger:{each:.1, from:'start'}, duration:.9, ease:'power3.out'
+    });
+  }
+  /* ── About strip ────────────────────────────────────────── */
+  G.from('.as-img',{
+    scrollTrigger:{trigger:'.about-strip', start:'top 77%', once:true},
+    x:-60, opacity:0, duration:1.15, ease:'power3.out'
+  });
+  G.from('.about-strip > div:last-child > *',{
+    scrollTrigger:{trigger:'.about-strip', start:'top 77%', once:true},
+    x:44, opacity:0, stagger:.09, duration:.88, ease:'power3.out', delay:.1
+  });
+
+  /* ── Client logos ───────────────────────────────────────── */
+  G.from('.client-card',{
+    scrollTrigger:{trigger:'.client-grid', start:'top 82%', once:true},
+    opacity:0, scale:.86, stagger:.03, duration:.55, ease:'power2.out'
+  });
+
+  /* ── CTA band ───────────────────────────────────────────── */
+  G.from('.cta-inner > *',{
+    scrollTrigger:{trigger:'.cta-band', start:'top 77%', once:true},
+    y:42, opacity:0, stagger:.1, duration:.88, ease:'power3.out'
+  });
+  G.from('.cstrip-item',{
+    scrollTrigger:{trigger:'.cstrip', start:'top 85%', once:true},
+    y:24, opacity:0, stagger:.1, duration:.7, ease:'power3.out'
+  });
+
+  /* ── Dividers ───────────────────────────────────────────── */
+  document.querySelectorAll('.divider').forEach(d=>{
+    G.from(d,{
+      scrollTrigger:{trigger:d, start:'top 89%', once:true},
+      scaleX:0, transformOrigin:'center', duration:1.3, ease:'power3.inOut'
+    });
+  });
+
+  /* ensure all scroll positions are calculated correctly */
+  ScrollTrigger.refresh();
 }
 
 })();

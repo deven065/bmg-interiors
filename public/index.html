@@ -54,6 +54,8 @@
 }
 </script>
   <link rel="stylesheet" href="css/bmg.css" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
   <style>
     /* ── HOME HERO ────────────────────────────────────────── */
     .hero {
@@ -275,6 +277,27 @@
       }
     }
 
+    /* tablet: hero padding + tighter heading */
+    @media(max-width:768px) {
+      .hero { padding-top: 72px; min-height: 88dvh }
+      .hero-sub { max-width: 100% }
+    }
+
+    /* phone: stack hero action buttons */
+    @media(max-width:540px) {
+      .hero { min-height: 82dvh }
+      .hero-acts {
+        flex-direction: column;
+        align-items: flex-start
+      }
+      .hero-acts .btn {
+        width: 100%;
+        max-width: 340px;
+        justify-content: center
+      }
+      .fw-count { font-size: 3.5rem; top: -1rem }
+    }
+
     /* ── HOME FEATURED SERVICES ───────────────────────────── */
     .fsvc-grid {
       display: grid;
@@ -353,6 +376,11 @@
       }
     }
 
+    @media(max-width:480px) {
+      .as-img { aspect-ratio: 4/3 }
+      .as-badge { right: .25rem; top: auto; bottom: 1rem; transform: none }
+    }
+
     /* ── FEATURED WORKS LABEL ─────────────────────────────── */
     .fw-count {
       font-family: var(--fh);
@@ -369,6 +397,9 @@
 </head>
 
 <body>
+
+  <!-- SCROLL PROGRESS -->
+  <div id="scroll-prog"></div>
 
   <!-- CURSOR -->
   <div id="cur"></div>
@@ -600,41 +631,98 @@
         </a>
       </div>
 
-      <div class="pgrid">
-        <div class="pi" data-r>
-          <div class="pthumb">
-            <div class="pthumb-bg"><img src="/images/mehta-residence/photo-1.JPG" alt="The Mehta Residence Living Room"
-                loading="eager" decoding="async" width="1920" height="1080"
-                style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div>
+      <div class="pw-accordion" data-r>
+
+        <!-- 01 Mehta Residence -->
+        <div class="pw-col active">
+          <div class="pw-col-bg"><img src="/images/mehta-residence/photo-1.JPG" alt="Mehta Residence" loading="eager" decoding="async"></div>
+          <div class="pw-col-num">01</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Residential</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">MEHTA RESIDENCE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Luxury Residential &middot; Mumbai</div>
+            <div class="pw-col-card-name">Mehta Residence</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A bespoke family home where artisan craftsmanship meets quiet luxury &mdash; every detail curated with intention.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
           </div>
         </div>
-        <div class="pi" data-r data-d="1">
-          <div class="pthumb">
-            <div class="pthumb-bg"><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ Corporate Office"
-                loading="eager" decoding="async" width="1920" height="1080"
-                style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div>
+
+        <!-- 02 Vertex HQ -->
+        <div class="pw-col">
+          <div class="pw-col-bg"><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ" loading="lazy" decoding="async"></div>
+          <div class="pw-col-num">02</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Office</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">VERTEX HQ</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Corporate Office &middot; Mumbai</div>
+            <div class="pw-col-card-name">Vertex HQ</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A headquarters crafted to project authority &mdash; built around the rhythms of modern business culture.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
           </div>
         </div>
-        <div class="pi" data-r data-d="2">
-          <div class="pthumb">
-            <div class="pthumb-bg"><img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg"
-                alt="Aurum's Office Corporate Interior" loading="eager" decoding="async"
-                style="width:100%;height:100%;object-fit:cover; cursor:pointer;"></div>
+
+        <!-- 03 Aurum Office -->
+        <div class="pw-col">
+          <div class="pw-col-bg"><img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum Office" loading="lazy" decoding="async"></div>
+          <div class="pw-col-num">03</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Interior</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">AURUM OFFICE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Corporate Interior &middot; Mumbai</div>
+            <div class="pw-col-card-name">Aurum Office</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">Gold-toned accents and clean geometry define a new benchmark for corporate interior excellence.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
           </div>
         </div>
-        <div class="pi" data-r data-d="3">
-          <div class="pthumb">
-            <div class="pthumb-bg"><img src="/images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse Residential"
-                loading="eager" decoding="async" width="1920" height="1080"
-                style="width:100%; height:100%; object-fit:cover; cursor:pointer;"></div>
+
+        <!-- 04 Sky Penthouse -->
+        <div class="pw-col">
+          <div class="pw-col-bg"><img src="/images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse" loading="lazy" decoding="async"></div>
+          <div class="pw-col-num">04</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Penthouse</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">SKY PENTHOUSE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Penthouse Residential &middot; Mumbai</div>
+            <div class="pw-col-card-name">Sky Penthouse</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A sky-high residence commanding panoramic views, finished with collector-grade materials throughout.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
           </div>
         </div>
-        <div class="pi" data-r data-d="4">
-          <div class="pthumb">
-            <div class="pthumb-bg"><img src="/office - 11.JPG" alt="Soleil's Office Corporate Interior" loading="lazy"
-                decoding="async" style="width:100%;height:100%;object-fit:cover; cursor:pointer;"></div>
+
+        <!-- 05 Soleil Office -->
+        <div class="pw-col">
+          <div class="pw-col-bg"><img src="/office - 11.JPG" alt="Soleil Office" loading="lazy" decoding="async"></div>
+          <div class="pw-col-num">05</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Office</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">SOLEIL OFFICE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Corporate Interior &middot; Mumbai</div>
+            <div class="pw-col-card-name">Soleil Office</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">Bright, airy workspaces flooded with natural light &mdash; a productive sanctuary above the Mumbai skyline.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -931,17 +1019,7 @@
   <div id="bmg-footer"></div>
   <script src="js/footer.js"></script>
 
-  <script>
-    // ensure hero image and scroll indicator animate in
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const hi = document.getElementById('hero-img');
-        if (hi) hi.classList.add('on');
-        const hs = document.getElementById('hero-scroll');
-        if (hs) hs.classList.add('on');
-      }, 1200);
-    });
-  </script>
+
   <div id="lb" class="lb">
     <div class="lb-close">&times;</div>
     <div class="lb-hint">Click outside or press Escape to close</div>
