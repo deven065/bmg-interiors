@@ -131,10 +131,10 @@ em{font-style:italic}
 
 /* ── BUTTONS ─────────────────────────────────────────────────────── */
 .btn{display:inline-flex;align-items:center;gap:.65rem;padding:.85rem 2.2rem;
-  border-radius:2px;font-family:var(--fb);font-size:11px;font-weight:700;
+  border-radius:100px;font-family:var(--fb);font-size:11px;font-weight:700;
   letter-spacing:.18em;text-transform:uppercase;text-decoration:none;cursor:none;
   border:1px solid transparent;
-  transition:border-color .32s var(--e1),color .32s var(--e1),background .32s var(--e1);
+  transition:all .32s var(--e1);
   position:relative;overflow:hidden;white-space:nowrap;flex-shrink:0}
 .btn span{position:relative;z-index:1}
 .btn-g{background:var(--brand);color:#000;border-color:var(--brand)}
@@ -336,10 +336,10 @@ em{font-style:italic}
   color:var(--fg2);transition:all .3s var(--e1);pointer-events:none}
 .ff.focused label,.ff.filled label{top:.42rem;font-size:9px;color:var(--brand)}
 .ff input,.ff textarea,.ff select{width:100%;background:var(--s1);
-  border:1px solid var(--border);border-radius:2px;color:var(--fg);
+  border:1px solid var(--border);border-radius:12px;color:var(--fg);
   font-family:var(--fb);font-size:.9rem;
-  padding:1.7rem 1rem .7rem;cursor:none;outline:none;
-  transition:border-color .3s,background .3s;resize:none;appearance:none}
+  padding:1.7rem 1.2rem .7rem;cursor:none;outline:none;
+  transition:border-color .3s,background .3s,box-shadow .3s;resize:none;appearance:none}
 .ff input:focus,.ff textarea:focus,.ff select:focus{border-color:var(--brgold);background:var(--s2)}
 .ff textarea{min-height:140px;padding-top:1.8rem}
 
@@ -733,11 +733,13 @@ em{font-style:italic}
   z-index: 1;
   width: 100%;
   max-width: 580px;
-  padding: 3.5rem 3rem;
-  border-radius: 4px;
-  transform: translateY(30px) scale(.96);
-  transition: transform .6s var(--e1);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, .6);
+  padding: 4rem 3.5rem;
+  border-radius: 32px;
+  background: radial-gradient(circle at top left, var(--s2), var(--bg));
+  border: 1px solid rgba(255, 204, 0, 0.15);
+  transform: translateY(40px) scale(.95);
+  transition: transform .8s var(--e1), opacity .6s var(--e1);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .cta-modal.on .cta-modal-box {
