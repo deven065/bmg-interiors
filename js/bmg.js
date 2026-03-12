@@ -57,19 +57,21 @@
   const ldBar = document.querySelector('.ld-bar');
   const ldNum = document.querySelector('.ld-num');
   if (loader) {
-    let p = 0;
+    const duration = 2000;
+    const start = performance.now();
     const iv = setInterval(() => {
-      p += Math.random() * 16 + 4;
-      if (p >= 100) { p = 100; clearInterval(iv); }
+      const elapsed = performance.now() - start;
+      const p = Math.min((elapsed / duration) * 100, 100);
       if (ldBar) ldBar.style.width = p + '%';
       if (ldNum) ldNum.textContent = Math.floor(p) + '%';
       if (p >= 100) {
+        clearInterval(iv);
         setTimeout(() => {
           loader.classList.add('out');
           boot();
-        }, 460);
+        }, 200);
       }
-    }, 48);
+    }, 16);
   } else {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', boot);
