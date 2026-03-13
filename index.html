@@ -285,15 +285,53 @@
 
     /* phone: stack hero action buttons */
     @media(max-width:540px) {
-      .hero { min-height: 82dvh }
+      .hero {
+        min-height: auto;
+        align-items: flex-start;
+        padding-bottom: 2.25rem
+      }
+      .hero-layout {
+        gap: 1.25rem
+      }
+      .hero-content {
+        order: 2;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center
+      }
+      .hero-panel {
+        display: block;
+        order: 1
+      }
+      .hero-img {
+        aspect-ratio: 1.35/1
+      }
+      .hero-ey,
+      .hero-acts {
+        justify-content: center
+      }
+      .hero-h1,
+      .hero-sub {
+        max-width: 100%
+      }
+      .hero-badge1,
+      .hero-badge2,
+      #hero-scroll {
+        display: none
+      }
       .hero-acts {
         flex-direction: column;
-        align-items: flex-start
+        align-items: center;
+        width: 100%
       }
       .hero-acts .btn {
         width: 100%;
         max-width: 340px;
         justify-content: center
+      }
+      .hero-panel {
+        margin-top: .25rem
       }
       .fw-count { font-size: 3.5rem; top: -1rem }
     }
@@ -627,7 +665,8 @@
         </a>
       </div>
 
-      <div class="pw-accordion" data-r>
+    </div><!-- /.wrap -->
+    <div class="pw-accordion" data-r>
 
         <!-- 01 Mehta Residence -->
         <div class="pw-col active">
@@ -719,8 +758,7 @@
           </div>
         </div>
 
-      </div>
-    </div>
+    </div><!-- /.pw-accordion -->
   </section>
 
   <div class="wrap">

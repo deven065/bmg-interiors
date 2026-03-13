@@ -74,7 +74,7 @@
       cycle();
     }
 
-    const duration = 2800;
+    const duration = 1600;
     const start = performance.now();
     const iv = setInterval(() => {
       const elapsed = performance.now() - start;
@@ -84,6 +84,12 @@
       if (p >= 100) {
         clearInterval(iv);
         setTimeout(() => {
+          /* Kill char animation and snap to invisible BEFORE fading the loader,
+             so the fading black backdrop never reveals ghost letter shadows */
+          if (window.gsap && chars.length) {
+            gsap.killTweensOf(chars);
+            gsap.set(chars, { opacity: 0, filter: 'blur(0px)', y: 0 });
+          }
           loader.classList.add('out');
           boot();
         }, 200);
@@ -247,12 +253,27 @@
   function initShowcase(){
     const cols = document.querySelectorAll('.pw-col');
     if(!cols.length) return;
+    let activeIndex = Array.from(cols).findIndex(col => col.classList.contains('active'));
+    if(activeIndex < 0) activeIndex = 0;
+    let frame = 0;
+    let debounceTimer = 0;
+
     function activate(i){
-      cols.forEach(c=>c.classList.remove('active'));
-      cols[i].classList.add('active');
+      if(i === activeIndex) return;
+      cancelAnimationFrame(frame);
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        activeIndex = i;
+        frame = requestAnimationFrame(() => {
+          cols.forEach((col, index) => col.classList.toggle('active', index === activeIndex));
+        });
+      }, 140);
     }
+    activate(activeIndex);
     cols.forEach((col,i)=>{
-      col.addEventListener('mouseenter',()=>activate(i));
+      col.addEventListener('pointerenter',()=>activate(i));
+      col.addEventListener('pointerleave',()=>clearTimeout(debounceTimer));
+      col.addEventListener('focusin',()=>activate(i));
       col.addEventListener('click',()=>{ location.href='portfolio.html'; });
     });
   }
@@ -377,7 +398,7 @@
     if(eyLine) G.set(eyLine, {scaleX:0, transformOrigin:'left center'});
     if(heroImg){ heroImg.classList.remove('on'); G.set(heroImg,{clipPath:'inset(0 100% 0 0)',opacity:1}); }
 
-    const tl = G.timeline({delay:2.4});
+    const tl = G.timeline({delay:0.2});
     tl
       .to('.hero-ey-line',         {scaleX:1, duration:.75, ease:'power3.inOut'}, 0)
       .from('.hero-ey .lbl',       {opacity:0, y:12, duration:.6, ease:'power3.out'}, .18)
