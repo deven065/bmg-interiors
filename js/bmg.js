@@ -26,6 +26,76 @@
     document.addEventListener('mouseenter', () => document.body.classList.remove('c-hide'));
   }
 
+  /* ── M.PNG CLICK BURST ──────────────────────────────────────────── */
+  (function(){
+    const CSS = `
+      .m-orbit{
+        position:fixed;pointer-events:none;z-index:999999;
+        width:56px;height:56px;transform:translate(-50%,-50%);
+        will-change:transform,opacity;
+      }
+      .m-orbit .m-mark{
+        position:absolute;top:50%;left:50%;width:24px;height:24px;
+        opacity:0;will-change:transform,opacity;
+        filter:drop-shadow(0 0 8px rgba(255,204,0,.48));
+        animation:morbit .82s cubic-bezier(.16,1,.3,1) forwards;
+      }
+      .m-orbit .m-circle{
+        position:absolute;inset:0;border-radius:50%;
+        border:1.6px solid rgba(255,204,0,.78);
+        opacity:0;transform:scale(.36);
+        will-change:transform,opacity;
+        animation:mcircle .82s cubic-bezier(.16,1,.3,1) forwards;
+      }
+      .m-orbit .m-circle-2{
+        border-color:rgba(255,204,0,.38);
+        animation-delay:.08s;
+      }
+      @keyframes morbit{
+        0%   {transform:translate(-50%,-50%) rotate(0deg)   translateY(-13px) rotate(0deg) scale(.55);opacity:0}
+        18%  {opacity:1}
+        84%  {opacity:1}
+        100% {transform:translate(-50%,-50%) rotate(360deg) translateY(-13px) rotate(-360deg) scale(.82);opacity:0}
+      }
+      @keyframes mcircle{
+        0%   {transform:scale(.36);opacity:0}
+        22%  {opacity:1}
+        100% {transform:scale(1.08);opacity:0}
+      }
+    `;
+    const st = document.createElement('style');
+    st.textContent = CSS;
+    document.head.appendChild(st);
+
+    document.addEventListener('click', e=>{
+      const x = e.clientX, y = e.clientY;
+
+      const orbit = document.createElement('div');
+      orbit.className = 'm-orbit';
+      orbit.style.left = x+'px';
+      orbit.style.top = y+'px';
+
+      const circleA = document.createElement('div');
+      circleA.className = 'm-circle';
+      const circleB = document.createElement('div');
+      circleB.className = 'm-circle m-circle-2';
+
+      const img = document.createElement('img');
+      img.className = 'm-mark';
+      img.src = '/M.png';
+      img.alt = '';
+
+      orbit.appendChild(circleA);
+      orbit.appendChild(circleB);
+      orbit.appendChild(img);
+      document.body.appendChild(orbit);
+
+      const cleanup = ()=>{ orbit.remove(); };
+      img.addEventListener('animationend', cleanup, {once:true});
+      setTimeout(cleanup, 950);
+    });
+  })();
+
   /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
   const wipe = document.getElementById('wipe');
   if (wipe) {
@@ -104,6 +174,7 @@
   }
 
   function boot() {
+    initCinematicScroll();
     initGSAP();   // must be first — removes data-r from elements it controls
     initReveal();
     initHero();
@@ -116,6 +187,72 @@
     initForms();
     initMagnetic();
     initParallax();
+  }
+
+  /* ── CINEMATIC SCROLL (DESKTOP) ────────────────────────────────── */
+  function initCinematicScroll() {
+    if (/portfolio\.html$/i.test(location.pathname)) return;
+    const canEnhance =
+      window.matchMedia('(hover:hover) and (pointer:fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canEnhance) return;
+
+    const root = document.scrollingElement || document.documentElement;
+    let targetY = window.scrollY;
+    let currentY = targetY;
+    let rafId = 0;
+    let lockSync = false;
+
+    const clamp = v => Math.max(0, Math.min(v, root.scrollHeight - innerHeight));
+    const kick = () => { if (!rafId) rafId = requestAnimationFrame(tick); };
+
+    function tick() {
+      currentY += (targetY - currentY) * 0.12;
+      if (Math.abs(targetY - currentY) < 0.45) {
+        currentY = targetY;
+        rafId = 0;
+      } else {
+        rafId = requestAnimationFrame(tick);
+      }
+      lockSync = true;
+      window.scrollTo(0, currentY);
+      lockSync = false;
+      if (window.ScrollTrigger) ScrollTrigger.update();
+    }
+
+    window.addEventListener('wheel', e => {
+      if (e.ctrlKey || e.metaKey) return;
+      e.preventDefault();
+      const delta = Math.max(-220, Math.min(220, e.deltaY * 1.06));
+      targetY = clamp(targetY + delta);
+      kick();
+    }, { passive: false });
+
+    window.addEventListener('keydown', e => {
+      const k = e.key;
+      let step = 0;
+      if (k === 'ArrowDown') step = 88;
+      else if (k === 'ArrowUp') step = -88;
+      else if (k === 'PageDown' || k === ' ') step = innerHeight * 0.9;
+      else if (k === 'PageUp') step = -innerHeight * 0.9;
+      else if (k === 'Home') targetY = 0;
+      else if (k === 'End') targetY = root.scrollHeight - innerHeight;
+      else return;
+
+      if (step) targetY = clamp(targetY + step);
+      else targetY = clamp(targetY);
+      kick();
+    });
+
+    window.addEventListener('resize', () => {
+      targetY = clamp(window.scrollY);
+      currentY = targetY;
+    }, { passive: true });
+
+    window.addEventListener('scroll', () => {
+      if (lockSync || rafId) return;
+      targetY = currentY = window.scrollY;
+    }, { passive: true });
   }
 
   /* ── NAVBAR ─────────────────────────────────────────────────────── */
@@ -381,6 +518,11 @@
     if(!window.gsap || !window.ScrollTrigger) return;
     const G = gsap;
     G.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({limitCallbacks:true, ignoreMobileResize:true});
+
+    try {
+      ScrollTrigger.normalizeScroll({ allowNestedScroll:true, momentum:self => Math.min(3, Math.abs(self.velocityY) / 1350) });
+    } catch (_e) {}
 
     /* Hand key elements off from IntersectionObserver to GSAP */
     document.querySelectorAll(
@@ -415,6 +557,12 @@
       scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.4},
       y:'30%', ease:'none'
     });
+    G.to('.hero-video', {
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.1 },
+      yPercent: 9,
+      scale: 1.06,
+      ease: 'none'
+    });
     G.to('.hero-img-bg',{
       scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true},
       y:'13%', ease:'none'
@@ -423,6 +571,24 @@
     if(asImgBg) G.to(asImgBg,{
       scrollTrigger:{trigger:'.about-strip', start:'top bottom', end:'bottom top', scrub:1},
       y:'10%', ease:'none'
+    });
+
+    // cinematic section drift for a less template-like feel
+    G.utils.toArray('.sec').forEach((sec, i) => {
+      G.fromTo(sec,
+        { y: 36, opacity: .72 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sec,
+            start: 'top 92%',
+            end: 'top 58%',
+            scrub: 1 + (i % 3) * .08
+          }
+        }
+      );
     });
 
     /* ── Marquee band ─────────────────────────────────────── */

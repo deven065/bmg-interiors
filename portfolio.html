@@ -310,6 +310,171 @@
       }
     }
 
+    /* ── PORTFOLIO STACK CARDS ───────────────────────────── */
+    .proj-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      margin-top: .6rem
+    }
+
+    .proj-card {
+      display: grid;
+      grid-template-columns: 170px minmax(260px, 420px) 1fr;
+      gap: 1.25rem;
+      align-items: stretch;
+      background: rgba(236, 231, 219, .95);
+      border: 1px solid rgba(21, 35, 35, .14);
+      border-radius: 3px;
+      padding: .85rem;
+      min-height: 290px;
+      position: relative;
+      content-visibility: auto;
+      contain-intrinsic-size: 320px;
+      transition: transform .36s var(--e1), border-color .32s, box-shadow .36s var(--e1)
+    }
+
+    .proj-card + .proj-card { margin-top: -34px }
+    .proj-card:nth-child(3n+2) { margin-left: .9rem }
+    .proj-card:nth-child(3n+3) { margin-left: 1.7rem }
+    .proj-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(21, 35, 35, .24);
+      box-shadow: 0 20px 36px rgba(0, 0, 0, .18)
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      align-content: flex-start;
+      padding-top: .3rem;
+      position: sticky;
+      top: 108px;
+      align-self: start
+    }
+
+    .proj-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #243434;
+      border: 1px solid rgba(34, 49, 49, .24);
+      border-radius: 999px;
+      padding: .22rem .58rem;
+      background: rgba(255, 255, 255, .45);
+      white-space: nowrap
+    }
+
+    .proj-card-media {
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: none;
+      min-height: 255px
+    }
+
+    .proj-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .75s var(--e1)
+    }
+
+    .proj-card:hover .proj-card-media img { transform: scale(1.05) }
+
+    .proj-view {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 47, 47, .25);
+      background: rgba(243, 238, 226, .92);
+      color: #213333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 .95rem 0 1rem;
+      font-size: .86rem;
+      font-weight: 600
+    }
+
+    .proj-view-arr {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(24, 48, 48, .12);
+      border: 1px solid rgba(24, 48, 48, .35);
+      display: grid;
+      place-items: center;
+      color: #183030;
+      font-size: 1rem;
+      transition: transform .3s var(--e1), background .3s
+    }
+
+    .proj-card:hover .proj-view-arr { transform: translateX(2px); background: rgba(24, 48, 48, .2) }
+
+    .proj-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .8rem;
+      padding: .15rem .2rem .2rem .25rem
+    }
+
+    .proj-title {
+      font-family: var(--fb);
+      font-size: clamp(1.55rem, 2.2vw, 2.15rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: #1d2f2f
+    }
+
+    .proj-desc {
+      font-size: .96rem;
+      line-height: 1.62;
+      color: #405454;
+      max-width: 48ch
+    }
+
+    #legacy-pgrid { display: none }
+
+    @media(max-width:980px) {
+      .proj-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        margin-left: 0 !important;
+        margin-top: 0 !important
+      }
+
+      .proj-tags {
+        order: 1;
+        padding-top: 0;
+        position: static
+      }
+
+      .proj-card-media {
+        order: 2;
+        min-height: 265px
+      }
+
+      .proj-copy {
+        order: 3
+      }
+    }
+
+    @media(max-width:560px) {
+      .proj-card { padding: .7rem }
+      .proj-card-media { min-height: 235px }
+      .proj-title { font-size: 1.45rem }
+      .proj-desc { font-size: .92rem }
+      .proj-view { height: 42px; font-size: .82rem }
+    }
+
     /* ── PROCESS STRIP ────────────────────────────────────── */
     .pstrips {
       display: grid;
@@ -714,7 +879,8 @@
         </div>
       </div>
       <div style="margin-bottom: 2rem;"></div>
-      <div class="pgrid-full">
+      <div class="proj-cards" id="proj-cards"></div>
+      <div class="pgrid-full" id="legacy-pgrid" aria-hidden="true">
         <div class="pif" data-r>
           <div class="pif-thumb">
             <div class="pif-bg">
@@ -1033,15 +1199,85 @@
     const lbImg = document.getElementById('lb-img');
     const lbClose = document.querySelector('.lb-close');
 
-    document.querySelectorAll('.pif').forEach(pif => {
-      pif.addEventListener('click', (e) => {
-        const img = pif.querySelector('img');
-        if (img) {
-          lbImg.src = img.src;
-          lbImg.alt = img.alt;
-          lb.classList.add('on');
-        }
+    // Build stacked project cards from existing portfolio images
+    const projCards = document.getElementById('proj-cards');
+    const legacyGrid = document.getElementById('legacy-pgrid');
+    if (projCards && legacyGrid) {
+      const categories = [
+        ['Residential', 'Luxury Home'],
+        ['Commercial', 'Corporate Office'],
+        ['Commercial', 'Workplace'],
+        ['Residential', 'Penthouse'],
+        ['Retail', 'Showroom'],
+        ['Residential', 'Villa'],
+        ['Commercial', 'Workspace'],
+        ['Hospitality', 'Wellness'],
+        ['Residential', 'Apartment'],
+        ['Retail', 'Boutique'],
+        ['Commercial', 'Corporate Hub'],
+        ['Hospitality', 'Suites'],
+        ['Wellness', 'Spa'],
+        ['Residential', 'Heritage'],
+        ['Commercial', 'Office Tower']
+      ];
+
+      const descriptions = [
+        'A refined luxury residence with layered textures, bespoke finishes, and a calm architectural rhythm.',
+        'An executive workspace crafted for clarity, authority, and high-performance daily operations.',
+        'A modern corporate interior balancing agile layouts with premium material detailing.',
+        'A skyline penthouse designed around expansive views, elegant lighting, and timeless comfort.',
+        'A premium retail environment engineered to elevate product storytelling and customer flow.',
+        'A private villa blending artisanal craftsmanship with contemporary luxury living.',
+        'A smart workspace concept uniting efficiency, wellness, and brand-forward identity.',
+        'A restorative spa interior with tactile finishes, gentle lighting, and a serene guest journey.',
+        'A contemporary apartment transformed through intelligent planning and custom furniture.',
+        'A boutique concept with high-impact visual merchandising and polished customer touchpoints.',
+        'A corporate hub designed for modern teams, seamless collaboration, and executive presence.',
+        'A high-end suite experience with soft palettes, layered textures, and hospitality precision.',
+        'A wellness-focused destination balancing warmth, acoustics, and premium relaxation zones.',
+        'A heritage-inspired home where timeless architectural cues meet modern functionality.',
+        'A future-ready office tower floor with strong brand character and flexible planning.'
+      ];
+
+      const cards = Array.from(legacyGrid.querySelectorAll('img')).map((img, i) => {
+        const alt = (img.alt || `Project ${i + 1}`).replace(/\s+interior$/i, '').replace(/['\u2019]s/g, '');
+        const title = alt.includes('—') ? alt.split('—')[0].trim() : alt;
+        const tags = categories[i % categories.length];
+        const desc = descriptions[i % descriptions.length];
+        return `
+          <article class="proj-card">
+            <div class="proj-tags">
+              <span class="proj-tag">${tags[0]}</span>
+              <span class="proj-tag">${tags[1]}</span>
+            </div>
+            <div class="proj-card-media" data-lb="true">
+              <img src="${img.src}" alt="${img.alt}" loading="lazy" decoding="async" fetchpriority="low">
+              <div class="proj-view">
+                <span>View Project</span>
+                <span class="proj-view-arr">→</span>
+              </div>
+            </div>
+            <div class="proj-copy">
+              <h3 class="proj-title">${title}</h3>
+              <p class="proj-desc">${desc}</p>
+            </div>
+          </article>
+        `;
       });
+      projCards.innerHTML = cards.join('');
+      legacyGrid.innerHTML = '';
+      legacyGrid.remove();
+    }
+
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.proj-card-media, .pif');
+      if (!trigger) return;
+      const img = trigger.querySelector('img');
+      if (img) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lb.classList.add('on');
+      }
     });
 
     const closeLB = () => lb.classList.remove('on');

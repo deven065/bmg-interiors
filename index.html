@@ -59,7 +59,7 @@
   <style>
     /* ── HOME HERO ────────────────────────────────────────── */
     .hero {
-      min-height: 92dvh;
+      min-height: 100dvh;
       display: flex;
       align-items: center;
       position: relative;
@@ -67,10 +67,35 @@
       padding-top: 80px
     }
 
-    .hero-bg {
+    .hero-video-wrap {
       position: absolute;
       inset: 0;
       z-index: 0;
+      overflow: hidden
+    }
+
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(.9) contrast(1.02) brightness(.5)
+    }
+
+    .hero-video-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(6, 6, 6, .72) 0%, rgba(6, 6, 6, .48) 38%, rgba(6, 6, 6, .62) 100%),
+        radial-gradient(circle at 65% 35%, rgba(255, 204, 0, .1) 0%, transparent 38%),
+        linear-gradient(180deg, rgba(6, 6, 6, .2) 0%, rgba(6, 6, 6, .42) 100%);
+      pointer-events: none
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
       background: radial-gradient(ellipse 80% 60% at 62% 42%, rgba(255, 204, 0, .065) 0%, transparent 65%),
         radial-gradient(ellipse 45% 55% at 18% 72%, rgba(255, 204, 0, .04) 0%, transparent 60%)
     }
@@ -78,11 +103,12 @@
     .hero-pg {
       position: absolute;
       inset: 0;
-      z-index: 0;
+      z-index: 1;
       background-image: linear-gradient(rgba(255, 204, 0, .04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 204, 0, .04) 1px, transparent 1px);
       background-size: 88px 88px;
-      mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 100%)
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 35%, transparent 100%);
+      pointer-events: none
     }
 
     .hero .wrap {
@@ -93,9 +119,10 @@
 
     .hero-layout {
       display: grid;
-      grid-template-columns: 1.12fr .88fr;
+      grid-template-columns: 1fr;
       gap: 3.5rem;
-      align-items: center
+      align-items: center;
+      max-width: 760px
     }
 
     .hero-content {
@@ -272,9 +299,6 @@
         grid-template-columns: 1fr
       }
 
-      .hero-panel {
-        display: none
-      }
     }
 
     /* tablet: hero padding + tighter heading */
@@ -286,7 +310,7 @@
     /* phone: stack hero action buttons */
     @media(max-width:540px) {
       .hero {
-        min-height: auto;
+        min-height: 100dvh;
         align-items: flex-start;
         padding-bottom: 2.25rem
       }
@@ -351,11 +375,136 @@
     }
 
     /* ── HOME ABOUT STRIP ─────────────────────────────────── */
+    .about-sec {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: #090909
+    }
+
+    .about-sec::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: url('/images/mehta-residence/photo-2.JPG');
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.08);
+      filter: brightness(.28) saturate(.9) contrast(1.05);
+      animation: aboutZoom 18s ease-in-out infinite alternate
+    }
+
+    .about-sec::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(90deg, rgba(6, 6, 6, .86) 0%, rgba(6, 6, 6, .68) 45%, rgba(6, 6, 6, .84) 100%),
+        radial-gradient(circle at 72% 28%, rgba(255, 204, 0, .14) 0%, transparent 38%),
+        linear-gradient(180deg, rgba(6, 6, 6, .48) 0%, rgba(6, 6, 6, .74) 100%);
+      pointer-events: none
+    }
+
+    .about-sec .wrap {
+      position: relative;
+      z-index: 2
+    }
+
+    .about-sec .wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4% -2%;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 10% 22%, rgba(255, 204, 0, .16) 0 2px, transparent 4px),
+        radial-gradient(circle at 24% 78%, rgba(255, 204, 0, .12) 0 1.5px, transparent 4px),
+        radial-gradient(circle at 52% 40%, rgba(255, 204, 0, .13) 0 2px, transparent 4px),
+        radial-gradient(circle at 80% 22%, rgba(255, 204, 0, .12) 0 1.5px, transparent 4px),
+        radial-gradient(circle at 92% 70%, rgba(255, 204, 0, .16) 0 2px, transparent 4px);
+      filter: blur(.2px);
+      opacity: .8;
+      animation: aboutParticles 13s linear infinite
+    }
+
     .about-strip {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6rem;
-      align-items: center
+      align-items: center;
+      position: relative;
+      z-index: 1
+    }
+
+    .about-copy {
+      background: rgba(8, 8, 8, .46);
+      border: 1px solid rgba(255, 204, 0, .16);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, .4);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: clamp(1.1rem, 2.4vw, 1.9rem);
+      border-radius: 2px
+    }
+
+    .about-copy > * {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: aboutCopyIn .7s var(--e1) forwards
+    }
+
+    .about-copy > :nth-child(1) { animation-delay: .08s }
+    .about-copy > :nth-child(2) { animation-delay: .18s }
+    .about-copy > :nth-child(3) { animation-delay: .3s }
+    .about-copy > :nth-child(4) { animation-delay: .42s }
+    .about-copy > :nth-child(5) { animation-delay: .54s }
+
+    @keyframes aboutCopyIn {
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .about-sec .lbl,
+    .about-sec .t-xl,
+    .about-sec .body-l,
+    .about-sec .body-s {
+      text-shadow: 0 3px 20px rgba(0, 0, 0, .62)
+    }
+
+    .about-sec .t-xl {
+      color: #f7efe2
+    }
+
+    .about-sec .body-l {
+      color: #e6dccf
+    }
+
+    .about-sec .body-s {
+      color: #c6bcae
+    }
+
+    @keyframes aboutZoom {
+      0% {
+        transform: scale(1.08) translate3d(0, 0, 0)
+      }
+      100% {
+        transform: scale(1.16) translate3d(-1.6%, -1.1%, 0)
+      }
+    }
+
+    @keyframes aboutParticles {
+      0% {
+        transform: translate3d(0, 0, 0)
+      }
+      50% {
+        transform: translate3d(-1.2%, -1.8%, 0)
+      }
+      100% {
+        transform: translate3d(1.1%, -3.2%, 0)
+      }
     }
 
     .as-img {
@@ -409,6 +558,10 @@
         gap: 3.5rem
       }
 
+      .about-copy {
+        margin-top: -1rem
+      }
+
       .as-badge {
         right: .5rem
       }
@@ -430,6 +583,112 @@
       top: -1.5rem;
       right: 0;
       pointer-events: none
+    }
+
+    /* ── HERO PREMIUM CTA BUTTONS ────────────────────────────── */
+    .hbtn {
+      display: inline-flex;
+      align-items: center;
+      gap: .72rem;
+      padding: 1.05rem 2.5rem;
+      border-radius: 100px;
+      font-family: var(--fb);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hbtn > span { position: relative; z-index: 2; }
+    .hbtn-arr {
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+      transition: transform .38s var(--e1);
+    }
+    .hbtn:hover .hbtn-arr { transform: translateX(6px); }
+
+    /* Portfolio — outlined with sweeping shimmer */
+    .hbtn-port {
+      color: var(--fg);
+      background: transparent;
+      border: 1px solid rgba(255, 204, 0, .32);
+      transition: color .36s var(--e1), border-color .36s, transform .42s var(--e1), box-shadow .42s var(--e1);
+    }
+    /* shimmer beam that loops */
+    .hbtn-port::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -80%; width: 55%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,204,0,.22), transparent);
+      transform: skewX(-18deg);
+      animation: hbtn-sweep 2.8s ease-in-out infinite;
+    }
+    /* fill layer that slides in on hover */
+    .hbtn-port::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--brand);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .46s var(--e1);
+    }
+    .hbtn-port:hover {
+      color: #000;
+      border-color: var(--brand);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 50px rgba(255,204,0,.25), 0 0 0 4px rgba(255,204,0,.1);
+    }
+    .hbtn-port:hover::after { transform: scaleX(1); }
+    .hbtn-port:hover::before { animation-play-state: paused; }
+
+    /* Contact Us — solid gold with breathing pulse glow */
+    .hbtn-contact {
+      color: #000;
+      background: var(--brand);
+      border: 1px solid var(--brand);
+      transition: transform .42s var(--e1), box-shadow .42s var(--e1);
+      animation: hbtn-pulse 2.6s ease-in-out infinite;
+    }
+    /* white shine that sweeps on hover */
+    .hbtn-contact::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -90%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: skewX(-18deg);
+    }
+    .hbtn-contact:hover::before {
+      animation: hbtn-shine .58s var(--e1) forwards;
+    }
+    .hbtn-contact:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 10px 40px rgba(255,204,0,.6), 0 0 0 6px rgba(255,204,0,.14);
+      animation-play-state: paused;
+    }
+
+    @keyframes hbtn-sweep {
+      0%   { left: -80% }
+      55%  { left: 120% }
+      100% { left: 120% }
+    }
+    @keyframes hbtn-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,204,0,.55) }
+      50%       { box-shadow: 0 0 0 15px rgba(255,204,0,0) }
+    }
+    @keyframes hbtn-shine {
+      from { left: -90% }
+      to   { left: 130% }
+    }
+
+    @media(max-width:540px) {
+      .hbtn { width: 100%; max-width: 340px; justify-content: center; }
     }
   </style>
 </head>
@@ -498,6 +757,11 @@
 
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
   <section class="hero" id="home">
+    <div class="hero-video-wrap">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto">
+        <source src="/video.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="hero-bg"></div>
     <div class="hero-pg" id="hero-pg"></div>
     <div class="gspot" style="width:600px;height:600px;top:10%;right:5%;opacity:.7"></div>
@@ -515,26 +779,17 @@
             aesthetics with purposeful living — every detail,<br>obsessed over.
           </p>
           <div class="hero-acts" data-fade="1.35">
-            <a href="portfolio.html" class="btn btn-o btn-xl"><span>See Portfolio</span><span
-                class="btn-arr">→</span></a>
-            <a href="contact.html" class="btn btn-g btn-xl"><span>Contact Us</span></a>
+            <a href="portfolio.html" class="hbtn hbtn-port">
+              <span>Portfolio</span>
+              <span class="hbtn-arr">→</span>
+            </a>
+            <a href="contact.html" class="hbtn hbtn-contact">
+              <span>Contact Us</span>
+              <span class="hbtn-arr">→</span>
+            </a>
           </div>
         </div>
 
-        <div class="hero-panel" data-fade="0.6">
-          <div class="hero-img" id="hero-img">
-            <img src="/images/mehta-residence/photo-2.JPG" alt="BMG Interiors luxury interior design"
-              class="hero-img-bg">
-          </div>
-          <div class="hero-badge1 fbadge glass-g" style="animation-duration:5.5s">
-            <span class="fbadge-num"><span data-count="150">0</span><sup style="font-size:.5em">+</sup></span>
-            <div class="fbadge-lbl">Projects Done</div>
-          </div>
-          <div class="hero-badge2 fbadge glass-g">
-            <span class="fbadge-num">38<sup style="font-size:.5em">+</sup></span>
-            <div class="fbadge-lbl">Years Studio</div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -766,12 +1021,12 @@
   </div>
 
   <!-- ═══════════════════════ ABOUT STRIP ═══════════════════ -->
-  <section class="sec">
+  <section class="sec about-sec">
     <div class="wrap">
       <div class="about-strip">
         <div data-r>
           <div class="as-img">
-            <div class="as-img-bg"><img src="/Office - 32.JPG" alt="BMG Interiors — Our Story"
+            <div class="as-img-bg"><img src="/images/mehta-residence/photo-2.JPG" alt="BMG Interiors luxury interior design"
                 style="width:100%;height:100%;object-fit:cover;display:block;" loading="eager"></div>
             <div class="as-badge fbadge glass-g" style="animation-duration:6.5s">
               <span class="fbadge-num">&#8377;1Cr<sup style="font-size:.45em">+</sup></span>
@@ -779,21 +1034,22 @@
             </div>
           </div>
         </div>
-        <div>
-          <div class="lbl" data-r>Our Story</div>
-          <h2 class="t-xl" data-r data-d="2" style="margin:1rem 0 1.5rem">
-            Designing With<br><em class="gt">Intent &amp; Craft</em>
+        <div class="about-copy">
+          <div class="lbl">For Discerning Homeowners</div>
+          <h2 class="t-xl" style="margin:1rem 0 1.5rem">
+            Signature Interiors That<br><em class="gt">Elevate Your Legacy</em>
           </h2>
-          <p class="body-l" data-r data-d="3" style="margin-bottom:1.2rem">
-            BMG Interiors was founded on a radical belief: great design transforms not just spaces, but the people who
-            inhabit them.
+          <p class="body-l" style="margin-bottom:1.2rem">
+            We partner with business leaders and legacy families to create statement residences that project success,
+            authority, and refined taste from the very first step inside.
           </p>
-          <p class="body-s" data-r data-d="4" style="margin-bottom:2.5rem">
-            Over nearly four decades and 450+ projects later, we remain obsessively detail-driven — blending global
-            design
-            sensibilities with a deeply personal approach to each client&apos;s vision and lifestyle.
+          <p class="body-s" style="margin-bottom:2.5rem">
+            With 38+ years of execution expertise, our studio manages every detail end-to-end &mdash; design strategy,
+            bespoke materials, custom furniture, and precision site delivery &mdash; so your home feels exceptional and
+            unmistakably yours.
           </p>
-          <a href="about.html" class="btn btn-o" data-r data-d="5">
+          <a href="about.html" class="btn btn-o">
+            <span>Explore Our Process</span>
             <span class="btn-arr">→</span>
           </a>
         </div>
