@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════
-   BMG INTERIORS — MASTER JAVASCRIPT
+   BMG INTERIORS &mdash; MASTER JAVASCRIPT
    ══════════════════════════════════════════════════════════════════ */
 ; (function () {
   'use strict';
@@ -99,7 +99,7 @@
   /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
   const wipe = document.getElementById('wipe');
   if (wipe) {
-    // on load → wipe out
+    // on load &rarr; wipe out
     setTimeout(() => { wipe.classList.add('wipe-out'); }, 60);
     // intercept clicks
     document.addEventListener('click', e => {
@@ -175,7 +175,7 @@
 
   function boot() {
     initCinematicScroll();
-    initGSAP();   // must be first — removes data-r from elements it controls
+    initGSAP();   // must be first &mdash; removes data-r from elements it controls
     initReveal();
     initHero();
     initCounters();
@@ -526,7 +526,7 @@
 
     /* Hand key elements off from IntersectionObserver to GSAP */
     document.querySelectorAll(
-      '.stat-cell,.svc-card,.pi,.client-card,.cta-inner > *,.divider'
+      '.stat-cell,.svc-card,.pi,.client-card,.cta-inner > *,.divider,.tl-grid,.tl-item'
     ).forEach(el=>{
       el.removeAttribute('data-r');
       el.removeAttribute('data-d');
@@ -591,6 +591,18 @@
       );
     });
 
+    /* ── Timeline line (about.html) ────────────────────────── */
+    const tlLine = document.querySelector('.tl-line');
+    const tlGrid = document.querySelector('.tl-grid');
+    if(tlLine && tlGrid){
+      const tln = G.timeline({
+        scrollTrigger:{trigger:tlGrid, start:'top 85%', once:true}
+      });
+      tln
+        .from(tlLine, {scaleX:0, transformOrigin:'left center', duration:1.5, ease:'power3.inOut'})
+        .from('.tl-item', {y:30, opacity:0, stagger:0.18, duration:0.9, ease:'power3.out'}, "-=0.6");
+    }
+
     /* ── Marquee band ─────────────────────────────────────── */
     G.from('.mqband',{
       scrollTrigger:{trigger:'.mqband', start:'top 91%', once:true},
@@ -603,7 +615,7 @@
       y:50, opacity:0, stagger:.1, duration:.78, ease:'power3.out'
     });
 
-    /* ── Service cards – clip from bottom ────────────────── */
+    /* ── Service cards &ndash; clip from bottom ────────────────── */
     G.from('.svc-card',{
       scrollTrigger:{trigger:'.fsvc-grid', start:'top 80%', once:true},
       clipPath:'inset(0 0 100% 0)', opacity:0,

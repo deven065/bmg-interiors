@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════
    BMG INTERIORS — MASTER JAVASCRIPT
    ══════════════════════════════════════════════════════════════════ */
 ;(function(){
@@ -99,7 +99,7 @@ if(cur && ring){
 /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
 const wipe = document.getElementById('wipe');
 if(wipe){
-  // on load → wipe out
+  // on load &rarr; wipe out
   setTimeout(()=>{ wipe.classList.add('wipe-out'); },60);
   // intercept clicks
   document.addEventListener('click', e=>{
@@ -147,7 +147,7 @@ if(loader){
       onDone();
     }
 
-    /* cycle: reveal → hold → dissolve → reset → reveal … */
+    /* cycle: reveal &rarr; hold &rarr; dissolve &rarr; reset &rarr; reveal … */
     function cycle(){
       revealIn(()=>{
         G.delayedCall(.65, ()=>{
@@ -592,7 +592,7 @@ function initGSAP(){
 
   /* Hand key elements off from IntersectionObserver to GSAP */
   document.querySelectorAll(
-    '.stat-cell,.svc-card,.pi,.client-card,.cta-inner > *,.divider'
+    '.stat-cell,.svc-card,.pi,.client-card,.cta-inner > *,.divider,.tl-grid,.tl-item'
   ).forEach(el=>{
     el.removeAttribute('data-r');
     el.removeAttribute('data-d');
@@ -620,7 +620,7 @@ function initGSAP(){
 
   /* ── Scroll-scrub parallax ──────────────────────────────── */
   G.to('#hero-pg',{
-    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.4},
+    scrollTrigger:{trigger:document.querySelector('.hero') ? '.hero' : '.phero', start:'top top', end:'bottom top', scrub:1.4},
     y:'30%', ease:'none'
   });
   G.to('.hero-video',{
@@ -657,6 +657,18 @@ function initGSAP(){
     );
   });
 
+  /* ── Timeline line (about.html) ────────────────────────── */
+  const tlLine = document.querySelector('.tl-line');
+  const tlGrid = document.querySelector('.tl-grid');
+  if(tlLine && tlGrid){
+    const tln = G.timeline({
+      scrollTrigger:{trigger:tlGrid, start:'top 85%', once:true}
+    });
+    tln
+      .from(tlLine, {scaleX:0, transformOrigin:'left center', duration:1.5, ease:'power3.inOut'})
+      .from('.tl-item', {y:30, opacity:0, stagger:0.18, duration:0.9, ease:'power3.out'}, "-=0.6");
+  }
+
   /* ── Marquee band ───────────────────────────────────────── */
   G.from('.mqband',{
     scrollTrigger:{trigger:'.mqband', start:'top 91%', once:true},
@@ -669,7 +681,7 @@ function initGSAP(){
     y:50, opacity:0, stagger:.1, duration:.78, ease:'power3.out'
   });
 
-  /* ── Service cards – clip from bottom ──────────────────── */
+  /* ── Service cards &ndash; clip from bottom ──────────────────── */
   G.from('.svc-card',{
     scrollTrigger:{trigger:'.fsvc-grid', start:'top 80%', once:true},
     clipPath:'inset(0 0 100% 0)', opacity:0,
