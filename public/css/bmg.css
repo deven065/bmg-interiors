@@ -237,7 +237,7 @@ em{font-style:italic}
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 .ftr{background:var(--bg);border-top:1px solid var(--border);padding-top:5.5rem;padding-bottom:2.8rem}
 .ftr .nav-logo img{height:110px}
-.ftr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.3fr;gap:3.5rem;margin-bottom:4.5rem}
+.ftr-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.3fr;gap:3.5rem;margin-bottom:4.5rem}
 .ftr-desc{color:var(--fg2);font-size:.875rem;line-height:1.82;margin-top:1rem;max-width:265px}
 .ftr-award{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.4rem;
   padding:.32rem .9rem;border:1px solid var(--brgold);border-radius:100px;
@@ -279,6 +279,15 @@ em{font-style:italic}
 /* ── CTA BAND ────────────────────────────────────────────────────── */
 .cta-band{background:linear-gradient(135deg,#0d0c07,#0f0e06 40%,#090904);
   border-top:1px solid var(--brgold);border-bottom:1px solid var(--brgold)}
+.ready-sec{position:relative;overflow:hidden;
+  background:
+    linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.84)),
+    radial-gradient(circle at center,rgba(255,204,0,.07) 0%,rgba(255,204,0,0) 45%),
+    url('/ready.png') center/cover no-repeat;
+  background-color:var(--bg2)}
+.ready-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(6,6,6,.18),rgba(6,6,6,.05) 50%,rgba(6,6,6,.18));opacity:.95}
+.ready-sec .wrap{position:relative;z-index:1}
 .cta-inner{max-width:800px;margin-inline:auto;text-align:center}
 .cta-inner .lbl{display:block;margin-bottom:1.2rem}
 .cta-inner p{color:var(--fg2);font-size:.98rem;max-width:480px;margin:0 auto 2.8rem}
@@ -304,11 +313,7 @@ em{font-style:italic}
   position:relative;overflow:hidden}
 .phero-bg{position:absolute;inset:0;z-index:0;
   background:radial-gradient(ellipse 75% 65% at 65% 45%,rgba(255,204,0,.055) 0%,transparent 70%)}
-.phero-grid{position:absolute;inset:0;z-index:0;
-  background-image:linear-gradient(rgba(255,204,0,.04) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,204,0,.04) 1px,transparent 1px);
-  background-size:90px 90px;
-  mask-image:radial-gradient(ellipse 90% 80% at 50% 55%,black 25%,transparent 100%)}
+.phero-grid{display:none}
 .phero-rule{position:absolute;bottom:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--brand) 50%,transparent);opacity:.18}
 .phero .wrap{position:relative;z-index:2}
@@ -351,6 +356,15 @@ em{font-style:italic}
   animation:apulse 2.6s ease-in-out infinite;flex-shrink:0}
 
 /* ── TESTIMONIAL ─────────────────────────────────────────────────── */
+.testi-sec{position:relative;overflow:hidden;
+  background:
+    linear-gradient(rgba(6,6,6,.78),rgba(6,6,6,.84)),
+    radial-gradient(circle at center,rgba(255,204,0,.08) 0%,rgba(255,204,0,0) 45%),
+    url('/client.png') center/cover no-repeat;
+  background-color:var(--bg2)}
+.testi-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(6,6,6,.22),rgba(6,6,6,.05) 50%,rgba(6,6,6,.22));opacity:.9}
+.testi-sec .wrap{position:relative;z-index:1}
 .tslide{display:none;flex-direction:column;align-items:center}
 .tslide.on{display:flex;animation:afadein .6s var(--e1)}
 .ttext{font-family:var(--fh);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:300;
@@ -389,18 +403,6 @@ em{font-style:italic}
 .pthumb{width:100%;position:relative;overflow:hidden}
 .pthumb-bg{position:absolute;inset:0;transition:transform .7s var(--e1)}
 .pi:hover .pthumb-bg{transform:scale(1.06)}
-/* architectural grid overlay on all portfolio items */
-.pthumb-bg::after{content:'';position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,204,0,.065) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,204,0,.065) 1px,transparent 1px);
-  background-size:55px 55px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
-/* room perspective silhouette lines (architectural sketch feel) */
-.pthumb-bg::before{content:'';position:absolute;inset:0;
-  background:
-    linear-gradient(to bottom right,transparent calc(50% - .6px),rgba(255,204,0,.18) calc(50% - .6px),rgba(255,204,0,.18) calc(50% + .6px),transparent calc(50% + .6px)),
-    linear-gradient(to bottom left,transparent calc(50% - .6px),rgba(255,204,0,.18) calc(50% - .6px),rgba(255,204,0,.18) calc(50% + .6px),transparent calc(50% + .6px)),
-    linear-gradient(to bottom,transparent 60%,rgba(255,204,0,.08) 60% calc(60% + 1px),transparent calc(60% + 1px))}
 .pover{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,transparent 55%);
   display:flex;flex-direction:column;justify-content:flex-end;padding:1.6rem;
   opacity:0;transition:opacity .45s var(--e1)}

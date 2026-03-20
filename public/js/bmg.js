@@ -211,7 +211,12 @@ function boot(){
 
 /* ── CINEMATIC SCROLL (DESKTOP) ────────────────────────────────── */
 function initCinematicScroll(){
-  if(/portfolio\.html$/i.test(location.pathname)) return;
+  if(
+    /portfolio\.html$/i.test(location.pathname) ||
+    /interior-designer-in-mumbai\.html$/i.test(location.pathname) ||
+    /2bhk-interior-design-in-mumbai\.html$/i.test(location.pathname) ||
+    /interior-design-cost-in-mumbai\.html$/i.test(location.pathname)
+  ) return;
   const canEnhance =
     window.matchMedia('(hover:hover) and (pointer:fine)').matches &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
