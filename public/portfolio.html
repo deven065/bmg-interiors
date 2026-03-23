@@ -356,20 +356,28 @@
     }
 
     .proj-card {
-      display: grid;
-      grid-template-columns: 180px 1.5fr 1fr;
-      gap: 3rem;
-      align-items: stretch;
-      background: #ece7db;
-      border: 1px solid rgba(21, 35, 35, .14);
-      border-radius: 8px;
-      padding: 1.5rem;
-      min-height: 75vh;
       position: sticky;
       top: calc(100px + (var(--card-index, 0) * 12px));
+      min-height: 76vh;
+      width: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 204, 0, .18);
+      border-radius: 0;
       box-shadow: 0 -15px 30px -10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
       transition: transform .36s var(--e1), border-color .32s, box-shadow .36s var(--e1);
       z-index: calc(10 + var(--card-index, 0));
+    }
+
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, .66) 0%, rgba(0, 0, 0, .28) 45%, rgba(0, 0, 0, .18) 100%),
+        linear-gradient(0deg, rgba(0, 0, 0, .48) 0%, rgba(0, 0, 0, .08) 40%, rgba(0, 0, 0, .12) 100%);
+      pointer-events: none;
     }
 
     .proj-card:hover {
@@ -379,14 +387,14 @@
     }
 
     .proj-tags {
+      position: absolute;
+      top: clamp(1rem, 2vw, 1.8rem);
+      left: clamp(1rem, 2vw, 1.8rem);
+      z-index: 3;
       display: flex;
       flex-wrap: wrap;
       gap: .45rem;
-      align-content: flex-start;
-      padding-top: .3rem;
-      position: sticky;
-      top: 108px;
-      align-self: start
+      max-width: 70%;
     }
 
     .proj-tag {
@@ -394,20 +402,23 @@
       font-weight: 700;
       letter-spacing: .08em;
       text-transform: uppercase;
-      color: #243434;
-      border: 1px solid rgba(34, 49, 49, .24);
+      color: #f4f4f4;
+      border: 1px solid rgba(255, 255, 255, .44);
       border-radius: 999px;
       padding: .22rem .58rem;
-      background: rgba(255, 255, 255, .45);
+      background: rgba(0, 0, 0, .33);
+      backdrop-filter: blur(6px);
       white-space: nowrap
     }
 
     .proj-card-media {
-      position: relative;
-      border-radius: 2px;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 0;
       overflow: hidden;
       cursor: none;
-      min-height: 255px
+      min-height: 100%
     }
 
     .proj-card-media img {
@@ -415,7 +426,8 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform .75s var(--e1)
+      transition: transform .75s var(--e1), filter .5s var(--e1);
+      filter: saturate(1.02) contrast(1.02)
     }
 
     .proj-card:hover .proj-card-media img { transform: scale(1.05) }
@@ -425,6 +437,7 @@
       left: 1rem;
       right: 1rem;
       bottom: 1rem;
+      z-index: 4;
       height: 46px;
       border-radius: 999px;
       border: 1px solid rgba(30, 47, 47, .25);
@@ -454,11 +467,15 @@
     .proj-card:hover .proj-view-arr { transform: translateX(2px); background: rgba(24, 48, 48, .2) }
 
     .proj-copy {
+      position: absolute;
+      left: clamp(1rem, 2.6vw, 2.4rem);
+      right: clamp(1rem, 2.6vw, 2.4rem);
+      bottom: clamp(4.6rem, 8vw, 7rem);
+      z-index: 3;
+      max-width: min(56ch, 64vw);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 1rem 2rem 2rem 1rem
+      gap: .85rem;
     }
 
     .proj-title {
@@ -466,50 +483,57 @@
       font-size: clamp(2.2rem, 3.5vw, 3.2rem);
       font-weight: 300;
       line-height: 1.1;
-      color: #1a1a1a;
+      color: #fff;
       letter-spacing: -0.02em;
+      text-shadow: 0 8px 28px rgba(0, 0, 0, .5);
     }
 
     .proj-desc {
       font-family: var(--fb);
       font-size: 1.1rem;
-      line-height: 1.7;
-      color: #555;
+      line-height: 1.6;
+      color: rgba(245, 245, 245, .9);
       max-width: 48ch;
       font-weight: 400;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, .42);
     }
 
     #legacy-pgrid { display: none }
 
     @media(max-width:980px) {
       .proj-card {
-        grid-template-columns: 1fr;
         min-height: calc(100vh - 120px);
         margin-left: 0 !important;
         margin-top: 0 !important
       }
 
       .proj-tags {
-        order: 1;
-        padding-top: 0;
-        position: static
+        top: 1rem;
+        left: 1rem;
+        max-width: calc(100% - 2rem);
       }
 
       .proj-card-media {
-        order: 2;
-        min-height: 265px
+        min-height: 100%
       }
 
       .proj-copy {
-        order: 3
+        left: 1rem;
+        right: 1rem;
+        bottom: 4.2rem;
+        max-width: 100%;
+        gap: .75rem;
       }
+
+      .proj-title { font-size: clamp(1.75rem, 7vw, 2.4rem) }
+      .proj-desc { font-size: .98rem; max-width: 90% }
     }
 
     @media(max-width:560px) {
-      .proj-card { padding: .7rem }
-      .proj-card-media { min-height: 235px }
+      .proj-card { min-height: 72vh }
+      .proj-copy { bottom: 4rem }
       .proj-title { font-size: 1.45rem }
-      .proj-desc { font-size: .92rem }
+      .proj-desc { font-size: .92rem; max-width: 100% }
       .proj-view { height: 42px; font-size: .82rem }
     }
 
@@ -964,7 +988,8 @@
   </div>
 
   <!-- FULL PORTFOLIO -->
-  <section class="sec">
+  <!-- FULL PORTFOLIO HEADING + FILTERS -->
+  <section class="sec" style="padding-bottom:1.5rem">
     <div class="wrap">
       <div class="sh-row">
         <div>
@@ -980,7 +1005,14 @@
         <button class="pf-btn" data-filter="Hospitality">Hospitality</button>
         <button class="pf-btn" data-filter="Retail">Retail</button>
       </div>
-      <div class="proj-cards" id="proj-cards"></div>
+    </div>
+  </section>
+
+  <!-- FULL WIDTH PORTFOLIO CARDS -->
+  <div class="proj-cards" id="proj-cards"></div>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
       <div class="pgrid-full" id="legacy-pgrid" aria-hidden="true">
         <div class="pif" data-r>
           <div class="pif-thumb">
