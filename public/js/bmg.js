@@ -120,70 +120,92 @@ const loader = document.getElementById('loader');
 const ldBar  = document.querySelector('.ld-bar');
 const ldNum  = document.querySelector('.ld-num');
 if(loader){
-  /* ── Letter-cycle animation via GSAP ── */
-  const chars = loader.querySelectorAll('.ld-char');
-  if(window.gsap && chars.length){
+  const logoImg = loader.querySelector('.ld-logo img');
+  const rings = loader.querySelectorAll('.ld-ring');
+
+  if(ldBar) ldBar.style.width = '0%';
+  if(ldNum) ldNum.textContent = '0%';
+
+  if(window.gsap){
     const G = gsap;
-    /* initial state already set by CSS (opacity:0, y:20, blur:8px) */
-
-    function revealIn(onDone){
-      G.to(chars,{
-        opacity:1, y:0, filter:'blur(0px)',
-        duration:.6, stagger:.055,
-        ease:'power3.out',
-        onComplete: onDone
+    if(logoImg){
+      G.set(logoImg, { opacity: 0, y: 16, scale: .9, filter: 'blur(6px)' });
+      G.to(logoImg, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: .9,
+        ease: 'power3.out'
       });
-    }
-    function dissolveOut(onDone){
-      G.to(chars,{
-        opacity:0, y:-18, filter:'blur(6px)',
-        duration:.5, stagger:.045,
-        ease:'power2.in',
-        onComplete: onDone
+      G.to(logoImg, {
+        y: -3,
+        duration: 1.5,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1
       });
-    }
-    function resetDown(onDone){
-      G.set(chars,{y:20, filter:'blur(8px)'});
-      onDone();
     }
 
-    /* cycle: reveal &rarr; hold &rarr; dissolve &rarr; reset &rarr; reveal … */
-    function cycle(){
-      revealIn(()=>{
-        G.delayedCall(.65, ()=>{
-          dissolveOut(()=>{
-            G.delayedCall(.12, ()=>{
-              resetDown(cycle);
-            });
-          });
-        });
-      });
-    }
-    cycle();
   }
 
-  /* ── Progress bar ── */
-  const duration = 1600;
+  let done = false;
+  let finished = false;
+  let doneAt = null;
   const start = performance.now();
-  const iv = setInterval(()=>{
+  const minDuration = 3000;
+  const HOLD = 88;      // % cap while page is loading
+  const COMPLETE = 520; // ms to fill from HOLD → 100%
+
+  // smooth ease-out: fast start, gentle approach to HOLD
+  const easeOut = t => 1 - Math.pow(1 - t, 2.2);
+  // smoothstep for the completion rush
+  const smooth  = t => t * t * (3 - 2 * t);
+
+  const markDone = ()=>{
     const elapsed = performance.now() - start;
-    const p = Math.min((elapsed / duration) * 100, 100);
-    if(ldBar) ldBar.style.width = p+'%';
-    if(ldNum) ldNum.textContent = Math.floor(p)+'%';
-    if(p>=100){
-      clearInterval(iv);
-      setTimeout(()=>{
-        /* Kill char animation and snap to invisible BEFORE fading the loader,
-           so the fading black backdrop never reveals ghost letter shadows */
-        if(window.gsap && chars.length){
-          gsap.killTweensOf(chars);
-          gsap.set(chars, {opacity:0, filter:'blur(0px)', y:0});
-        }
-        loader.classList.add('out');
-        boot();
-      }, 200);
+    if(elapsed >= minDuration){
+      done = true;
+    } else {
+      setTimeout(()=>{ done = true; }, minDuration - elapsed);
     }
-  }, 16);
+  };
+  if(document.readyState === 'complete'){
+    setTimeout(markDone, 120);
+  } else {
+    window.addEventListener('load', ()=>setTimeout(markDone, 120), { once: true });
+  }
+  setTimeout(()=>{ done = true; }, 8000);
+
+  const tick = ()=>{
+    if(finished) return;
+    const elapsed = performance.now() - start;
+    let pct;
+
+    if(done){
+      if(doneAt === null) doneAt = elapsed;
+      const dt = elapsed - doneAt;
+      const t  = Math.min(1, dt / COMPLETE);
+      const fromPct = easeOut(Math.min(1, doneAt / minDuration)) * HOLD;
+      pct = fromPct + (100 - fromPct) * smooth(t);
+      if(t >= 1){
+        finished = true;
+        if(ldBar) ldBar.style.width = '100%';
+        if(ldNum) ldNum.textContent = '100%';
+        setTimeout(()=>{ loader.classList.add('out'); boot(); }, 220);
+        return;
+      }
+    } else {
+      const t = Math.min(1, elapsed / minDuration);
+      pct = easeOut(t) * HOLD;
+    }
+
+    if(ldBar) ldBar.style.width = pct.toFixed(2) + '%';
+    if(ldNum) ldNum.textContent = Math.floor(pct) + '%';
+    requestAnimationFrame(tick);
+  };
+
+  requestAnimationFrame(tick);
 } else {
   if(document.readyState==='loading'){
     document.addEventListener('DOMContentLoaded', boot);
@@ -286,11 +308,29 @@ window.addEventListener('scroll',()=>{ nav && nav.classList.toggle('sc', scrollY
 
 const ham   = document.getElementById('ham');
 const mobMenu = document.getElementById('nav-mob');
+const closeMenuBtn = document.getElementById('nav-close');
 if(ham && mobMenu){
-  ham.addEventListener('click',()=>{ ham.classList.toggle('open'); mobMenu.classList.toggle('open'); });
-  mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    ham.classList.remove('open'); mobMenu.classList.remove('open');
-  }));
+  const openMenu = ()=>{
+    ham.classList.add('open');
+    ham.setAttribute('aria-expanded','true');
+    mobMenu.classList.add('open');
+  };
+
+  const closeMenu = ()=>{
+    ham.classList.remove('open');
+    ham.setAttribute('aria-expanded','false');
+    mobMenu.classList.remove('open');
+  };
+
+  ham.setAttribute('aria-expanded','false');
+  ham.addEventListener('click',()=>{
+    mobMenu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  closeMenuBtn && closeMenuBtn.addEventListener('click', closeMenu);
+  mobMenu.addEventListener('click', (e)=>{ if(e.target === mobMenu) closeMenu(); });
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
 }
 // active link
 ;(()=>{

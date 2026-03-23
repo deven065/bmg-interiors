@@ -64,7 +64,121 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      padding-top: 80px
+      padding-top: 0
+    }
+
+    .hero-floating-nav {
+      position: fixed;
+      top: clamp(1rem, 2.4vw, 2rem);
+      right: clamp(1rem, 3vw, 2.5rem);
+      z-index: 4;
+    }
+
+    .hero-floating-nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .hero-float-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(10, 10, 10, .45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero-float-brand img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    .hero-float-links {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-float-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: .58rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .24);
+      background: rgba(10, 10, 10, .38);
+      color: #f3ede4;
+      text-decoration: none;
+      font-family: var(--fb);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: transform .3s var(--e1), border-color .3s, color .3s, background .3s;
+    }
+
+    .hero-float-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 204, 0, .55);
+      color: var(--brand);
+      background: rgba(10, 10, 10, .55);
+    }
+
+    .hero-menu-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 204, 0, .42);
+      background: rgba(10, 10, 10, .55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff6d8;
+      cursor: none;
+      transition: transform .3s var(--e1), background .3s, border-color .3s;
+    }
+
+    .hero-menu-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 204, 0, .22);
+      border-color: rgba(255, 204, 0, .72);
+    }
+
+    .hero-menu-btn .ham {
+      display: inline-flex;
+      padding: 0;
+      cursor: none;
+      pointer-events: none;
+    }
+
+    .hero-menu-btn .ham span {
+      width: 18px;
+      height: 1.5px;
+      background: #fff6d8;
+    }
+
+    .hero-menu-btn.open .ham span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .hero-menu-btn.open .ham span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hero-menu-btn.open .ham span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
     }
 
     .hero-video-wrap {
@@ -294,8 +408,25 @@
 
     /* tablet: hero padding + tighter heading */
     @media(max-width:768px) {
-      .hero { padding-top: 72px; min-height: 88dvh }
+      .hero { min-height: 88dvh }
       .hero-sub { max-width: 100% }
+
+      .hero-floating-nav .wrap {
+        gap: .75rem;
+      }
+
+      .hero-float-links {
+        display: none;
+      }
+
+      .hero-float-brand img {
+        height: 40px;
+      }
+
+      .hero-menu-btn {
+        min-height: 38px;
+        padding: .5rem .9rem;
+      }
     }
 
     /* phone: stack hero action buttons */
@@ -700,16 +831,13 @@
   <div id="loader">
     <div class="ld-glow"></div>
     <div class="ld-logo-wrap">
-      <div class="ld-deco">
-        <span class="ld-deco-l"></span>
-        <span class="ld-deco-dot"></span>
-        <span class="ld-deco-r"></span>
-      </div>
-      <div class="ld-logo">
-        <span class="ld-char" style="--i:0">B</span><span class="ld-char m-yellow" style="--i:1">M</span><span class="ld-char" style="--i:2">G</span><span class="ld-sp"></span><span class="ld-char" style="--i:3">I</span><span class="ld-char" style="--i:4">N</span><span class="ld-char" style="--i:5">T</span><span class="ld-char" style="--i:6">E</span><span class="ld-char" style="--i:7">R</span><span class="ld-char" style="--i:8">I</span><span class="ld-char" style="--i:9">O</span><span class="ld-char" style="--i:10">R</span><span class="ld-char" style="--i:11">S</span>
-      </div>
-      <p class="ld-tag">Luxury Interiors &middot; Mumbai</p>
+      <div class="ld-ring"></div>
+      <div class="ld-ring ld-ring2"></div>
+      <div class="ld-ring ld-ring3"></div>
+      <div class="ld-logo"><img src="/images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"
+          decoding="sync"></div>
     </div>
+    <p class="ld-tag">Luxury Interiors &middot; Mumbai</p>
     <div class="ld-bottom">
       <div class="ld-bar-wrap">
         <div class="ld-bar"></div>
@@ -721,27 +849,9 @@
   </div>
 
   <!-- NAV -->
-  <nav class="nav">
-    <div class="wrap">
-      <a href="index.html" class="nav-logo">
-        <img src="/images/bmg-logo.png" alt="BMG Interiors">
-      </a>
-      <ul class="nav-ul">
-        <li><a href="services.html">Services</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="clients.html">Clients</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-r">
-        <a href="contact.html" class="btn btn-g btn-xl"><span>Book Consultation</span><span class="btn-arr" style="display:inline-flex; align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px; transform:translateY(1px);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span></a>
-      </div>
-      <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
-
   <!-- MOBILE MENU -->
   <div class="nav-mob" id="nav-mob">
+    <button class="nav-mob-close" id="nav-close" aria-label="Close menu">Close</button>
     <a href="services.html">Services</a>
     <a href="portfolio.html">Portfolio</a>
     <a href="about.html">About</a>
@@ -752,6 +862,12 @@
 
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
   <section class="hero" id="home">
+    <div class="hero-floating-nav" data-fade="0.2">
+      <button class="hero-menu-btn" id="ham" aria-label="Open menu">
+        <span class="ham" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+
     <div class="hero-video-wrap">
       <video class="hero-video" autoplay muted loop playsinline preload="auto">
         <source src="/video.mp4" type="video/mp4">
