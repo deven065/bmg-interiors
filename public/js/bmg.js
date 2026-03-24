@@ -1,4 +1,4 @@
-﻿/* ══════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    BMG INTERIORS — MASTER JAVASCRIPT
    ══════════════════════════════════════════════════════════════════ */
 ;(function(){
@@ -215,98 +215,92 @@ if(loader){
 }
 
 function boot(){
-  initCinematicScroll();
-  initGSAP();   // must be first — removes data-r from elements it controls
-  initReveal();
-  initHero();
-  initCounters();
-  initMarquees();
-  initPortfolio();
-  initShowcase();
-  initTestimonials();
-  initAccordions();
-  initForms();
-  initMagnetic();
-  initParallax();
-  initCTA();
+  // Initialize Cinematic Scroll first, and then everything else
+  initCinematicScroll().then(() => {
+    initGSAP();   // must be first — removes data-r from elements it controls
+    initReveal();
+    initHero();
+    initCounters();
+    initMarquees();
+    initPortfolio();
+    initShowcase();
+    initTestimonials();
+    initAccordions();
+    initForms();
+    initMagnetic();
+    initParallax();
+    initCTA();
+  });
 }
 
-/* ── CINEMATIC SCROLL (DESKTOP) ────────────────────────────────── */
+/* ── SUPER SMOOTH SCROLL (LENIS) ────────────────────────────────── */
 function initCinematicScroll(){
-  if(
-    /portfolio\.html$/i.test(location.pathname) ||
-    /interior-designer-in-mumbai\.html$/i.test(location.pathname) ||
-    /2bhk-interior-design-in-mumbai\.html$/i.test(location.pathname) ||
-    /interior-design-cost-in-mumbai\.html$/i.test(location.pathname) ||
-    /luxury-home-interiors\.html$/i.test(location.pathname)
-  ) return;
-  const canEnhance =
-    window.matchMedia('(hover:hover) and (pointer:fine)').matches &&
-    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!canEnhance) return;
-
-  const root = document.scrollingElement || document.documentElement;
-  let targetY = window.scrollY;
-  let currentY = targetY;
-  let rafId = 0;
-  let lockSync = false;
-  let lastTs = 0;
-
-  const clamp = v => Math.max(0, Math.min(v, root.scrollHeight - innerHeight));
-  const kick = ()=>{ if(!rafId) rafId = requestAnimationFrame(tick); };
-
-  function tick(ts){
-    const dt = lastTs ? Math.min(34, ts - lastTs) : 16;
-    lastTs = ts;
-    const ease = 1 - Math.pow(0.84, dt / 16);
-    currentY += (targetY - currentY) * ease;
-    if(Math.abs(targetY - currentY) < 0.45){
-      currentY = targetY;
-      rafId = 0;
-      lastTs = 0;
-    } else {
-      rafId = requestAnimationFrame(tick);
+  return new Promise((resolve) => {
+    const canEnhance =
+      window.matchMedia('(hover:hover) and (pointer:fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if(!canEnhance) {
+      resolve();
+      return;
     }
-    lockSync = true;
-    window.scrollTo(0, currentY);
-    lockSync = false;
-    if(window.ScrollTrigger) ScrollTrigger.update();
-  }
 
-  window.addEventListener('wheel', e=>{
-    if(e.ctrlKey || e.metaKey) return;
-    e.preventDefault();
-    const unit = e.deltaMode === 1 ? 16 : 1;
-    const delta = Math.max(-180, Math.min(180, e.deltaY * unit * 0.92));
-    targetY = clamp(targetY + delta);
-    kick();
-  }, {passive:false});
+  const loadLenis = () => {
+    return new Promise((resolve, reject) => {
+      if (window.Lenis) return resolve();
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/lenis@1.1.20/dist/lenis.min.js';
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  };
 
-  window.addEventListener('keydown', e=>{
-    const k = e.key;
-    let step = 0;
-    if(k === 'ArrowDown') step = 88;
-    else if(k === 'ArrowUp') step = -88;
-    else if(k === 'PageDown' || k === ' ') step = innerHeight * 0.9;
-    else if(k === 'PageUp') step = -innerHeight * 0.9;
-    else if(k === 'Home') targetY = 0;
-    else if(k === 'End') targetY = root.scrollHeight - innerHeight;
-    else return;
+  loadLenis().then(() => {
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 2,
+      infinite: false,
+    });
 
-    if(step) targetY = clamp(targetY + step);
-    else targetY = clamp(targetY);
-    kick();
+    window.lenis = lenis;
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Sync GSAP ScrollTrigger with Lenis
+    if (window.gsap && window.ScrollTrigger) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    // Anchor links smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          lenis.scrollTo(target, { offset: -80 });
+        }
+      });
+    });
+  }).catch(err => {
+    console.warn('Lenis failed to load, falling back to native scroll.', err);
+  }).finally(() => {
+    resolve();
   });
-
-  window.addEventListener('resize', ()=>{
-    targetY = clamp(window.scrollY);
-    currentY = targetY;
-  }, {passive:true});
-
-  window.addEventListener('scroll', ()=>{
-    if(lockSync || rafId) return;
-    targetY = currentY = window.scrollY;
-  }, {passive:true});
+});
 }
 
 /* ── NAVBAR ─────────────────────────────────────────────────────── */
@@ -648,9 +642,8 @@ function initGSAP(){
   G.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({limitCallbacks:true, ignoreMobileResize:true});
 
-  try{
-    ScrollTrigger.normalizeScroll({allowNestedScroll:true, momentum:self=>Math.min(3, Math.abs(self.velocityY)/1350)});
-  }catch(_e){}
+  /* ScrollTrigger.normalizeScroll is handled by Lenis now */
+  // try { ScrollTrigger.normalizeScroll({allowNestedScroll:true, ...}); } catch(_e){}
 
   /* Hand key elements off from IntersectionObserver to GSAP */
   document.querySelectorAll(
