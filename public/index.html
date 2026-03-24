@@ -739,19 +739,19 @@
     }
     .hbtn:hover .hbtn-arr { transform: translateX(6px); }
 
-    /* Portfolio — outlined with sweeping shimmer */
+    /* Portfolio — white outline before hover for readability */
     .hbtn-port {
-      color: var(--fg);
+      color: #ffffff;
       background: transparent;
-      border: 1px solid rgba(255, 204, 0, .32);
+      border: 1px solid rgba(255, 255, 255, .32);
       transition: color .36s var(--e1), border-color .36s, transform .42s var(--e1), box-shadow .42s var(--e1);
     }
-    /* shimmer beam that loops */
+    /* shimmer beam that loops — white shimmer for the white button */
     .hbtn-port::before {
       content: '';
       position: absolute;
       top: 0; left: -80%; width: 55%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,204,0,.22), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
       transform: skewX(-18deg);
       animation: hbtn-sweep 2.8s ease-in-out infinite;
     }
