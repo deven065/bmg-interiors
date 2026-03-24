@@ -115,111 +115,131 @@ if(wipe){
   });
 }
 
-/* ── LOADER (home only) ─────────────────────────────────────────── */
+/* ── PREMIUM LOADER (Home Only) ────────────────────────────────── */
 const loader = document.getElementById('loader');
 const ldBar  = document.querySelector('.ld-bar');
 const ldNum  = document.querySelector('.ld-num');
-if(loader){
+
+if (loader) {
+  const G = window.gsap;
   const logoImg = loader.querySelector('.ld-logo img');
-  const rings = loader.querySelectorAll('.ld-ring');
+  const tag = loader.querySelector('.ld-tag');
+  const bottom = loader.querySelector('.ld-bottom');
 
-  if(ldBar) ldBar.style.width = '0%';
-  if(ldNum) ldNum.textContent = '0%';
-
-  if(window.gsap){
-    const G = gsap;
-    if(logoImg){
-      G.set(logoImg, { opacity: 0, y: 16, scale: .9, filter: 'blur(6px)' });
-      G.to(logoImg, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        filter: 'blur(0px)',
-        duration: .9,
-        ease: 'power3.out'
-      });
-      G.to(logoImg, {
-        y: -3,
-        duration: 1.5,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1
-      });
-    }
-
+  // Initial State
+  if (G && logoImg) {
+    G.set(logoImg, { opacity: 0, scale: 0.94, y: 15 });
+    G.set([tag, bottom], { opacity: 0, y: 12 });
   }
 
-  let done = false;
-  let finished = false;
-  let doneAt = null;
+  // Entrance Timeline — minimal delay for instant feel
+  const entranceTl = G ? G.timeline({ delay: 0.1 }) : null;
+  if (entranceTl && logoImg) {
+    entranceTl
+      .to(logoImg, { 
+        opacity: 1, scale: 1, y: 0, 
+        duration: 1.2, ease: "power4.out" 
+      })
+      .to(tag, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.7")
+      .to(bottom, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.8");
+    
+    // Smooth breathing float
+    G.to(logoImg, { y: -4, duration: 2, ease: "sine.inOut", repeat: -1, yoyo: true });
+  }
+
+  let done = false, finished = false, doneAt = null;
   const start = performance.now();
-  const minDuration = 3000;
-  const HOLD = 88;      // % cap while page is loading
-  const COMPLETE = 520; // ms to fill from HOLD → 100%
+  const minDuration = 2400; // Total duration
+  const HOLD = 90; 
 
-  // smooth ease-out: fast start, gentle approach to HOLD
-  const easeOut = t => 1 - Math.pow(1 - t, 2.2);
-  // smoothstep for the completion rush
-  const smooth  = t => t * t * (3 - 2 * t);
+  // Very gentle ease-in to ensure we see the 0% -> 1% transition
+  const easeIn = t => 1 - Math.pow(1 - t, 1.2);
+  const smooth = t => t * t * (3 - 2 * t);
 
-  const markDone = ()=>{
+  if (ldBar) ldBar.style.width = '0%';
+  if (ldNum) ldNum.textContent = '0%';
+
+  const markDone = () => {
     const elapsed = performance.now() - start;
-    if(elapsed >= minDuration){
-      done = true;
-    } else {
-      setTimeout(()=>{ done = true; }, minDuration - elapsed);
-    }
+    if (elapsed >= minDuration) done = true;
+    else setTimeout(() => { done = true; }, minDuration - elapsed);
   };
-  if(document.readyState === 'complete'){
-    setTimeout(markDone, 120);
-  } else {
-    window.addEventListener('load', ()=>setTimeout(markDone, 120), { once: true });
-  }
-  setTimeout(()=>{ done = true; }, 8000);
 
-  const tick = ()=>{
-    if(finished) return;
+  if (document.readyState === 'complete') setTimeout(markDone, 200);
+  else window.addEventListener('load', () => setTimeout(markDone, 120), { once: true });
+  
+  // Safety timeout
+  setTimeout(() => { done = true; }, 8000);
+
+  const tick = () => {
+    if (finished) return;
     const elapsed = performance.now() - start;
+    
+    // Offset the start slightly to guarantee the 0% state is visible locally
+    const adjustedElapsed = Math.max(0, elapsed - 60); 
     let pct;
 
-    if(done){
-      if(doneAt === null) doneAt = elapsed;
-      const dt = elapsed - doneAt;
-      const t  = Math.min(1, dt / COMPLETE);
-      const fromPct = easeOut(Math.min(1, doneAt / minDuration)) * HOLD;
+    if (done) {
+      if (doneAt === null) doneAt = elapsed;
+      const t = Math.min(1, (elapsed - doneAt) / 450); 
+      const fromPct = easeIn(Math.min(1, doneAt / minDuration)) * HOLD;
       pct = fromPct + (100 - fromPct) * smooth(t);
-      if(t >= 1){
+      
+      if (t >= 1) {
         finished = true;
-        if(ldBar) ldBar.style.width = '100%';
-        if(ldNum) ldNum.textContent = '100%';
-        setTimeout(()=>{ loader.classList.add('out'); boot(); }, 220);
+        if (ldBar) ldBar.style.width = '100%';
+        if (ldNum) ldNum.textContent = '100%';
+        
+        // CINEMATIC EXIT ANIMATION
+        loader.classList.add('out');
+        if (G && logoImg) {
+          if (entranceTl) entranceTl.progress(1);
+          
+          const exitTl = G.timeline({
+            onStart: () => {
+              // Trigger boot slightly after curtains start moving to sync with visibility
+              setTimeout(boot, 450); 
+            }
+          });
+
+          exitTl
+            .to(".ld-curtain-up", { scaleX: 0, duration: 1.35, ease: "expo.inOut" }, 0)
+            .to(".ld-curtain-dn", { scaleX: 0, duration: 1.35, ease: "expo.inOut" }, 0.08)
+            .to([logoImg, tag, bottom], { 
+              opacity: 0, y: -60, scale: 0.9, 
+              duration: 0.85, ease: "power4.in",
+              stagger: 0.05,
+              overwrite: true 
+            }, 0);
+        } else {
+          boot(); // Fallback if GSAP is missing
+        }
+        
+        setTimeout(() => { loader.style.display = 'none'; }, 1300);
         return;
       }
     } else {
-      const t = Math.min(1, elapsed / minDuration);
-      pct = easeOut(t) * HOLD;
+      const t = Math.min(1, adjustedElapsed / minDuration);
+      pct = easeIn(t) * HOLD;
     }
 
-    if(ldBar) ldBar.style.width = pct.toFixed(2) + '%';
-    if(ldNum) ldNum.textContent = Math.floor(pct) + '%';
+    if (ldBar) ldBar.style.width = pct.toFixed(2) + '%';
+    if (ldNum) ldNum.textContent = Math.floor(pct) + '%';
     requestAnimationFrame(tick);
   };
 
   requestAnimationFrame(tick);
 } else {
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 }
 
 function boot(){
   // Initialize Cinematic Scroll first, and then everything else
   initCinematicScroll().then(() => {
-    initGSAP();   // must be first — removes data-r from elements it controls
+    initHero();   // must be before GSAP to create .line-inner elements
+    initGSAP();   
     initReveal();
-    initHero();
     initCounters();
     initMarquees();
     initPortfolio();
@@ -659,7 +679,7 @@ function initGSAP(){
   const heroImg = document.getElementById('hero-img');
   const eyLine  = document.querySelector('.hero-ey-line');
   if(eyLine) G.set(eyLine, {scaleX:0, transformOrigin:'left center'});
-  if(heroImg){ heroImg.classList.remove('on'); G.set(heroImg,{clipPath:'inset(0 100% 0 0)',opacity:1}); }
+  if(heroImg){ heroImg.classList.remove('on'); G.set(heroImg,{clipPath:'inset(0% 100% 0% 0%)',opacity:1}); }
 
   const tl = G.timeline({delay:0.2});
   tl
@@ -668,7 +688,7 @@ function initGSAP(){
     .from('.hero-h1 .line-inner',{yPercent:110, opacity:0, stagger:.07, duration:.88, ease:'power4.out'}, .36)
     .from('.hero-sub',           {opacity:0, y:22, duration:.72, ease:'power3.out'}, .88)
     .from('.hero-acts > *',      {opacity:0, y:16, stagger:.1, duration:.6, ease:'power3.out'}, 1.02)
-    .to(heroImg||{},             {clipPath:'inset(0 0% 0 0)', duration:1.35, ease:'power4.inOut'}, .48)
+    .to(heroImg||{},             {clipPath:'inset(0% 0% 0% 0%)', duration:1.35, ease:'power4.inOut'}, .48)
     .from('.hero-badge1',        {opacity:0, scale:.7, y:22, duration:.72, ease:'back.out(1.7)'}, 1.42)
     .from('.hero-badge2',        {opacity:0, scale:.7, y:-18, duration:.72, ease:'back.out(1.7)'}, 1.58)
     .from('#hero-scroll',        {opacity:0, y:16, duration:.6, ease:'power2.out'}, 1.72);
@@ -739,8 +759,8 @@ function initGSAP(){
   /* ── Service cards &ndash; clip from bottom ──────────────────── */
   G.from('.svc-card',{
     scrollTrigger:{trigger:'.fsvc-grid', start:'top 80%', once:true},
-    clipPath:'inset(0 0 100% 0)', opacity:0,
-    stagger:.14, duration:1, ease:'power4.out'
+    clipPath:'inset(0% 0% 100% 0%)', opacity:0,
+    stagger:.14, duration:1, ease:'power3.inOut'
   });
 
   /* ── Portfolio grid (portfolio.html) ───────────────────── */
