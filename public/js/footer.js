@@ -3,7 +3,7 @@
 (function () {
   var el = document.getElementById('bmg-footer');
   if (!el) return;
-  fetch('/components/footer.html')
+  fetch('/components/footer.html?v=' + new Date().getTime())
     .then(function (r) { return r.text(); })
     .then(function (html) { el.innerHTML = html; })
     .catch(function () {

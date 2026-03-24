@@ -257,15 +257,20 @@
     let currentY = targetY;
     let rafId = 0;
     let lockSync = false;
+    let lastTs = 0;
 
     const clamp = v => Math.max(0, Math.min(v, root.scrollHeight - innerHeight));
     const kick = () => { if (!rafId) rafId = requestAnimationFrame(tick); };
 
-    function tick() {
-      currentY += (targetY - currentY) * 0.12;
+    function tick(ts) {
+      const dt = lastTs ? Math.min(34, ts - lastTs) : 16;
+      lastTs = ts;
+      const ease = 1 - Math.pow(0.84, dt / 16);
+      currentY += (targetY - currentY) * ease;
       if (Math.abs(targetY - currentY) < 0.45) {
         currentY = targetY;
         rafId = 0;
+        lastTs = 0;
       } else {
         rafId = requestAnimationFrame(tick);
       }
@@ -278,7 +283,8 @@
     window.addEventListener('wheel', e => {
       if (e.ctrlKey || e.metaKey) return;
       e.preventDefault();
-      const delta = Math.max(-220, Math.min(220, e.deltaY * 1.06));
+      const unit = e.deltaMode === 1 ? 16 : 1;
+      const delta = Math.max(-180, Math.min(180, e.deltaY * unit * 0.92));
       targetY = clamp(targetY + delta);
       kick();
     }, { passive: false });
@@ -369,31 +375,43 @@
       const words = el.getAttribute('data-words').split('|');
       const base = parseFloat(el.getAttribute('data-wd') || '0');
       el.innerHTML = words.map((w, i) =>
-        `<span class="line-clip"><span class="line-inner" style="transition-delay:${(base + i * .11).toFixed(2)}s">${w}</span></span>`
+        `<span class="line-clip"><span class="line-inner" style="transition-delay:${(base + i * .13).toFixed(2)}s">${w}</span></span>`
       ).join('<span style="display:inline-block;width:.22em"></span>');
       requestAnimationFrame(() => el.querySelectorAll('.line-inner').forEach(s => s.classList.add('on')));
     });
+
+    // hero eyebrow gold line — grow from 0
+    const eyeLine = document.querySelector('.hero-ey-line');
+    if (eyeLine) requestAnimationFrame(() => eyeLine.classList.add('on'));
 
     // char reveal
     document.querySelectorAll('[data-chars]').forEach(el => {
       const base = parseFloat(el.getAttribute('data-cd') || '0');
       const text = el.textContent;
       el.innerHTML = [...text].map((ch, i) =>
-        `<span style="display:inline-block;opacity:0;transform:translateY(28px);
+        `<span style="display:inline-block;opacity:0;transform:translateX(28px);
        transition:opacity .5s ${(base + i * .025).toFixed(3)}s cubic-bezier(.16,1,.3,1),
        transform .5s ${(base + i * .025).toFixed(3)}s cubic-bezier(.16,1,.3,1)">${ch === ' ' ? '&nbsp;' : ch}</span>`
       ).join('');
       requestAnimationFrame(() => el.querySelectorAll('span').forEach(s => { s.style.opacity = '1'; s.style.transform = 'none'; }));
     });
 
-    // fade elements
+    // fade elements — blur-dissolve for hero-sub, classic slide for everything else
     document.querySelectorAll('[data-fade]').forEach(el => {
       const d = parseFloat(el.getAttribute('data-fade') || '0');
-      Object.assign(el.style, {
-        opacity: '0', transform: 'translateY(18px)',
-        transition: `opacity .8s ${d}s cubic-bezier(.16,1,.3,1),transform .8s ${d}s cubic-bezier(.16,1,.3,1)`
-      });
-      requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      if (el.classList.contains('hero-sub')) {
+        Object.assign(el.style, {
+          opacity: '0', transform: 'translateY(10px)', filter: 'blur(6px)',
+          transition: `opacity 1.1s ${d}s cubic-bezier(.16,1,.3,1),transform 1.1s ${d}s cubic-bezier(.16,1,.3,1),filter 1s ${d}s cubic-bezier(.16,1,.3,1)`
+        });
+        requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; });
+      } else {
+        Object.assign(el.style, {
+          opacity: '0', transform: 'translateX(18px)',
+          transition: `opacity .8s ${d}s cubic-bezier(.16,1,.3,1),transform .8s ${d}s cubic-bezier(.16,1,.3,1)`
+        });
+        requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      }
     });
 
     // hero scroll click
