@@ -203,8 +203,8 @@ if (loader) {
           });
 
           exitTl
-            .to(".ld-curtain-up", { scaleX: 0, duration: 1.35, ease: "expo.inOut" }, 0)
-            .to(".ld-curtain-dn", { scaleX: 0, duration: 1.35, ease: "expo.inOut" }, 0.08)
+            .to(".ld-curtain-up", { xPercent: -100, duration: 1.5, ease: "expo.inOut" }, 0)
+            .to(".ld-curtain-dn", { xPercent: 100, duration: 1.5, ease: "expo.inOut" }, 0.05)
             .to([logoImg, tag, bottom], { 
               opacity: 0, y: -60, scale: 0.9, 
               duration: 0.85, ease: "power4.in",
@@ -250,7 +250,10 @@ function boot(){
     initMagnetic();
     initParallax();
     initCTA();
+    initHeroSlideshow();
   });
+  // Also listen for footer load which contains the CTA modal
+  window.addEventListener('footerLoaded', initCTA);
 }
 
 /* ── SUPER SMOOTH SCROLL (LENIS) ────────────────────────────────── */
@@ -331,20 +334,62 @@ const ham   = document.getElementById('ham');
 const mobMenu = document.getElementById('nav-mob');
 const closeMenuBtn = document.getElementById('nav-close');
 if(ham && mobMenu){
-  const openMenu = ()=>{
+  const openMenu = () => {
     ham.classList.add('open');
-    ham.setAttribute('aria-expanded','true');
+    ham.setAttribute('aria-expanded', 'true');
     mobMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // GSAP Animation for a premium feel
+    if (window.gsap) {
+      const links = mobMenu.querySelectorAll('a');
+      gsap.set(links, { y: 20, opacity: 0 });
+      gsap.to(mobMenu, { 
+        opacity: 1, 
+        duration: 0.45, 
+        ease: "power2.out" 
+      });
+      gsap.to(links, { 
+        y: 0, 
+        opacity: 1, 
+        stagger: 0.07, 
+        duration: 0.6, 
+        ease: "power3.out", 
+        delay: 0.15 
+      });
+    }
   };
 
-  const closeMenu = ()=>{
+  const closeMenu = () => {
     ham.classList.remove('open');
-    ham.setAttribute('aria-expanded','false');
-    mobMenu.classList.remove('open');
+    ham.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    if (window.gsap) {
+      const links = mobMenu.querySelectorAll('a');
+      gsap.to(links, { 
+        y: -10, 
+        opacity: 0, 
+        stagger: 0.03, 
+        duration: 0.3, 
+        ease: "power2.in" 
+      });
+      gsap.to(mobMenu, { 
+        opacity: 0, 
+        duration: 0.4, 
+        ease: "power2.inOut",
+        onComplete: () => {
+          mobMenu.classList.remove('open');
+          gsap.set(links, { y: 0, opacity: 1 }); // Reset for next open
+        }
+      });
+    } else {
+      mobMenu.classList.remove('open');
+    }
   };
 
-  ham.setAttribute('aria-expanded','false');
-  ham.addEventListener('click',()=>{
+  ham.setAttribute('aria-expanded', 'false');
+  ham.addEventListener('click', () => {
     mobMenu.classList.contains('open') ? closeMenu() : openMenu();
   });
 
@@ -416,6 +461,124 @@ function initHero(){
       requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='none'; });
     }
   });
+}
+
+/* ── HERO SLIDESHOW ────────────────────────────────────────────── */
+function initHeroSlideshow(){
+  const container = document.getElementById('hero-slideshow');
+  if(!container) return;
+
+  const images = [
+    '/images/slider/architecture.jpg',
+    '/images/slider/1.jpg',
+    '/images/slider/1.png',
+    '/images/slider/2.jpg',
+    '/images/slider/2.png',
+    '/images/slider/3.jpg',
+    '/images/slider/4.jpg',
+    '/images/slider/5.jpg',
+    '/images/slider/6.jpg',
+    '/images/slider/interiordesign.jpg'
+  ];
+
+  const stripCount = 10;
+  let currentSlide = 0;
+  let isTransitioning = false;
+
+  const createSlide = (imgSrc, index) => {
+    const slide = document.createElement('div');
+    slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
+    
+    // Set initial scale to 1.05 so we can zoom out to 1.0 without borders
+    if (index === 0) gsap.set(slide, { scale: 1.05 });
+
+    for(let i = 0; i < stripCount; i++){
+      const strip = document.createElement('div');
+      strip.className = 'hero-strip';
+      strip.style.backgroundImage = `url(${imgSrc})`;
+      strip.style.backgroundSize = '100vw 100vh';
+      strip.style.backgroundPosition = `-${i * (100 / stripCount)}vw 0`;
+      
+      if(index === 0) {
+        strip.style.transform = 'translateY(0)';
+      }
+      
+      slide.appendChild(strip);
+    }
+    
+    return slide;
+  };
+
+  images.forEach((img, i) => container.appendChild(createSlide(img, i)));
+
+  const slides = container.querySelectorAll('.hero-slide');
+
+  const changeSlide = (direction = 1) => {
+    if(isTransitioning) return;
+    isTransitioning = true;
+
+    const nextIndex = (currentSlide + direction + images.length) % images.length;
+    const current = slides[currentSlide];
+    const next = slides[nextIndex];
+
+    const enterFrom = direction === 1 ? '100%' : '-100%';
+    const exitTo = direction === 1 ? '-100%' : '100%';
+
+    // Initial state for next slide
+    gsap.set(next.querySelectorAll('.hero-strip'), { translateY: enterFrom, opacity: 1 });
+    gsap.set(next, { scale: 1.15 });
+    next.classList.add('active');
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        current.classList.remove('active');
+        gsap.set(current, { scale: 1.05, translateY: 0 });
+        currentSlide = nextIndex;
+        isTransitioning = false;
+      }
+    });
+
+    // 1. Zoom out current slide from 1.05 to 1.0
+    tl.to(current, { 
+      scale: 1, 
+      duration: 1.0, 
+      ease: "power2.inOut" 
+    });
+
+    // 2. Then proceed with strip animations
+    tl.to(next.querySelectorAll('.hero-strip'), {
+      translateY: '0%',
+      duration: 1.3,
+      stagger: 0.08,
+      ease: 'expo.inOut'
+    }, "-=0.6")
+    .to(current.querySelectorAll('.hero-strip'), {
+      translateY: exitTo,
+      duration: 1.3,
+      stagger: 0.08,
+      ease: 'expo.inOut'
+    }, "<");
+
+    // 3. Zoom next slide out from 1.15 to 1.05
+    tl.to(next, { 
+      scale: 1.05, 
+      duration: 1.6, 
+      ease: "power2.out" 
+    }, "-=1.1");
+  };
+
+  const btnPrev = document.getElementById('hero-prev');
+  const btnNext = document.getElementById('hero-next');
+
+  let slideInterval = setInterval(() => changeSlide(1), 5000);
+
+  const resetInterval = () => {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(() => changeSlide(1), 5000);
+  };
+
+  if(btnPrev) btnPrev.onclick = () => { changeSlide(-1); resetInterval(); };
+  if(btnNext) btnNext.onclick = () => { changeSlide(1); resetInterval(); };
 }
 
 /* ── COUNTERS ───────────────────────────────────────────────────── */
@@ -594,15 +757,15 @@ function initParallax(){
 /* ── CTA MODAL TIMED ────────────────────────────────────────────── */
 function initCTA() {
   const modal = document.getElementById('cta-modal');
-  if(!modal) return;
+  if(!modal || modal.dataset.init === 'true') return;
+  console.log('initCTA called, modal found:', !!modal);
+  modal.dataset.init = 'true';
 
-  // Show after 5 seconds
+  // Show after exactly 5 seconds
   const ctaTimer = setTimeout(() => {
-    // Only show if user hasn't already closed it in this session
-    if (!sessionStorage.getItem('bmg_cta_shown')) {
-      modal.classList.add('on');
-      document.body.style.overflow = 'hidden'; // prevent scroll
-    }
+    console.log('Showing CTA modal now (5s)');
+    modal.classList.add('on');
+    document.body.style.overflow = 'hidden'; 
   }, 5000);
 
   const close = () => {
@@ -698,10 +861,10 @@ function initGSAP(){
     scrollTrigger:{trigger:document.querySelector('.hero') ? '.hero' : '.phero', start:'top top', end:'bottom top', scrub:1.4},
     y:'30%', ease:'none'
   });
-  G.to('.hero-video',{
+  G.to('.hero-slideshow',{
     scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.1},
-    yPercent:9,
-    scale:1.06,
+    yPercent:7,
+    scale:1.05,
     ease:'none'
   });
   G.to('.hero-img-bg',{
