@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════
    BMG INTERIORS — MASTER JAVASCRIPT
    ══════════════════════════════════════════════════════════════════ */
 ;(function(){
@@ -329,6 +329,41 @@ function initCinematicScroll(){
 /* ── NAVBAR ─────────────────────────────────────────────────────── */
 const nav = document.querySelector('.nav');
 window.addEventListener('scroll',()=>{ nav && nav.classList.toggle('sc', scrollY>44); },{passive:true});
+
+function ensureBlogsMenuLink(){
+  const desktopMenu = document.querySelector('.nav-ul');
+  const mobileMenu = document.getElementById('nav-mob');
+
+  const addDesktop = () => {
+    if (!desktopMenu || desktopMenu.querySelector('a[href="blogs.html"]')) return;
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = 'blogs.html';
+    a.textContent = 'Blogs';
+    li.appendChild(a);
+
+    const contact = desktopMenu.querySelector('a[href="contact.html"]');
+    const contactLi = contact ? contact.closest('li') : null;
+    if (contactLi && contactLi.parentNode) contactLi.parentNode.insertBefore(li, contactLi);
+    else desktopMenu.appendChild(li);
+  };
+
+  const addMobile = () => {
+    if (!mobileMenu || mobileMenu.querySelector('a[href="blogs.html"]')) return;
+    const a = document.createElement('a');
+    a.href = 'blogs.html';
+    a.textContent = 'Blogs';
+
+    const contact = mobileMenu.querySelector('a[href="contact.html"]');
+    if (contact && contact.parentNode) contact.parentNode.insertBefore(a, contact);
+    else mobileMenu.appendChild(a);
+  };
+
+  addDesktop();
+  addMobile();
+}
+
+ensureBlogsMenuLink();
 
 const ham   = document.getElementById('ham');
 const mobMenu = document.getElementById('nav-mob');

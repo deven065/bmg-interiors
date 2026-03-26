@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Blogs | BMG Interiors</title>
+  <meta name="description" content="Explore all BMG Interiors blogs on luxury interior design in Mumbai, including South Mumbai, Worli, Bandra, and more." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="author" content="BMG Interiors" />
+  <link rel="canonical" href="https://bmginteriors.com/blogs.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bmginteriors.com/blogs.html" />
+  <meta property="og:title" content="Interior Design Blogs Mumbai | BMG Interiors" />
+  <meta property="og:description" content="Read expert articles on luxury home interiors, design costs, modular kitchens, and premium residential design across Mumbai." />
+  <meta property="og:image" content="https://bmginteriors.com/images/og-image.jpg" />
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://bmginteriors.com/blogs.html" />
+  <meta property="twitter:title" content="Interior Design Blogs Mumbai | BMG Interiors" />
+  <meta property="twitter:description" content="Expert interior design guides and inspiration for Mumbai homeowners." />
+  <meta property="twitter:image" content="https://bmginteriors.com/images/og-image.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Interior Design Blogs | BMG Interiors",
+    "description": "All interior design articles published by BMG Interiors covering luxury homes, design cost guides, modular kitchens, and Mumbai localities.",
+    "url": "https://bmginteriors.com/blogs.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "BMG Interiors",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://bmginteriors.com/images/bmg-logo.png"
+      }
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://bmginteriors.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blogs"
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" />
+  </noscript>
+  <link rel="stylesheet" href="css/bmg.css" />
+
+  <style>
+    .blog-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 0;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .blog-card {
+      display: block;
+      padding: 1.1rem 1.2rem;
+      border: 1px solid var(--border);
+      background: var(--s1);
+      border-radius: 10px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--brgold);
+    }
+
+    .blog-card h3 {
+      font-family: var(--fh);
+      color: var(--brand);
+      font-size: 1.25rem;
+      margin: 0 0 .6rem;
+    }
+
+    .blog-card p {
+      margin: 0;
+      color: var(--fg2);
+      line-height: 1.65;
+      font-size: .96rem;
+    }
+
+    .blog-meta {
+      margin-top: .8rem;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--fg3);
+    }
+
+    .state-box {
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--fg2);
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <div id="wipe"></div>
+
+  <nav class="nav">
+    <div class="wrap">
+      <a href="index.html" class="nav-logo"><img src="/images/bmg-logo.png" alt="BMG Interiors" /></a>
+      <ul class="nav-ul">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-r">
+        <a href="contact.html" class="btn btn-g"><span>Book Consultation</span></a>
+      </div>
+      <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="nav-mob" id="nav-mob">
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="about.html">About</a>
+    <a href="clients.html">Clients</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <section class="phero">
+    <div class="phero-bg"></div>
+    <div class="phero-grid" id="hero-pg"></div>
+    <div class="phero-rule"></div>
+    <div class="gspot" style="width:560px;height:560px;top:8%;right:4%;opacity:.6"></div>
+    <div class="wrap">
+      <div class="phero-ey" data-fade="0">
+        <div class="phero-ey-line"></div>
+        <span class="lbl">Knowledge Hub</span>
+      </div>
+      <h1 class="t-disp">BMG Interiors Blogs</h1>
+      <p class="phero-sub" data-fade=".35">Every published blog in one place, automatically updated as you add new pages.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="blog-wrap">
+      <div class="sh">
+        <div class="lbl">Latest Articles</div>
+        <h2 class="t-xl">Explore Design Insights</h2>
+      </div>
+
+      <div id="blog-loading" class="state-box">Loading blogs...</div>
+      <div id="blog-empty" class="state-box" style="display:none;">No blog pages found yet.</div>
+      <div id="blog-error" class="state-box" style="display:none;">Could not load blogs right now.</div>
+      <div id="blog-grid" class="blog-grid" style="display:none;"></div>
+    </div>
+  </section>
+
+  <div id="bmg-footer"></div>
+
+  <script src="js/footer.js"></script>
+  <script src="js/bmg.js"></script>
+  <script>
+    (function () {
+      var loading = document.getElementById('blog-loading');
+      var empty = document.getElementById('blog-empty');
+      var error = document.getElementById('blog-error');
+      var grid = document.getElementById('blog-grid');
+
+      function fmtDate(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function summaryFromTitle(title) {
+        return 'Read this luxury interior design guide by BMG Interiors.';
+      }
+
+      fetch('/api/blogs', { cache: 'no-store' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('Request failed');
+          return res.json();
+        })
+        .then(function (blogs) {
+          loading.style.display = 'none';
+          if (!Array.isArray(blogs) || blogs.length === 0) {
+            empty.style.display = 'block';
+            return;
+          }
+
+          grid.style.display = 'grid';
+          blogs.forEach(function (blog) {
+            var card = document.createElement('a');
+            card.className = 'blog-card';
+            card.href = blog.url.replace(/^\//, '');
+
+            var h3 = document.createElement('h3');
+            h3.textContent = blog.title || 'Blog';
+
+            var p = document.createElement('p');
+            p.textContent = summaryFromTitle(blog.title || '');
+
+            var meta = document.createElement('div');
+            meta.className = 'blog-meta';
+            meta.textContent = fmtDate(blog.lastModified);
+
+            card.appendChild(h3);
+            card.appendChild(p);
+            card.appendChild(meta);
+            grid.appendChild(card);
+          });
+        })
+        .catch(function () {
+          loading.style.display = 'none';
+          error.style.display = 'block';
+        });
+    })();
+  </script>
+</body>
+
+</html>
