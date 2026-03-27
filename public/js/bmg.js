@@ -666,14 +666,16 @@ function initPortfolio(){
 
 /* ── PROJECT ACCORDION ───────────────────────────────────────────── */
 function initShowcase(){
-  const cols = document.querySelectorAll('.pw-col');
+  const cols = Array.from(document.querySelectorAll('.pw-col'));
+  const filterBtns = Array.from(document.querySelectorAll('.pw-filter-btn'));
+  const accordion = document.querySelector('.pw-accordion');
   if(!cols.length) return;
-  let activeIndex = Array.from(cols).findIndex(col=>col.classList.contains('active'));
-  if(activeIndex < 0) activeIndex = 0;
+  let activeIndex = 0;
   let frame = 0;
   let debounceTimer = 0;
 
   function activate(i){
+    if(i < 0 || i >= cols.length) return;
     if(i === activeIndex) return;
     cancelAnimationFrame(frame);
     clearTimeout(debounceTimer);
@@ -684,13 +686,62 @@ function initShowcase(){
       });
     }, 140);
   }
-  activate(activeIndex);
+
+  function syncActive(){
+    cols.forEach((col,index)=>col.classList.toggle('active', activeIndex >= 0 && index === activeIndex));
+  }
+
+  function clearActive(){
+    cancelAnimationFrame(frame);
+    clearTimeout(debounceTimer);
+    const firstVisible = cols.findIndex(col=>!col.classList.contains('is-muted'));
+    activeIndex = firstVisible >= 0 ? firstVisible : 0;
+    syncActive();
+  }
+
+  function applyFilter(filterKey){
+    cols.forEach(col=>{
+      const sector = col.dataset.sector || '';
+      const match = !filterKey || filterKey === 'all' || sector === filterKey;
+      col.classList.toggle('is-muted', !match);
+    });
+
+    filterBtns.forEach(btn=>{
+      const isOn = btn.dataset.pwFilter === filterKey;
+      btn.classList.toggle('on', isOn);
+      btn.setAttribute('aria-selected', isOn ? 'true' : 'false');
+    });
+
+    clearActive();
+
+    if(accordion){
+      accordion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  syncActive();
+
+  if(filterBtns.length){
+    filterBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>applyFilter(btn.dataset.pwFilter || 'all'));
+    });
+
+    const initial = filterBtns.find(btn=>btn.classList.contains('on')) || filterBtns[0];
+    if(initial){
+      applyFilter(initial.dataset.pwFilter || 'all');
+    }
+  }
+
   cols.forEach((col,i)=>{
     col.addEventListener('pointerenter',()=>activate(i));
     col.addEventListener('pointerleave',()=>clearTimeout(debounceTimer));
     col.addEventListener('focusin',()=>activate(i));
     col.addEventListener('click',()=>{ location.href='portfolio.html'; });
   });
+
+  if(accordion){
+    accordion.addEventListener('pointerleave', clearActive);
+  }
 }
 
 /* ── TESTIMONIALS ───────────────────────────────────────────────── */
