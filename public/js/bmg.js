@@ -1,4 +1,4 @@
-﻿/* ══════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    BMG INTERIORS — MASTER JAVASCRIPT
    ══════════════════════════════════════════════════════════════════ */
 ;(function(){
@@ -99,15 +99,30 @@ if(cur && ring){
 /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
 const wipe = document.getElementById('wipe');
 if(wipe){
-  // on load &rarr; wipe out
-  setTimeout(()=>{ wipe.classList.add('wipe-out'); },60);
-  // intercept clicks
+  const resetWipe = () => {
+    wipe.classList.remove('wipe-in');
+    setTimeout(()=>{ wipe.classList.add('wipe-out'); }, 60);
+  };
+  
+  // on initial load
+  resetWipe();
+
+  // fix for browser back/forward (BFCache)
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) resetWipe();
+  });
+
+  // intercept internal clicks
   document.addEventListener('click', e=>{
     const a = e.target.closest('a[href]');
     if(!a) return;
     const h = a.getAttribute('href');
     if(!h || h.startsWith('#') || h.startsWith('mailto') || h.startsWith('tel') ||
        h.startsWith('http') || a.target==='_blank') return;
+    
+    // ignore if it's the same page
+    if(h === window.location.pathname.split('/').pop()) return;
+
     e.preventDefault();
     wipe.classList.remove('wipe-out');
     wipe.classList.add('wipe-in');
@@ -168,6 +183,17 @@ if (loader) {
   if (document.readyState === 'complete') setTimeout(markDone, 200);
   else window.addEventListener('load', () => setTimeout(markDone, 120), { once: true });
   
+  // fix for browser back/forward (BFCache)
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      if (loader) {
+        loader.classList.add('out');
+        loader.style.display = 'none';
+        boot();
+      }
+    }
+  });
+
   // Safety timeout
   setTimeout(() => { done = true; }, 8000);
 
@@ -504,7 +530,7 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const images = [
-    '/images/slider/architecture.jpg',
+    '/images/projects/mehta-residence/1.png',
     '/images/slider/1.jpg',
     '/images/slider/1.png',
     '/images/slider/2.jpg',
@@ -699,7 +725,7 @@ function initShowcase(){
     syncActive();
   }
 
-  function applyFilter(filterKey){
+  function applyFilter(filterKey, scroll = true){
     cols.forEach(col=>{
       const sector = col.dataset.sector || '';
       const match = !filterKey || filterKey === 'all' || sector === filterKey;
@@ -714,7 +740,7 @@ function initShowcase(){
 
     clearActive();
 
-    if(accordion){
+    if(scroll && accordion){
       accordion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
@@ -728,7 +754,7 @@ function initShowcase(){
 
     const initial = filterBtns.find(btn=>btn.classList.contains('on')) || filterBtns[0];
     if(initial){
-      applyFilter(initial.dataset.pwFilter || 'all');
+      applyFilter(initial.dataset.pwFilter || 'all', false);
     }
   }
 
@@ -736,7 +762,11 @@ function initShowcase(){
     col.addEventListener('pointerenter',()=>activate(i));
     col.addEventListener('pointerleave',()=>clearTimeout(debounceTimer));
     col.addEventListener('focusin',()=>activate(i));
-    col.addEventListener('click',()=>{ location.href='portfolio.html'; });
+    col.addEventListener('click',(e)=>{ 
+      if(e.target.closest('.pw-col-cta')) return; // let the link handle it naturally
+      const cta = col.querySelector('.pw-col-cta');
+      if(cta) location.href = cta.getAttribute('href'); 
+    });
   });
 
   if(accordion){

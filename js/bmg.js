@@ -547,7 +547,7 @@
       syncActive();
     }
 
-    function applyFilter(filterKey){
+    function applyFilter(filterKey, scroll = true){
       cols.forEach(col => {
         const sector = col.dataset.sector || '';
         const match = !filterKey || filterKey === 'all' || sector === filterKey;
@@ -562,7 +562,7 @@
 
       clearActive();
 
-      if(accordion){
+      if(scroll && accordion){
         accordion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
@@ -576,7 +576,7 @@
 
       const initial = filterBtns.find(btn => btn.classList.contains('on')) || filterBtns[0];
       if(initial){
-        applyFilter(initial.dataset.pwFilter || 'all');
+        applyFilter(initial.dataset.pwFilter || 'all', false);
       }
     }
 

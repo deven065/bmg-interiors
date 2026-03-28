@@ -213,6 +213,8 @@
       background-size: cover;
       background-position: center;
       transform: translateY(100%); /* Initial state for animation */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
     }
 
     .hero-slideshow::after {
@@ -340,7 +342,10 @@
       height: 100%;
       display: block;
       object-fit: cover;
-      object-position: center
+      object-position: center;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
+      filter: contrast(1.02) saturate(1.02);
     }
 
     .hero-badge1 {
@@ -1148,7 +1153,7 @@
 
         <!-- 01 Mehta Residence -->
         <div class="pw-col active" data-sector="residential">
-          <div class="pw-col-bg"><img src="/images/mehta-residence/photo-1.JPG" alt="Mehta Residence" loading="eager" decoding="async"></div>
+          <div class="pw-col-bg"><img src="/images/projects/mehta-residence/1.png" alt="Mehta Residence" loading="eager" fetchpriority="high" decoding="sync"></div>
           <div class="pw-col-num">01</div>
           <div class="pw-col-vert">
             <span class="pw-col-cat">Residential</span>
@@ -1160,13 +1165,13 @@
             <div class="pw-col-card-name">Mehta Residence</div>
             <div class="pw-col-card-rule"></div>
             <p class="pw-col-card-desc">A bespoke family home where artisan craftsmanship meets quiet luxury — every detail curated with intention.</p>
-            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+            <a href="mehta-residence.html" class="pw-col-cta">VIEW PROJECT &#8599;</a>
           </div>
         </div>
 
         <!-- 02 Vertex HQ -->
         <div class="pw-col" data-sector="commercial">
-          <div class="pw-col-bg"><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ" loading="lazy" decoding="async"></div>
+          <div class="pw-col-bg"><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ" loading="eager" fetchpriority="high" decoding="sync"></div>
           <div class="pw-col-num">02</div>
           <div class="pw-col-vert">
             <span class="pw-col-cat">Commercial</span>
@@ -1178,13 +1183,13 @@
             <div class="pw-col-card-name">Vertex HQ</div>
             <div class="pw-col-card-rule"></div>
             <p class="pw-col-card-desc">A headquarters crafted to project authority — built around the rhythms of modern business culture.</p>
-            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+            <a href="vertex-hq.html" class="pw-col-cta">VIEW PROJECT &#8599;</a>
           </div>
         </div>
 
         <!-- 03 Aurum Office -->
         <div class="pw-col" data-sector="retail">
-          <div class="pw-col-bg"><img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum Office" loading="lazy" decoding="async"></div>
+          <div class="pw-col-bg"><img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum Office" loading="eager" fetchpriority="high" decoding="sync"></div>
           <div class="pw-col-num">03</div>
           <div class="pw-col-vert">
             <span class="pw-col-cat">Retail</span>
@@ -1196,13 +1201,13 @@
             <div class="pw-col-card-name">Aurum Office</div>
             <div class="pw-col-card-rule"></div>
             <p class="pw-col-card-desc">Gold-toned accents and clean geometry shape a premium retail environment built to elevate customer experience.</p>
-            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+            <a href="aurum-office.html" class="pw-col-cta">VIEW PROJECT &#8599;</a>
           </div>
         </div>
 
         <!-- 04 Sky Penthouse -->
         <div class="pw-col" data-sector="residential">
-          <div class="pw-col-bg"><img src="/images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse" loading="lazy" decoding="async"></div>
+          <div class="pw-col-bg"><img src="/images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse" loading="eager" fetchpriority="high" decoding="sync"></div>
           <div class="pw-col-num">04</div>
           <div class="pw-col-vert">
             <span class="pw-col-cat">Residential</span>
@@ -1214,13 +1219,13 @@
             <div class="pw-col-card-name">Sky Penthouse</div>
             <div class="pw-col-card-rule"></div>
             <p class="pw-col-card-desc">A sky-high residence commanding panoramic views, finished with collector-grade materials throughout.</p>
-            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+            <a href="sky-penthouse.html" class="pw-col-cta">VIEW PROJECT &#8599;</a>
           </div>
         </div>
 
         <!-- 05 Soleil Office -->
         <div class="pw-col" data-sector="commercial">
-          <div class="pw-col-bg"><img src="/office - 11.JPG" alt="Soleil Office" loading="lazy" decoding="async"></div>
+          <div class="pw-col-bg"><img src="/office - 11.JPG" alt="Soleil Office" loading="eager" fetchpriority="high" decoding="sync"></div>
           <div class="pw-col-num">05</div>
           <div class="pw-col-vert">
             <span class="pw-col-cat">Commercial</span>
@@ -1232,7 +1237,7 @@
             <div class="pw-col-card-name">Soleil Office</div>
             <div class="pw-col-card-rule"></div>
             <p class="pw-col-card-desc">Bright, airy workspaces flooded with natural light — a productive sanctuary above the Mumbai skyline.</p>
-            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+            <a href="soleil-office.html" class="pw-col-cta">VIEW PROJECT &#8599;</a>
           </div>
         </div>
 
@@ -1319,128 +1324,49 @@
       </div>
       <div class="client-grid" data-r data-d="3">
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://bsmedia.business-standard.com/_media/bs/img/article/2021-04/07/full/20210407111055.jpg"
-              alt="Hiranandani" loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://bsmedia.business-standard.com/_media/bs/img/article/2021-04/07/full/20210407111055.jpg" alt="Hiranandani" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="https://jayco.in/wp-content/uploads/2024/06/sapoor.png"
-              alt="Shapoorji Pallonji" loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://jayco.in/wp-content/uploads/2024/06/sapoor.png" alt="Shapoorji Pallonji" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://download.logo.wine/logo/Hikvision/Hikvision-Logo.wine.png" alt="HIKVISION" loading="lazy"
-              style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://is1-2.housingcdn.com/0b8ad14c/09c9f16a41314ab752947b70298b27a3/v1/medium.jpg" alt="Dattani Estate Developers" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/coconut.png" alt="Coconut Media Box"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://shraddhalandmark.com/new_img/logo-768x257.png" alt="Shraddha Landmark" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://is1-2.housingcdn.com/0b8ad14c/09c9f16a41314ab752947b70298b27a3/v1/medium.jpg"
-              alt="Dattani Estate" loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s" alt="Tanna Infra Developers LLP" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/rp-enterprises-logo.jpg" alt="RP Enterprises"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/sai-construction-logo.png"
-              alt="Sai Construction Co." loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/sai-construction-logo.png" alt="Sai Construction Co." loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/shraddha-landmark-logo.jpg"
-              alt="Shraddha Landmark" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/godrej-logo.svg" alt="Godrej" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/navbharat.png" alt="Navbharat Trading"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://download.logo.wine/logo/Hikvision/Hikvision-Logo.wine.png" alt="HIKVISION" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s"
-              alt="Tanna Infra Developers" loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/spice-telecom-logo.jpg" alt="Spice Telecom" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/spice-telecom-logo.jpg" alt="Spice Telecom"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/gsi.webp" alt="Gemological Science Intl."
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/hind.png" alt="Hind Rectifiers Ltd." loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/oren.png" alt="Oren Kitchenworld"
-              loading="lazy" style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy" style="object-fit:contain" /></div>
         </div>
         <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/canara-bank-logo.png" alt="Canara Bank"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/central-bank-of-india-logo.jpg"
-              alt="Central Bank of India" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/godrej-logo.svg" alt="Godrej" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s"
-              alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/aec.png" alt="AEC Pvt. Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/shari.png" alt="Shari Academy"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/ecplaza.png" alt="Ecplaza" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Mz4SGMY2RJZdwPMjAHsUveyE28N5tLO5Bg&s"
-              alt="B&amp;M Buildcon" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://imgcdn.houssed.com/assets/Files/Developer/FirmLogos/0b5016fb08a168e27315a5f010161934.webp"
-              alt="Khatri Constructions" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/fairfield-logo.jpg" alt="Fairfield" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/dmart-logo.png" alt="D-Mart" loading="lazy"
-              style="object-fit:contain;transform:scale(1.5)" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/hind.png" alt="Hind Rectifiers Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy"
-              style="object-fit:contain" /></div>
+          <div class="cl-logo-wrap"><img class="cl-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s" alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
         </div>
       </div>
       <div style="text-align:center;margin-top:3rem" data-r data-d="4">

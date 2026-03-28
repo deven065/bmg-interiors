@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -240,7 +240,16 @@
       border-radius: 3px;
       overflow: hidden;
       margin-bottom: 1.2rem;
-      position: relative
+      position: relative;
+      background: var(--s1);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      transition: border-color 0.4s, background 0.4s;
+    }
+    .team-card:hover .team-av {
+      border-color: var(--brand);
+      background: var(--s2);
     }
 
     .team-av-bg {
@@ -617,13 +626,60 @@
       </div>
       <div class="team-grid">
         <div class="team-card" data-r>
-          <div class="team-av" style="overflow:hidden">
-            <img src="images/team/bharat.png" alt="Bharat Gadhiya" loading="lazy" decoding="async" width="300"
-              height="300" style="width:100%;height:100%;object-fit:cover" />
+          <div class="team-av">
+            <img src="images/team/bharat.png" alt="Bharat Gadhiya" loading="lazy" decoding="async" width="300" height="300" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div class="team-name">Bharat Gadhiya</div>
           <div class="team-role">Founder &amp; Principal</div>
           <div class="team-exp">38 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="1">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">NS</div>
+          <div class="team-name">Neha Shah</div>
+          <div class="team-role">Senior Associate Architect</div>
+          <div class="team-exp">12 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="2">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">RP</div>
+          <div class="team-name">Raj Patel</div>
+          <div class="team-role">Lead Project Manager</div>
+          <div class="team-exp">15 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="3">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">AK</div>
+          <div class="team-name">Amit Kumar</div>
+          <div class="team-role">Senior Interior Designer</div>
+          <div class="team-exp">10 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="4">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">PS</div>
+          <div class="team-name">Priya Sharma</div>
+          <div class="team-role">Design Coordinator</div>
+          <div class="team-exp">8 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="5">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">VG</div>
+          <div class="team-name">Varun Gupta</div>
+          <div class="team-role">Technical Specialist</div>
+          <div class="team-exp">14 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="6">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">SM</div>
+          <div class="team-name">Sneha Mehta</div>
+          <div class="team-role">Client Relations Lead</div>
+          <div class="team-exp">11 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="7">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">KV</div>
+          <div class="team-name">Karan Vora</div>
+          <div class="team-role">Site Operations head</div>
+          <div class="team-exp">18 years experience</div>
+        </div>
+        <div class="team-card" data-r data-d="8">
+          <div class="team-av" style="font-family:var(--fh);font-size:2.2rem;color:var(--brand)">RD</div>
+          <div class="team-name">Riya Deshmukh</div>
+          <div class="team-role">Creative Stylist</div>
+          <div class="team-exp">7 years experience</div>
         </div>
       </div>
     </div>
