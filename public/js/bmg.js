@@ -99,30 +99,15 @@ if(cur && ring){
 /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
 const wipe = document.getElementById('wipe');
 if(wipe){
-  const resetWipe = () => {
-    wipe.classList.remove('wipe-in');
-    setTimeout(()=>{ wipe.classList.add('wipe-out'); }, 60);
-  };
-  
-  // on initial load
-  resetWipe();
-
-  // fix for browser back/forward (BFCache)
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted) resetWipe();
-  });
-
-  // intercept internal clicks
+  // on load &rarr; wipe out
+  setTimeout(()=>{ wipe.classList.add('wipe-out'); },60);
+  // intercept clicks
   document.addEventListener('click', e=>{
     const a = e.target.closest('a[href]');
     if(!a) return;
     const h = a.getAttribute('href');
     if(!h || h.startsWith('#') || h.startsWith('mailto') || h.startsWith('tel') ||
        h.startsWith('http') || a.target==='_blank') return;
-    
-    // ignore if it's the same page
-    if(h === window.location.pathname.split('/').pop()) return;
-
     e.preventDefault();
     wipe.classList.remove('wipe-out');
     wipe.classList.add('wipe-in');
@@ -183,17 +168,6 @@ if (loader) {
   if (document.readyState === 'complete') setTimeout(markDone, 200);
   else window.addEventListener('load', () => setTimeout(markDone, 120), { once: true });
   
-  // fix for browser back/forward (BFCache)
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted) {
-      if (loader) {
-        loader.classList.add('out');
-        loader.style.display = 'none';
-        boot();
-      }
-    }
-  });
-
   // Safety timeout
   setTimeout(() => { done = true; }, 8000);
 
@@ -530,7 +504,7 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const images = [
-    '/images/projects/mehta-residence/1.png',
+    '/images/slider/architecture.jpg',
     '/images/slider/1.jpg',
     '/images/slider/1.png',
     '/images/slider/2.jpg',
@@ -542,104 +516,112 @@ function initHeroSlideshow(){
     '/images/slider/interiordesign.jpg'
   ];
 
-  const stripCount = 10;
+  // Fewer strips = fewer GPU layers = smoother frames
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  const stripCount = isMobile ? 5 : 7;
   let currentSlide = 0;
   let isTransitioning = false;
+  let slideTimer = null;
+  const preloaded = new Set();
+
+  // Preload an image without blocking the main thread
+  const preloadImg = (src) => {
+    if (preloaded.has(src)) return;
+    preloaded.add(src);
+    const img = new Image(); img.decoding = 'async'; img.src = src;
+  };
+  // Eagerly decode the first 3 images so early transitions are instant
+  images.slice(0, 3).forEach(preloadImg);
 
   const createSlide = (imgSrc, index) => {
     const slide = document.createElement('div');
     slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
-    
-    // Set initial scale to 1.05 so we can zoom out to 1.0 without borders
-    if (index === 0) gsap.set(slide, { scale: 1.05 });
-
-    for(let i = 0; i < stripCount; i++){
+    for (let i = 0; i < stripCount; i++) {
       const strip = document.createElement('div');
       strip.className = 'hero-strip';
       strip.style.backgroundImage = `url(${imgSrc})`;
-      strip.style.backgroundSize = '100vw 100vh';
-      strip.style.backgroundPosition = `-${i * (100 / stripCount)}vw 0`;
-      
-      if(index === 0) {
-        strip.style.transform = 'translateY(0)';
-      }
-      
+      // Pure-percentage sizing — no vw/vh units so the browser
+      // never needs to recalculate these values during animation
+      strip.style.backgroundSize = `${stripCount * 100}% 100%`;
+      strip.style.backgroundPosition = `${(i / Math.max(1, stripCount - 1)) * 100}% 50%`;
+      // First slide is in-view; all others start off-screen below
+      strip.style.transform = index === 0 ? 'translate3d(0,0,0)' : 'translate3d(0,100%,0)';
       slide.appendChild(strip);
     }
-    
     return slide;
   };
 
-  images.forEach((img, i) => container.appendChild(createSlide(img, i)));
+  images.forEach((src, i) => container.appendChild(createSlide(src, i)));
+  const slides = Array.from(container.querySelectorAll('.hero-slide'));
 
-  const slides = container.querySelectorAll('.hero-slide');
+  // GPU-promote strips from the start so the compositor is ready
+  if (window.gsap) {
+    gsap.set(slides, { force3D: true });
+    gsap.set(slides[0].querySelectorAll('.hero-strip'), { y: 0, force3D: true });
+  }
 
   const changeSlide = (direction = 1) => {
-    if(isTransitioning) return;
+    if (isTransitioning || slides.length < 2) return;
     isTransitioning = true;
 
+    // Read height ONCE before the animation — avoids per-frame layout reads
+    // that happen when GSAP resolves '100%' strings mid-animation
+    const H = container.offsetHeight;
     const nextIndex = (currentSlide + direction + images.length) % images.length;
-    const current = slides[currentSlide];
-    const next = slides[nextIndex];
+    const current    = slides[currentSlide];
+    const next       = slides[nextIndex];
+    const curStrips  = Array.from(current.querySelectorAll('.hero-strip'));
+    const nextStrips = Array.from(next.querySelectorAll('.hero-strip'));
+    const enterY = direction === 1 ?  H : -H;
+    const exitY  = direction === 1 ? -H :  H;
+    const from   = direction === 1 ? 'start' : 'end';
 
-    const enterFrom = direction === 1 ? '100%' : '-100%';
-    const exitTo = direction === 1 ? '-100%' : '100%';
+    // Preload the slides that are coming up next
+    preloadImg(images[(nextIndex + 1) % images.length]);
+    preloadImg(images[(nextIndex + 2) % images.length]);
 
-    // Initial state for next slide
-    gsap.set(next.querySelectorAll('.hero-strip'), { translateY: enterFrom, opacity: 1 });
-    gsap.set(next, { scale: 1.15 });
     next.classList.add('active');
+    gsap.set(next,       { zIndex: 2 });
+    gsap.set(current,    { zIndex: 1 });
+    gsap.set(nextStrips, { y: enterY, force3D: true });
+    gsap.set(curStrips,  { force3D: true });
 
-    const tl = gsap.timeline({
+    const DUR     = 1.0;   // strip travel time
+    const STAGGER = 0.05;  // gap between each strip
+
+    gsap.timeline({
+      defaults: { ease: 'power3.inOut', force3D: true },
       onComplete: () => {
         current.classList.remove('active');
-        gsap.set(current, { scale: 1.05, translateY: 0 });
+        gsap.set(current, { zIndex: 0 });
+        // Reset outgoing strips so the slide is ready for its next appearance
+        gsap.set(curStrips,  { y: 0, clearProps: 'willChange' });
+        gsap.set(nextStrips, { clearProps: 'willChange' });
         currentSlide = nextIndex;
         isTransitioning = false;
       }
-    });
-
-    // 1. Zoom out current slide from 1.05 to 1.0
-    tl.to(current, { 
-      scale: 1, 
-      duration: 1.0, 
-      ease: "power2.inOut" 
-    });
-
-    // 2. Then proceed with strip animations
-    tl.to(next.querySelectorAll('.hero-strip'), {
-      translateY: '0%',
-      duration: 1.3,
-      stagger: 0.08,
-      ease: 'expo.inOut'
-    }, "-=0.6")
-    .to(current.querySelectorAll('.hero-strip'), {
-      translateY: exitTo,
-      duration: 1.3,
-      stagger: 0.08,
-      ease: 'expo.inOut'
-    }, "<");
-
-    // 3. Zoom next slide out from 1.15 to 1.05
-    tl.to(next, { 
-      scale: 1.05, 
-      duration: 1.6, 
-      ease: "power2.out" 
-    }, "-=1.1");
+    })
+    // Incoming strips rise into view
+    .to(nextStrips, { y: 0,      duration: DUR,        stagger: { each: STAGGER, from } }, 0)
+    // Outgoing strips exit (slight offset so both waves overlap cleanly)
+    .to(curStrips,  { y: exitY,  duration: DUR * 0.90, stagger: { each: STAGGER * 0.88, from } }, 0.04);
   };
 
   const btnPrev = document.getElementById('hero-prev');
   const btnNext = document.getElementById('hero-next');
 
-  let slideInterval = setInterval(() => changeSlide(1), 5000);
+  const startTimer = () => { slideTimer = setInterval(() => changeSlide(1), 6000); };
+  const resetTimer = () => { clearInterval(slideTimer); startTimer(); };
 
-  const resetInterval = () => {
-    clearInterval(slideInterval);
-    slideInterval = setInterval(() => changeSlide(1), 5000);
-  };
+  if (btnPrev) btnPrev.onclick = () => { changeSlide(-1); resetTimer(); };
+  if (btnNext) btnNext.onclick = () => { changeSlide(1);  resetTimer(); };
 
-  if(btnPrev) btnPrev.onclick = () => { changeSlide(-1); resetInterval(); };
-  if(btnNext) btnNext.onclick = () => { changeSlide(1); resetInterval(); };
+  // Pause animation when tab is hidden — resumes with a fresh interval on return
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? clearInterval(slideTimer) : resetTimer();
+  });
+
+  startTimer();
 }
 
 /* ── COUNTERS ───────────────────────────────────────────────────── */
@@ -762,11 +744,7 @@ function initShowcase(){
     col.addEventListener('pointerenter',()=>activate(i));
     col.addEventListener('pointerleave',()=>clearTimeout(debounceTimer));
     col.addEventListener('focusin',()=>activate(i));
-    col.addEventListener('click',(e)=>{ 
-      if(e.target.closest('.pw-col-cta')) return; // let the link handle it naturally
-      const cta = col.querySelector('.pw-col-cta');
-      if(cta) location.href = cta.getAttribute('href'); 
-    });
+    col.addEventListener('click',()=>{ location.href='portfolio.html'; });
   });
 
   if(accordion){
