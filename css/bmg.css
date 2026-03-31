@@ -512,10 +512,10 @@ em{font-style:italic}
 .pw-col:last-child{border-right:none}
 .pw-col.active{flex:1 1 auto}
 .pw-col::before{content:'';position:absolute;inset:0;z-index:1;
-  background:rgba(35,24,11,.2);transition:opacity .3s;pointer-events:none}
+  background:rgba(35,24,11,.1);opacity:0;transition:opacity .3s;pointer-events:none}
 .pw-col.active::before{opacity:0 !important;visibility:hidden}
 /* background image (revealed only on hover/active) */
-.pw-col-bg{position:absolute;inset:0;z-index:0;opacity:0.45;
+.pw-col-bg{position:absolute;inset:0;z-index:0;opacity:0.92;
   clip-path:inset(0 0 0 0);filter:none;
   transition:opacity .45s var(--e1)}
 .pw-col.active .pw-col-bg{opacity:1;filter:none !important;
