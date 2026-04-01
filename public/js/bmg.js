@@ -252,6 +252,7 @@ function boot(){
     initParallax();
     initCTA();
     initHeroSlideshow();
+    initLegacy();
   });
   // Also listen for footer load which contains the CTA modal
   window.addEventListener('footerLoaded', initCTA);
@@ -499,7 +500,7 @@ function initHero(){
   });
 }
 
-/* ── HERO SLIDESHOW ────────────────────────────────────────────── */
+/* ── HERO SLIDESHOW — Slider Revolution style ───────────────────── */
 function initHeroSlideshow(){
   const container = document.getElementById('hero-slideshow');
   if(!container) return;
@@ -517,21 +518,18 @@ function initHeroSlideshow(){
     '/images/slider/interiordesign.jpg'
   ];
 
-  // Fewer strips = fewer GPU layers = smoother frames
-  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  const isMobile   = window.matchMedia('(max-width: 640px)').matches;
   const stripCount = isMobile ? 5 : 7;
-  let currentSlide = 0;
+  let currentSlide    = 0;
   let isTransitioning = false;
-  let slideTimer = null;
-  const preloaded = new Set();
+  let slideTimer      = null;
+  const preloaded     = new Set();
 
-  // Preload an image without blocking the main thread
   const preloadImg = (src) => {
     if (preloaded.has(src)) return;
     preloaded.add(src);
     const img = new Image(); img.decoding = 'async'; img.src = src;
   };
-  // Eagerly decode the first 3 images so early transitions are instant
   images.slice(0, 3).forEach(preloadImg);
 
   const createSlide = (imgSrc, index) => {
@@ -540,13 +538,10 @@ function initHeroSlideshow(){
     for (let i = 0; i < stripCount; i++) {
       const strip = document.createElement('div');
       strip.className = 'hero-strip';
-      strip.style.backgroundImage = `url(${imgSrc})`;
-      // Pure-percentage sizing — no vw/vh units so the browser
-      // never needs to recalculate these values during animation
-      strip.style.backgroundSize = `${stripCount * 100}% 100%`;
+      strip.style.backgroundImage    = `url(${imgSrc})`;
+      strip.style.backgroundSize     = `${stripCount * 100}% 100%`;
       strip.style.backgroundPosition = `${(i / Math.max(1, stripCount - 1)) * 100}% 50%`;
-      // First slide is in-view; all others start off-screen below
-      strip.style.transform = index === 0 ? 'translate3d(0,0,0)' : 'translate3d(0,100%,0)';
+      // No transform — strips are static partition decorations
       slide.appendChild(strip);
     }
     return slide;
@@ -555,113 +550,184 @@ function initHeroSlideshow(){
   images.forEach((src, i) => container.appendChild(createSlide(src, i)));
   const slides = Array.from(container.querySelectorAll('.hero-slide'));
 
-  // Ken Burns variants — each slide gets a unique zoom direction + pan vector
-  // fromScale < 1.0 avoided so we never see a white border during pan
-  const KB_VARIANTS = [
-    { fromScale:1.00, toScale:1.08, fromX:  0, fromY:  0, toX:-22, toY:-10, origin:'62% 58%' },
-    { fromScale:1.08, toScale:1.00, fromX:-20, fromY: -8, toX:  0, toY:  0, origin:'40% 44%' },
-    { fromScale:1.00, toScale:1.08, fromX: 16, fromY:  0, toX:  0, toY:-14, origin:'38% 60%' },
-    { fromScale:1.08, toScale:1.00, fromX:  0, fromY:-12, toX: 20, toY:  0, origin:'58% 38%' },
-    { fromScale:1.00, toScale:1.07, fromX:  0, fromY:  8, toX:-14, toY:-8,  origin:'52% 54%' },
-    { fromScale:1.07, toScale:1.00, fromX:-12, fromY: -6, toX: 12, toY:  6, origin:'48% 46%' },
-    { fromScale:1.00, toScale:1.09, fromX: 12, fromY:  6, toX:  0, toY:-12, origin:'44% 56%' },
-    { fromScale:1.09, toScale:1.00, fromX:  0, fromY:-10, toX:-18, toY:  6, origin:'56% 44%' },
-    { fromScale:1.00, toScale:1.08, fromX: -6, fromY:  0, toX: 10, toY:-14, origin:'50% 62%' },
-    { fromScale:1.08, toScale:1.00, fromX: 10, fromY:-14, toX: -6, toY:  0, origin:'50% 40%' },
-  ];
-  let kbTween = null;
+  if (window.gsap) gsap.set(slides, { force3D: true });
 
-  const startKenBurns = (slideEl, idx) => {
-    if(kbTween) kbTween.kill();
-    const v = KB_VARIANTS[idx % KB_VARIANTS.length];
-    gsap.set(slideEl, {
-      scale: v.fromScale, x: v.fromX, y: v.fromY,
-      transformOrigin: v.origin, force3D: true
-    });
-    kbTween = gsap.to(slideEl, {
-      scale: v.toScale, x: v.toX, y: v.toY,
-      duration: 6.8, ease: 'none', force3D: true
-    });
+  /* ── Timing ── */
+  const SLIDE_MS  = 6000;
+  const DUR_IN    = 0.95;  // incoming slide travel
+  const DUR_OUT   = 0.75;  // outgoing fade+drift
+
+  /* ── UI references ── */
+  const progressEl = document.getElementById('hero-progress');
+  const bulletsEl  = document.getElementById('hero-bullets');
+  const curNumEl   = document.getElementById('hero-cur');
+  const totalEl    = document.getElementById('hero-total');
+
+  if (totalEl) totalEl.textContent = String(images.length).padStart(2, '0');
+
+  /* ── Progress bar ── */
+  const startProgress = () => {
+    if (!progressEl) return;
+    progressEl.style.cssText = 'transition:none;width:0%';
+    void progressEl.offsetWidth;
+    progressEl.style.cssText = `transition:width ${SLIDE_MS}ms linear;width:100%`;
+  };
+  const stopProgress = () => {
+    if (!progressEl) return;
+    progressEl.style.cssText = 'transition:none;width:0%';
   };
 
-  // GPU-promote strips from the start so the compositor is ready
-  if (window.gsap) {
-    gsap.set(slides, { force3D: true });
-    gsap.set(slides[0].querySelectorAll('.hero-strip'), { y: 0, force3D: true });
-    startKenBurns(slides[0], 0);
-  }
-
-  const changeSlide = (direction = 1) => {
+  /* ── Slide transition: animate__fadeInRight style ── */
+  const changeSlide = (direction = 1, targetIndex = null) => {
     if (isTransitioning || slides.length < 2) return;
     isTransitioning = true;
 
-    // Read height ONCE before the animation — avoids per-frame layout reads
-    // that happen when GSAP resolves '100%' strings mid-animation
-    const H = container.offsetHeight;
-    const nextIndex = (currentSlide + direction + images.length) % images.length;
-    const current    = slides[currentSlide];
-    const next       = slides[nextIndex];
-    const curStrips  = Array.from(current.querySelectorAll('.hero-strip'));
-    const nextStrips = Array.from(next.querySelectorAll('.hero-strip'));
-    const enterY = direction === 1 ?  H : -H;
-    const exitY  = direction === 1 ? -H :  H;
-    const from   = direction === 1 ? 'start' : 'end';
+    const nextIndex = targetIndex !== null
+      ? targetIndex
+      : (currentSlide + direction + images.length) % images.length;
 
-    // Preload the slides that are coming up next
+    const outgoing = slides[currentSlide];
+    const incoming = slides[nextIndex];
+
+    // Incoming: slides in from +80px right (or -80px left for prev), fades in
+    const enterX = direction === 1 ?  80 : -80;
+    // Outgoing: drifts slightly left (or right), fades out — parallax depth
+    const exitX  = direction === 1 ? -40 :  40;
+
+    outgoing.classList.remove('kb');
+    incoming.classList.remove('kb');
+    stopProgress();
+
+    if (bulletsEl) {
+      Array.from(bulletsEl.children).forEach((b, idx) =>
+        b.classList.toggle('active', idx === nextIndex));
+    }
+
     preloadImg(images[(nextIndex + 1) % images.length]);
     preloadImg(images[(nextIndex + 2) % images.length]);
 
-    // Start Ken Burns on the incoming slide as strips begin rising
-    startKenBurns(next, nextIndex);
-
-    next.classList.add('active');
-    gsap.set(next,       { zIndex: 2 });
-    gsap.set(current,    { zIndex: 1 });
-    gsap.set(nextStrips, { y: enterY, force3D: true });
-    gsap.set(curStrips,  { force3D: true });
-
-    const DUR     = 1.0;   // strip travel time
-    const STAGGER = 0.05;  // gap between each strip
+    incoming.classList.add('active');
+    gsap.set(incoming, { x: enterX, opacity: 0, zIndex: 2, force3D: true });
+    gsap.set(outgoing, { zIndex: 1 });
 
     gsap.timeline({
-      defaults: { ease: 'power3.inOut', force3D: true },
       onComplete: () => {
-        current.classList.remove('active');
-        gsap.set(current, { zIndex: 0, scale: 1, x: 0, y: 0, clearProps: 'transformOrigin' });
-        // Reset outgoing strips so the slide is ready for its next appearance
-        gsap.set(curStrips,  { y: 0, clearProps: 'willChange' });
-        gsap.set(nextStrips, { clearProps: 'willChange' });
-        currentSlide = nextIndex;
+        outgoing.classList.remove('active');
+        // Clear all GSAP props so KB CSS animation gets a clean transform
+        gsap.set(outgoing, { clearProps: 'all' });
+        gsap.set(incoming, { clearProps: 'x,opacity,willChange,zIndex' });
+        currentSlide    = nextIndex;
         isTransitioning = false;
+        incoming.classList.add('kb');
+        startProgress();
+        if (curNumEl) curNumEl.textContent = String(nextIndex + 1).padStart(2, '0');
       }
     })
-    // Incoming strips rise into view
-    .to(nextStrips, { y: 0,      duration: DUR,        stagger: { each: STAGGER, from } }, 0)
-    // Outgoing strips exit (slight offset so both waves overlap cleanly)
-    .to(curStrips,  { y: exitY,  duration: DUR * 0.90, stagger: { each: STAGGER * 0.88, from } }, 0.04);
+    // ── INCOMING: fadeInRight — glides in from the right and fades up
+    .to(incoming, { x: 0, opacity: 1, duration: DUR_IN, ease: 'power3.out',  force3D: true }, 0)
+    // ── OUTGOING: drift left + fade out (parallax gives a sense of depth)
+    .to(outgoing, { x: exitX,         duration: DUR_OUT, ease: 'power2.in',   force3D: true }, 0)
+    .to(outgoing, { opacity: 0,        duration: DUR_OUT, ease: 'power1.in'                 }, 0);
   };
+
+  /* ── Autoplay & nav controls ── */
+  const startTimer = () => { slideTimer = setInterval(() => changeSlide(1), SLIDE_MS); };
+  const resetTimer = () => { clearInterval(slideTimer); startTimer(); };
+
+  /* ── Bullet dots ── */
+  if (bulletsEl) {
+    images.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'hero-bullet' + (i === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      btn.addEventListener('click', () => {
+        if (!isTransitioning && i !== currentSlide) {
+          changeSlide(i > currentSlide ? 1 : -1, i);
+          resetTimer();
+        }
+      });
+      bulletsEl.appendChild(btn);
+    });
+  }
 
   const btnPrev = document.getElementById('hero-prev');
   const btnNext = document.getElementById('hero-next');
 
-  const startTimer = () => { slideTimer = setInterval(() => changeSlide(1), 6000); };
-  const resetTimer = () => { clearInterval(slideTimer); startTimer(); };
-
   if (btnPrev) btnPrev.onclick = () => { changeSlide(-1); resetTimer(); };
   if (btnNext) btnNext.onclick = () => { changeSlide(1);  resetTimer(); };
 
-  // Pause animation when tab is hidden — resumes with a fresh interval on return
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      clearInterval(slideTimer);
-      if (kbTween) kbTween.pause();
-    } else {
-      if (kbTween) kbTween.resume();
-      resetTimer();
-    }
+    if (document.hidden) { clearInterval(slideTimer); stopProgress(); }
+    else { resetTimer(); startProgress(); }
   });
 
+  /* ── Kick off first slide ── */
+  slides[0].classList.add('kb');
+  startProgress();
   startTimer();
+}
+
+/* ── LEGACY SECTION ─────────────────────────────────────────────── */
+function initLegacy(){
+  const sec      = document.querySelector('.legacy-sec');
+  if (!sec) return;
+
+  const num      = document.getElementById('legacy-num');
+  const divider  = document.getElementById('legacy-divider');
+  const goldLine = document.getElementById('legacy-gold-line');
+  const eyebrow  = sec.querySelector('.legacy-eyebrow');
+  const heading  = sec.querySelector('.legacy-heading');
+  const tagline  = sec.querySelector('.legacy-tagline');
+  const body     = sec.querySelector('.legacy-body');
+
+  /* ── Scroll parallax: image inside the number drifts as you scroll ── */
+  if (num) {
+    const onScroll = () => {
+      const rect = num.getBoundingClientRect();
+      const vh   = window.innerHeight;
+      const prog = 1 - (rect.top + rect.height) / (vh + rect.height);
+      const pos  = 30 + Math.min(1, Math.max(0, prog)) * 50;
+      num.style.backgroundPositionY = pos.toFixed(2) + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ── GSAP ScrollTrigger reveals ── */
+  if (!window.gsap || !window.ScrollTrigger) {
+    [eyebrow, heading, tagline, body, goldLine, divider, num]
+      .filter(Boolean).forEach(el => { el.style.opacity = 1; });
+    if (goldLine) goldLine.style.width = 'clamp(80px,14vw,160px)';
+    if (divider)  divider.style.height = '90%';
+    return;
+  }
+
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: sec, start: 'top 78%', once: true }
+  });
+
+  /* Vertical gold divider line draws downward */
+  if (divider) {
+    gsap.set(divider, { height: '0%' });
+    tl.to(divider, { height: '90%', duration: 1.2, ease: 'power3.inOut' }, 0);
+  }
+
+  /* "35" scales + fades in from slight compression */
+  if (num) {
+    gsap.set(num, { opacity: 0, scale: 0.88, transformOrigin: 'left center' });
+    tl.to(num, { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out' }, 0.05);
+  }
+
+  /* Right-column elements stagger up one by one */
+  const rightEls = [eyebrow, heading, tagline, body].filter(Boolean);
+  rightEls.forEach(el => gsap.set(el, { opacity: 0, y: 22 }));
+  tl.to(rightEls, { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out', stagger: 0.12 }, 0.2);
+
+  /* Gold accent line expands from 0 */
+  if (goldLine) {
+    gsap.set(goldLine, { width: 0, opacity: 1 });
+    tl.to(goldLine, { width: 'clamp(80px,14vw,160px)', duration: 0.9, ease: 'power3.out' }, 0.44);
+  }
 }
 
 /* ── COUNTERS ───────────────────────────────────────────────────── */

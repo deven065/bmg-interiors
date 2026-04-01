@@ -197,10 +197,12 @@
       position: absolute;
       inset: 0;
       display: flex;
+      gap: 1px;            /* 1px gap = decorative partition lines between strips */
+      background: #080808; /* colour seen through the gaps                        */
       opacity: 0;
       pointer-events: none;
-      /* No CSS transition — GSAP drives everything, mixing both causes fighting */
       backface-visibility: hidden;
+      will-change: transform, opacity;
     }
 
     .hero-slide.active {
@@ -213,13 +215,88 @@
       flex: 1;
       height: 100%;
       overflow: hidden;
-      /* background-size/position set inline per-strip via JS (percentage values) */
-      transform: translate3d(0, 100%, 0); /* off-screen default; JS overrides slide-0 */
+      /* background-size/position set inline per-strip via JS */
+      /* No transform — strips are static decoration; slide-level GSAP drives motion */
       backface-visibility: hidden;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-strip { transform: translate3d(0, 0, 0) !important; }
+      .hero-slide { transition: opacity 0.5s ease !important; will-change: auto; }
+    }
+
+    /* ── Ken Burns on settled slide (Slider Revolution style) ────── */
+    @keyframes heroKenBurns {
+      from { transform: scale(1);    }
+      to   { transform: scale(1.04); }
+    }
+    .hero-slide.kb {
+      animation: heroKenBurns 7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide.kb { animation: none !important; }
+    }
+
+    /* ── Progress timer bar ──────────────────────────────────────── */
+    .hero-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: rgba(255, 204, 0, 0.85);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── Bullet navigation ───────────────────────────────────────── */
+    .hero-bullets {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .hero-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .hero-bullet.active {
+      width: 22px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.9);
+      border-color: transparent;
+    }
+    .hero-bullet:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ── Slide counter ───────────────────────────────────────────── */
+    .hero-counter {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 8.5rem;
+      z-index: 10;
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+    .hero-counter .hc-cur {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+      font-weight: 300;
     }
 
     .hero-slideshow::after {
@@ -919,6 +996,182 @@
       .hero-h1 { font-size: clamp(2.6rem, 8.8vw, 3.6rem); line-height: 1.0; }
       .hero-content::before { display: none; }
     }
+
+    /* ─────────────────────────────────────────────────────────────
+       LEGACY SECTION  –  editorial two-column  "35 Years"
+    ───────────────────────────────────────────────────────────── */
+    .legacy-sec {
+      background: #050505;
+      overflow: hidden;
+      position: relative;
+      padding-block: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    /* Full-bleed ambient interior photo at very low opacity */
+    .legacy-sec::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('/images/slider/architecture.jpg') center / cover no-repeat;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    /* Bottom gold gradient border */
+    .legacy-sec::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,204,0,.35) 30%,
+        rgba(255,204,0,.55) 50%,
+        rgba(255,204,0,.35) 70%,
+        transparent 100%);
+      pointer-events: none;
+    }
+
+    .legacy-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 5rem);
+      display: grid;
+      grid-template-columns: clamp(180px, 28vw, 380px) 1fr;
+      align-items: center;
+      gap: clamp(1.25rem, 3vw, 3.5rem);
+    }
+
+    /* ── LEFT: giant image-clipped number ── */
+    .legacy-left {
+      position: relative;
+      overflow: visible;
+    }
+
+    .legacy-num {
+      font-family: var(--fh);
+      font-size: clamp(6rem, 22vw, 18rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      background-image: url('/images/slider/architecture.jpg');
+      background-size: 120% auto;
+      background-position: center 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      will-change: background-position;
+      display: block;
+      width: 100%;
+      filter: drop-shadow(0 0 60px rgba(255,204,0,.12));
+    }
+
+    /* thin vertical gold line between columns */
+    .legacy-divider {
+      position: absolute;
+      top: 5%;
+      right: -1px;
+      width: 1px;
+      height: 0%;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(255,204,0,.5) 30%,
+        rgba(255,204,0,.5) 70%,
+        transparent 100%
+      );
+    }
+
+    /* ── RIGHT: typographic stack ── */
+    .legacy-right {
+      padding-left: clamp(1rem, 3vw, 3.5rem);
+    }
+
+    .legacy-eyebrow {
+      font-family: var(--fb);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .legacy-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--brand);
+      flex-shrink: 0;
+    }
+
+    .legacy-heading {
+      font-family: var(--fh);
+      font-size: clamp(1.2rem, 2.4vw, 2rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 0.25rem;
+      font-style: italic;
+    }
+    .legacy-heading strong {
+      font-style: normal;
+      font-weight: 800;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .legacy-gold-line {
+      display: block;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand), rgba(255,204,0,0));
+      margin: 0.9rem 0;
+      border-radius: 1px;
+    }
+
+    .legacy-tagline {
+      font-family: var(--fb);
+      font-size: clamp(0.68rem, 1.3vw, 0.8rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .legacy-tagline em {
+      color: var(--brand);
+      font-style: normal;
+    }
+
+    .legacy-body {
+      font-family: var(--fb);
+      font-size: clamp(0.82rem, 1.3vw, 0.9rem);
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.32);
+      max-width: 420px;
+      margin: 0;
+    }
+
+    /* ── Responsive: stack on mobile ── */
+    @media(max-width:700px){
+      .legacy-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+      }
+      .legacy-divider { display: none; }
+      .legacy-right { padding-left: 0; }
+      .legacy-eyebrow { justify-content: center; }
+      .legacy-gold-line { margin-inline: auto; }
+      .legacy-body { margin-inline: auto; }
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -997,6 +1250,15 @@
       </button>
     </div>
 
+    <!-- Slider Revolution style UI -->
+    <div class="hero-progress" id="hero-progress"></div>
+    <div class="hero-bullets"  id="hero-bullets"></div>
+    <div class="hero-counter"  aria-hidden="true">
+      <span class="hc-cur" id="hero-cur">01</span>
+      <span>—</span>
+      <span id="hero-total">10</span>
+    </div>
+
     <div class="wrap">
       <div class="hero-layout">
 
@@ -1011,6 +1273,42 @@
       data-mq='["Luxury Residential","Premium Commercial","Turnkey Projects","Custom Furniture","Space Planning","Award-Winning Design","Est. 1988","Mumbai Studio","450+ Projects"]'>
     </div>
   </div>
+
+  <!-- ═══════════════════════ LEGACY ══════════════════════════ -->
+  <section class="legacy-sec" id="legacy" aria-label="35 years of excellence">
+    <div class="legacy-inner">
+
+      <!-- LEFT: image-clipped number -->
+      <div class="legacy-left">
+        <span class="legacy-num" id="legacy-num">35</span>
+        <div class="legacy-divider" id="legacy-divider"></div>
+      </div>
+
+      <!-- RIGHT: editorial text stack -->
+      <div class="legacy-right">
+        <div class="legacy-eyebrow">Est. 1988 &nbsp;&middot;&nbsp; Mumbai</div>
+
+        <h2 class="legacy-heading">
+          <strong>Years of Quality</strong><br>
+          Services Delivered
+        </h2>
+
+        <span class="legacy-gold-line" id="legacy-gold-line"></span>
+
+        <p class="legacy-tagline">
+          To our <em>beloved customers</em> —<br>
+          every project, a lasting legacy.
+        </p>
+
+        <p class="legacy-body">
+          Three and a half decades of extraordinary spaces crafted across
+          Mumbai. Each room a balance of elegance, comfort, and purpose —
+          built on trust, finished with care, remembered forever.
+        </p>
+      </div>
+
+    </div>
+  </section>
 
   <!-- ═══════════════════════ STATS ══════════════════════════ -->
   <section class="sec" style="padding-block:0">
@@ -1377,86 +1675,6 @@
           <div class="cl-logo-wrap"><img class="cl-logo"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s"
               alt="Tanna Infra Developers" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/spice-telecom-logo.jpg" alt="Spice Telecom"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/gsi.webp" alt="Gemological Science Intl."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/oren.png" alt="Oren Kitchenworld"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/canara-bank-logo.png" alt="Canara Bank"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/central-bank-of-india-logo.jpg"
-              alt="Central Bank of India" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/godrej-logo.svg" alt="Godrej" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s"
-              alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/aec.png" alt="AEC Pvt. Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/shari.png" alt="Shari Academy"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/ecplaza.png" alt="Ecplaza" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Mz4SGMY2RJZdwPMjAHsUveyE28N5tLO5Bg&s"
-              alt="B&amp;M Buildcon" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://imgcdn.houssed.com/assets/Files/Developer/FirmLogos/0b5016fb08a168e27315a5f010161934.webp"
-              alt="Khatri Constructions" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/fairfield-logo.jpg" alt="Fairfield" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/dmart-logo.png" alt="D-Mart" loading="lazy"
-              style="object-fit:contain;transform:scale(1.5)" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/hind.png" alt="Hind Rectifiers Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy"
-              style="object-fit:contain" /></div>
         </div>
       </div>
       <div style="text-align:center;margin-top:3rem" data-r data-d="4">
