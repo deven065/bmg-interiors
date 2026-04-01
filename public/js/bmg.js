@@ -8,19 +8,20 @@
 const cur  = document.getElementById('cur');
 const ring = document.getElementById('cur-ring');
 if(cur && ring){
-  let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my;
+  let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my, cs=1, ts=1;
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    cur.style.left = mx+'px'; cur.style.top = my+'px';
   });
   (function raf(){
+    cs += (ts-cs)*.18;
     rx += (mx-rx)*.1; ry += (my-ry)*.1;
-    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    cur.style.transform  = 'translate('+(mx-4.5)+'px,'+(my-4.5)+'px) scale('+cs.toFixed(3)+')';
+    ring.style.transform = 'translate('+(rx-20)+'px,'+(ry-20)+'px) scale('+(1+(ts-1)*.4).toFixed(3)+')';
     requestAnimationFrame(raf);
   })();
   document.querySelectorAll('a,button,[data-cur]').forEach(el=>{
-    el.addEventListener('mouseenter',()=>document.body.classList.add('c-hover'));
-    el.addEventListener('mouseleave',()=>document.body.classList.remove('c-hover'));
+    el.addEventListener('mouseenter',()=>{ ts=2; document.body.classList.add('c-hover'); });
+    el.addEventListener('mouseleave',()=>{ ts=1; document.body.classList.remove('c-hover'); });
   });
   document.addEventListener('mouseleave',()=>document.body.classList.add('c-hide'));
   document.addEventListener('mouseenter',()=>document.body.classList.remove('c-hide'));
@@ -235,13 +236,10 @@ if (loader) {
 }
 
 function boot(){
-  // Initialize Mission-Critical Hero UI immediately
-  initHero(); 
-  initHeroSlideshow();
-  initGSAP();
-
-  // Initialize Smooth Scroll and everything else as secondary
+  // Initialize Cinematic Scroll first, and then everything else
   initCinematicScroll().then(() => {
+    initHero();   // must be before GSAP to create .line-inner elements
+    initGSAP();   
     initReveal();
     initCounters();
     initMarquees();
@@ -253,6 +251,7 @@ function boot(){
     initMagnetic();
     initParallax();
     initCTA();
+    initHeroSlideshow();
   });
   // Also listen for footer load which contains the CTA modal
   window.addEventListener('footerLoaded', initCTA);
@@ -459,7 +458,6 @@ function initReveal(){
 
 /* ── HERO ANIMATIONS ────────────────────────────────────────────── */
 function initHero(){
-  document.body.classList.add('js-ready');
   // word reveal
   document.querySelectorAll('[data-words]').forEach(el=>{
     const words = el.getAttribute('data-words').split('|');
@@ -490,9 +488,9 @@ function initHero(){
   document.querySelectorAll('[data-fade]').forEach(el=>{
     const d = parseFloat(el.getAttribute('data-fade')||'0');
     if(el.classList.contains('hero-sub')){
-      Object.assign(el.style,{opacity:'0',transform:'translateY(10px)',
-        transition:`opacity 1.1s ${d}s cubic-bezier(.16,1,.3,1),transform 1.1s ${d}s cubic-bezier(.16,1,.3,1)`});
-      requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='none'; });
+      Object.assign(el.style,{opacity:'0',transform:'translateY(10px)',filter:'blur(6px)',
+        transition:`opacity 1.1s ${d}s cubic-bezier(.16,1,.3,1),transform 1.1s ${d}s cubic-bezier(.16,1,.3,1),filter 1s ${d}s cubic-bezier(.16,1,.3,1)`});
+      requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='none'; el.style.filter='none'; });
     } else {
       Object.assign(el.style,{opacity:'0',transform:'translateX(18px)',
         transition:`opacity .8s ${d}s cubic-bezier(.16,1,.3,1),transform .8s ${d}s cubic-bezier(.16,1,.3,1)`});
@@ -526,7 +524,6 @@ function initHeroSlideshow(){
   let isTransitioning = false;
   let slideTimer = null;
   const preloaded = new Set();
-  const thumbsContainer = document.getElementById('hero-thumbs');
 
   // Preload an image without blocking the main thread
   const preloadImg = (src) => {
@@ -555,24 +552,8 @@ function initHeroSlideshow(){
     return slide;
   };
 
-  images.forEach((src, i) => {
-    container.appendChild(createSlide(src, i));
-    if (thumbsContainer) {
-      const thumb = document.createElement('div');
-      thumb.className = `hero-thumb ${i === 0 ? 'active' : ''}`;
-      thumb.innerHTML = `<img src="${src}" alt="Slide ${i+1}">`;
-      thumb.onclick = () => {
-        if (i === currentSlide) return;
-        const dir = i > currentSlide ? 1 : -1;
-        jumpToSlide(i, dir);
-        resetTimer();
-      };
-      thumbsContainer.appendChild(thumb);
-    }
-  });
-
+  images.forEach((src, i) => container.appendChild(createSlide(src, i)));
   const slides = Array.from(container.querySelectorAll('.hero-slide'));
-  const thumbs = thumbsContainer ? Array.from(thumbsContainer.querySelectorAll('.hero-thumb')) : [];
 
   // GPU-promote strips from the start so the compositor is ready
   if (window.gsap) {
@@ -609,57 +590,22 @@ function initHeroSlideshow(){
     const DUR     = 1.0;   // strip travel time
     const STAGGER = 0.05;  // gap between each strip
 
-    thumbs.forEach((t, i) => t.classList.toggle('active', i === nextIndex));
-
     gsap.timeline({
       defaults: { ease: 'power3.inOut', force3D: true },
       onComplete: () => {
         current.classList.remove('active');
         gsap.set(current, { zIndex: 0 });
+        // Reset outgoing strips so the slide is ready for its next appearance
         gsap.set(curStrips,  { y: 0, clearProps: 'willChange' });
         gsap.set(nextStrips, { clearProps: 'willChange' });
         currentSlide = nextIndex;
         isTransitioning = false;
       }
     })
+    // Incoming strips rise into view
     .to(nextStrips, { y: 0,      duration: DUR,        stagger: { each: STAGGER, from } }, 0)
+    // Outgoing strips exit (slight offset so both waves overlap cleanly)
     .to(curStrips,  { y: exitY,  duration: DUR * 0.90, stagger: { each: STAGGER * 0.88, from } }, 0.04);
-  };
-
-  const jumpToSlide = (index, direction = 1) => {
-    if (isTransitioning) return;
-    isTransitioning = true;
-    const H = container.offsetHeight;
-    const nextIndex = index;
-    const current = slides[currentSlide];
-    const next = slides[nextIndex];
-    const curStrips = Array.from(current.querySelectorAll('.hero-strip'));
-    const nextStrips = Array.from(next.querySelectorAll('.hero-strip'));
-    
-    const enterY = direction === 1 ? H : -H;
-    const exitY = direction === 1 ? -H : H;
-    const from = direction === 1 ? 'start' : 'end';
-
-    next.classList.add('active');
-    gsap.set(next, { zIndex: 2 });
-    gsap.set(current, { zIndex: 1 });
-    gsap.set(nextStrips, { y: enterY, force3D: true });
-
-    gsap.timeline({
-      defaults: { ease: 'power3.inOut', force3D: true },
-      onComplete: () => {
-        current.classList.remove('active');
-        gsap.set(current, { zIndex: 0 });
-        gsap.set(curStrips, { y: 0, clearProps: 'all' });
-        gsap.set(nextStrips, { clearProps: 'all' });
-        currentSlide = nextIndex;
-        isTransitioning = false;
-      }
-    })
-    .to(nextStrips, { y: 0, duration: 1.0, stagger: { each: 0.05, from } }, 0)
-    .to(curStrips, { y: exitY, duration: 0.9, stagger: { each: 0.045, from } }, 0.04);
-
-    thumbs.forEach((t, i) => t.classList.toggle('active', i === nextIndex));
   };
 
   const btnPrev = document.getElementById('hero-prev');
@@ -883,13 +829,20 @@ function initForms(){
 /* ── MAGNETIC BUTTONS ───────────────────────────────────────────── */
 function initMagnetic(){
   document.querySelectorAll('.btn-g,.btn-o').forEach(btn=>{
+    let rafId=null, dx=0, dy=0;
     btn.addEventListener('mousemove',e=>{
-      const r  = btn.getBoundingClientRect();
-      const dx = (e.clientX-r.left-r.width/2)*.3;
-      const dy = (e.clientY-r.top-r.height/2)*.3;
-      btn.style.transform = `translate(${dx}px,${dy}px)`;
+      const r=btn.getBoundingClientRect();
+      dx=(e.clientX-r.left-r.width/2)*.3;
+      dy=(e.clientY-r.top-r.height/2)*.3;
+      if(!rafId) rafId=requestAnimationFrame(()=>{
+        btn.style.transform=`translate(${dx}px,${dy}px)`;
+        rafId=null;
+      });
     });
-    btn.addEventListener('mouseleave',()=>{ btn.style.transform=''; });
+    btn.addEventListener('mouseleave',()=>{
+      if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+      btn.style.transform='';
+    });
   });
 }
 
@@ -997,30 +950,29 @@ function initGSAP(){
   tl
     .to('.hero-ey-line',         {scaleX:1, duration:.75, ease:'power3.inOut'}, 0)
     .from('.hero-ey .lbl',       {opacity:0, y:12, duration:.6, ease:'power3.out'}, .18)
-    .from('.hero-sub',           {opacity:0, y:22, duration:.72, ease:'power3.out'}, .38)
-    .from('.hero-acts > *',      {opacity:0, y:16, stagger:.1, duration:.6, ease:'power3.out'}, .68);
+    .from('.hero-h1 .line-inner',{yPercent:110, opacity:0, stagger:.07, duration:.88, ease:'power4.out'}, .36)
+    .from('.hero-sub',           {opacity:0, y:22, duration:.72, ease:'power3.out'}, .88)
+    .from('.hero-acts > *',      {opacity:0, y:16, stagger:.1, duration:.6, ease:'power3.out'}, 1.02)
+    .to(heroImg||{},             {clipPath:'inset(0% 0% 0% 0%)', duration:1.35, ease:'power4.inOut'}, .48)
+    .from('.hero-badge1',        {opacity:0, scale:.7, y:22, duration:.72, ease:'back.out(1.7)'}, 1.42)
+    .from('.hero-badge2',        {opacity:0, scale:.7, y:-18, duration:.72, ease:'back.out(1.7)'}, 1.58)
+    .from('#hero-scroll',        {opacity:0, y:16, duration:.6, ease:'power2.out'}, 1.72);
 
   /* ── Scroll-scrub parallax ──────────────────────────────── */
-  if (document.getElementById('hero-pg')) {
-    G.to('#hero-pg',{
-      scrollTrigger:{trigger:document.querySelector('.hero') ? '.hero' : '.phero', start:'top top', end:'bottom top', scrub:1.4},
-      y:'30%', ease:'none'
-    });
-  }
-  if (document.querySelector('.hero-slideshow')) {
-    G.to('.hero-slideshow',{
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.1},
-      yPercent:7,
-      scale:1.05,
-      ease:'none'
-    });
-  }
-  if (document.querySelector('.hero-img-bg')) {
-    G.to('.hero-img-bg',{
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true},
-      y:'13%', ease:'none'
-    });
-  }
+  G.to('#hero-pg',{
+    scrollTrigger:{trigger:document.querySelector('.hero') ? '.hero' : '.phero', start:'top top', end:'bottom top', scrub:1.4},
+    y:'30%', ease:'none'
+  });
+  G.to('.hero-slideshow',{
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:1.1},
+    yPercent:7,
+    scale:1.05,
+    ease:'none'
+  });
+  G.to('.hero-img-bg',{
+    scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true},
+    y:'13%', ease:'none'
+  });
   const asImgBg = document.querySelector('.as-img-bg');
   if(asImgBg) G.to(asImgBg,{
     scrollTrigger:{trigger:'.about-strip', start:'top bottom', end:'bottom top', scrub:1},
