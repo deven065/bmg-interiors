@@ -555,10 +555,40 @@ function initHeroSlideshow(){
   images.forEach((src, i) => container.appendChild(createSlide(src, i)));
   const slides = Array.from(container.querySelectorAll('.hero-slide'));
 
+  // Ken Burns variants — each slide gets a unique zoom direction + pan vector
+  // fromScale < 1.0 avoided so we never see a white border during pan
+  const KB_VARIANTS = [
+    { fromScale:1.00, toScale:1.08, fromX:  0, fromY:  0, toX:-22, toY:-10, origin:'62% 58%' },
+    { fromScale:1.08, toScale:1.00, fromX:-20, fromY: -8, toX:  0, toY:  0, origin:'40% 44%' },
+    { fromScale:1.00, toScale:1.08, fromX: 16, fromY:  0, toX:  0, toY:-14, origin:'38% 60%' },
+    { fromScale:1.08, toScale:1.00, fromX:  0, fromY:-12, toX: 20, toY:  0, origin:'58% 38%' },
+    { fromScale:1.00, toScale:1.07, fromX:  0, fromY:  8, toX:-14, toY:-8,  origin:'52% 54%' },
+    { fromScale:1.07, toScale:1.00, fromX:-12, fromY: -6, toX: 12, toY:  6, origin:'48% 46%' },
+    { fromScale:1.00, toScale:1.09, fromX: 12, fromY:  6, toX:  0, toY:-12, origin:'44% 56%' },
+    { fromScale:1.09, toScale:1.00, fromX:  0, fromY:-10, toX:-18, toY:  6, origin:'56% 44%' },
+    { fromScale:1.00, toScale:1.08, fromX: -6, fromY:  0, toX: 10, toY:-14, origin:'50% 62%' },
+    { fromScale:1.08, toScale:1.00, fromX: 10, fromY:-14, toX: -6, toY:  0, origin:'50% 40%' },
+  ];
+  let kbTween = null;
+
+  const startKenBurns = (slideEl, idx) => {
+    if(kbTween) kbTween.kill();
+    const v = KB_VARIANTS[idx % KB_VARIANTS.length];
+    gsap.set(slideEl, {
+      scale: v.fromScale, x: v.fromX, y: v.fromY,
+      transformOrigin: v.origin, force3D: true
+    });
+    kbTween = gsap.to(slideEl, {
+      scale: v.toScale, x: v.toX, y: v.toY,
+      duration: 6.8, ease: 'none', force3D: true
+    });
+  };
+
   // GPU-promote strips from the start so the compositor is ready
   if (window.gsap) {
     gsap.set(slides, { force3D: true });
     gsap.set(slides[0].querySelectorAll('.hero-strip'), { y: 0, force3D: true });
+    startKenBurns(slides[0], 0);
   }
 
   const changeSlide = (direction = 1) => {
@@ -581,6 +611,9 @@ function initHeroSlideshow(){
     preloadImg(images[(nextIndex + 1) % images.length]);
     preloadImg(images[(nextIndex + 2) % images.length]);
 
+    // Start Ken Burns on the incoming slide as strips begin rising
+    startKenBurns(next, nextIndex);
+
     next.classList.add('active');
     gsap.set(next,       { zIndex: 2 });
     gsap.set(current,    { zIndex: 1 });
@@ -594,7 +627,7 @@ function initHeroSlideshow(){
       defaults: { ease: 'power3.inOut', force3D: true },
       onComplete: () => {
         current.classList.remove('active');
-        gsap.set(current, { zIndex: 0 });
+        gsap.set(current, { zIndex: 0, scale: 1, x: 0, y: 0, clearProps: 'transformOrigin' });
         // Reset outgoing strips so the slide is ready for its next appearance
         gsap.set(curStrips,  { y: 0, clearProps: 'willChange' });
         gsap.set(nextStrips, { clearProps: 'willChange' });
@@ -619,7 +652,13 @@ function initHeroSlideshow(){
 
   // Pause animation when tab is hidden — resumes with a fresh interval on return
   document.addEventListener('visibilitychange', () => {
-    document.hidden ? clearInterval(slideTimer) : resetTimer();
+    if (document.hidden) {
+      clearInterval(slideTimer);
+      if (kbTween) kbTween.pause();
+    } else {
+      if (kbTween) kbTween.resume();
+      resetTimer();
+    }
   });
 
   startTimer();
