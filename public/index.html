@@ -188,21 +188,13 @@
       z-index: 0;
       overflow: hidden;
       background: #000;
-      /* Own compositing layer so child animations don't repaint the whole page */
-      transform: translateZ(0);
-      isolation: isolate;
     }
 
     .hero-slide {
       position: absolute;
       inset: 0;
-      display: flex;
-      gap: 1px;            /* 1px gap = decorative partition lines between strips */
-      background: #080808; /* colour seen through the gaps                        */
       opacity: 0;
       pointer-events: none;
-      backface-visibility: hidden;
-      will-change: transform, opacity;
     }
 
     .hero-slide.active {
@@ -224,17 +216,7 @@
       .hero-slide { transition: opacity 0.5s ease !important; will-change: auto; }
     }
 
-    /* ── Ken Burns on settled slide (Slider Revolution style) ────── */
-    @keyframes heroKenBurns {
-      from { transform: scale(1);    }
-      to   { transform: scale(1.04); }
-    }
-    .hero-slide.kb {
-      animation: heroKenBurns 7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-slide.kb { animation: none !important; }
-    }
+    /* Ken Burns disabled for video slides — scaling blurs video content */
 
     /* ── Progress timer bar ──────────────────────────────────────── */
     .hero-progress {
@@ -303,9 +285,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(180deg, rgba(6,6,6,.18) 0%, rgba(6,6,6,.1) 50%, rgba(6,6,6,.72) 100%),
-        linear-gradient(90deg, rgba(6,6,6,.55) 0%, rgba(6,6,6,.1) 60%, transparent 100%);
+      background: linear-gradient(180deg, transparent 55%, rgba(6,6,6,.50) 100%);
       pointer-events: none;
       z-index: 2;
     }
@@ -669,7 +649,9 @@
 
     .about-sec .wrap {
       position: relative;
-      z-index: 2
+      z-index: 2;
+      max-width: 100%;
+      padding-inline: 0
     }
 
     .about-sec .wrap::before {
@@ -690,22 +672,42 @@
     }
 
     .about-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
       position: relative;
       z-index: 1
     }
 
+    .as-img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      min-height: 580px
+    }
+
+    .as-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .48);
+      pointer-events: none;
+      z-index: 1
+    }
+
     .about-copy {
-      background: rgba(8, 8, 8, .46);
-      border: 1px solid rgba(255, 204, 0, .16);
-      box-shadow: 0 22px 52px rgba(0, 0, 0, .4);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      padding: clamp(1.1rem, 2.4vw, 1.9rem);
-      border-radius: 2px
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(1.5rem, 3vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
+      z-index: 2;
+      background: none;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none
     }
 
     .about-copy > * {
@@ -768,11 +770,12 @@
     }
 
     .as-img {
-      aspect-ratio: 1.2/1;
-      position: relative;
-      border-radius: 2px;
-      overflow: hidden;
-      box-shadow: 28px 28px 60px rgba(0, 0, 0, .5)
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0
     }
 
     .as-img-bg {
@@ -807,29 +810,68 @@
 
     .as-badge {
       position: absolute;
-      right: -2.5rem;
-      top: 50%;
-      transform: translateY(-50%)
+      left: 2.5rem;
+      bottom: 2.5rem;
+      z-index: 2;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255, 204, 0, .12);
+      border: 1.5px solid rgba(255, 204, 0, .55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.45)
+    }
+
+    .as-badge-n {
+      font-family: var(--fh);
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #ffcc00;
+      line-height: 1
+    }
+
+    .as-badge-l {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255, 204, 0, .85)
     }
 
     @media(max-width:900px) {
-      .about-strip {
-        grid-template-columns: 1fr;
-        gap: 3.5rem
-      }
+      .as-img-wrap { min-height: 520px }
 
       .about-copy {
-        margin-top: -1rem
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        padding: 3rem 1.5rem 1.8rem;
+        background: linear-gradient(to top, rgba(4,4,4,.95) 0%, rgba(4,4,4,.80) 55%, transparent 100%);
+        justify-content: flex-end
       }
 
       .as-badge {
-        right: .5rem
+        left: 1rem;
+        bottom: 1rem;
+        right: auto;
+        top: auto;
+        width: 90px;
+        height: 90px
       }
     }
 
     @media(max-width:480px) {
-      .as-img { aspect-ratio: 4/3 }
-      .as-badge { right: .25rem; top: auto; bottom: 1rem; transform: none }
+      .as-img-wrap { min-height: 460px }
+      .as-badge { left: .75rem; bottom: .75rem; width: 80px; height: 80px }
     }
 
     /* ── FEATURED WORKS LABEL ─────────────────────────────── */
@@ -998,179 +1040,112 @@
     }
 
     /* ─────────────────────────────────────────────────────────────
-       LEGACY SECTION  –  editorial two-column  "35 Years"
+       LEGACY STRIP  –  compact "38 years" highlight
     ───────────────────────────────────────────────────────────── */
     .legacy-sec {
-      background: #050505;
+      background: #080808;
+      border-top: 1px solid rgba(255,204,0,.12);
+      border-bottom: 1px solid rgba(255,204,0,.12);
+      padding: 3rem clamp(1.5rem, 5vw, 5rem);
+      position: relative;
       overflow: hidden;
-      position: relative;
-      padding-block: clamp(2.5rem, 5vw, 4rem);
     }
-
-    /* Full-bleed ambient interior photo at very low opacity */
+    /* Ghost number watermark */
     .legacy-sec::before {
-      content: '';
+      content: '38';
       position: absolute;
-      inset: 0;
-      background: url('/images/slider/architecture.jpg') center / cover no-repeat;
-      opacity: 0.04;
-      pointer-events: none;
-    }
-
-    /* Bottom gold gradient border */
-    .legacy-sec::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255,204,0,.35) 30%,
-        rgba(255,204,0,.55) 50%,
-        rgba(255,204,0,.35) 70%,
-        transparent 100%);
-      pointer-events: none;
-    }
-
-    .legacy-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 clamp(1.25rem, 5vw, 5rem);
-      display: grid;
-      grid-template-columns: clamp(180px, 28vw, 380px) 1fr;
-      align-items: center;
-      gap: clamp(1.25rem, 3vw, 3.5rem);
-    }
-
-    /* ── LEFT: giant image-clipped number ── */
-    .legacy-left {
-      position: relative;
-      overflow: visible;
-    }
-
-    .legacy-num {
+      right: clamp(1rem, 4vw, 4rem);
+      top: 50%;
+      transform: translateY(-50%);
       font-family: var(--fh);
-      font-size: clamp(6rem, 22vw, 18rem);
+      font-size: clamp(8rem, 18vw, 16rem);
       font-weight: 900;
+      letter-spacing: -0.05em;
       line-height: 1;
-      letter-spacing: -0.035em;
-      background-image: url('/images/slider/architecture.jpg');
-      background-size: 120% auto;
-      background-position: center 50%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      will-change: background-position;
-      display: block;
-      width: 100%;
-      filter: drop-shadow(0 0 60px rgba(255,204,0,.12));
+      color: rgba(255,204,0,.045);
+      pointer-events: none;
+      user-select: none;
     }
-
-    /* thin vertical gold line between columns */
-    .legacy-divider {
-      position: absolute;
-      top: 5%;
-      right: -1px;
-      width: 1px;
-      height: 0%;
-      background: linear-gradient(
-        180deg,
-        transparent 0%,
-        rgba(255,204,0,.5) 30%,
-        rgba(255,204,0,.5) 70%,
-        transparent 100%
-      );
-    }
-
-    /* ── RIGHT: typographic stack ── */
-    .legacy-right {
-      padding-left: clamp(1rem, 3vw, 3.5rem);
-    }
-
-    .legacy-eyebrow {
-      font-family: var(--fb);
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--brand);
+    .legacy-inner {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
+      gap: clamp(1.5rem, 4vw, 5rem);
+      position: relative;
+      z-index: 1;
     }
-    .legacy-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 28px;
-      height: 1px;
-      background: var(--brand);
+    /* Big gold year number on the left */
+    .legacy-num {
+      font-family: var(--fh);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--brand);
+      white-space: nowrap;
       flex-shrink: 0;
     }
-
-    .legacy-heading {
+    .legacy-num sup {
+      font-size: 0.38em;
+      vertical-align: super;
+      opacity: .75;
+    }
+    /* Thin vertical gold rule */
+    .legacy-rule {
+      width: 1px;
+      height: 3.5rem;
+      background: linear-gradient(180deg, transparent, rgba(255,204,0,.5) 40%, rgba(255,204,0,.5) 60%, transparent);
+      flex-shrink: 0;
+    }
+    /* Text block */
+    .legacy-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .legacy-copy strong {
       font-family: var(--fh);
-      font-size: clamp(1.2rem, 2.4vw, 2rem);
-      font-weight: 400;
-      line-height: 1.15;
+      font-size: clamp(1.1rem, 2vw, 1.55rem);
+      font-weight: 700;
       color: #fff;
-      margin: 0 0 0.25rem;
-      font-style: italic;
+      line-height: 1.15;
     }
-    .legacy-heading strong {
-      font-style: normal;
-      font-weight: 800;
-      color: rgba(255,255,255,0.95);
-    }
-
-    .legacy-gold-line {
-      display: block;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--brand), rgba(255,204,0,0));
-      margin: 0.9rem 0;
-      border-radius: 1px;
-    }
-
-    .legacy-tagline {
+    .legacy-copy p {
       font-family: var(--fb);
-      font-size: clamp(0.68rem, 1.3vw, 0.8rem);
+      font-size: clamp(0.78rem, 1.2vw, 0.88rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.42);
+      line-height: 1.6;
+      margin: 0;
+      max-width: 420px;
+    }
+    /* Push CTA to the far right */
+    .legacy-cta {
+      margin-left: auto;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--fb);
+      font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
+      color: #000;
+      background: var(--brand);
+      text-decoration: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 2px;
+      transition: opacity .25s, transform .25s;
     }
-    .legacy-tagline em {
-      color: var(--brand);
-      font-style: normal;
-    }
-
-    .legacy-body {
-      font-family: var(--fb);
-      font-size: clamp(0.82rem, 1.3vw, 0.9rem);
-      font-weight: 300;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.32);
-      max-width: 420px;
-      margin: 0;
-    }
-
-    /* ── Responsive: stack on mobile ── */
-    @media(max-width:700px){
-      .legacy-inner {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 1rem;
-      }
-      .legacy-divider { display: none; }
-      .legacy-right { padding-left: 0; }
-      .legacy-eyebrow { justify-content: center; }
-      .legacy-gold-line { margin-inline: auto; }
-      .legacy-body { margin-inline: auto; }
+    .legacy-cta:hover { opacity: .88; transform: translateY(-1px); }
+    .legacy-cta svg { transition: transform .25s; }
+    .legacy-cta:hover svg { transform: translateX(3px); }
+    @media(max-width: 700px) {
+      .legacy-inner { flex-wrap: wrap; gap: 1rem; }
+      .legacy-rule  { display: none; }
+      .legacy-cta   { margin-left: 0; }
     }
   </style>
 
@@ -1274,41 +1249,26 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════ LEGACY ══════════════════════════ -->
-  <section class="legacy-sec" id="legacy" aria-label="35 years of excellence">
+  <!-- ═══════════════════════ LEGACY STRIP ══════════════════════════ -->
+  <div class="legacy-sec" id="legacy" aria-label="38 years in the industry">
     <div class="legacy-inner">
 
-      <!-- LEFT: image-clipped number -->
-      <div class="legacy-left">
-        <span class="legacy-num" id="legacy-num">35</span>
-        <div class="legacy-divider" id="legacy-divider"></div>
+      <span class="legacy-num">38<sup>+</sup></span>
+
+      <span class="legacy-rule" aria-hidden="true"></span>
+
+      <div class="legacy-copy">
+        <strong>Years in the Industry</strong>
+        <p>Crafting extraordinary interiors across Mumbai since 1988 — trusted by 150+ clients.</p>
       </div>
 
-      <!-- RIGHT: editorial text stack -->
-      <div class="legacy-right">
-        <div class="legacy-eyebrow">Est. 1988 &nbsp;&middot;&nbsp; Mumbai</div>
-
-        <h2 class="legacy-heading">
-          <strong>Years of Quality</strong><br>
-          Services Delivered
-        </h2>
-
-        <span class="legacy-gold-line" id="legacy-gold-line"></span>
-
-        <p class="legacy-tagline">
-          To our <em>beloved customers</em> —<br>
-          every project, a lasting legacy.
-        </p>
-
-        <p class="legacy-body">
-          Three and a half decades of extraordinary spaces crafted across
-          Mumbai. Each room a balance of elegance, comfort, and purpose —
-          built on trust, finished with care, remembered forever.
-        </p>
-      </div>
+      <a href="about.html" class="legacy-cta">
+        Our Story
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
 
     </div>
-  </section>
+  </div>
 
   <!-- ═══════════════════════ STATS ══════════════════════════ -->
   <section class="sec" style="padding-block:0">
@@ -1339,22 +1299,22 @@
   </div>
 
   <!-- ═══════════════════════ ABOUT STRIP ════════════════════ -->
-  <section class="sec about-sec" id="about" style="overflow:hidden; padding-top:2rem">
+  <section class="sec about-sec" id="about" style="overflow:hidden; padding:0">
     <div class="wrap">
       <div class="about-strip">
         <div class="as-img-wrap" data-r>
-          <img src="/images/mehta-residence/photo-1.JPG" class="as-img" alt="BMG Interiors Craftsmanship" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:4px;">
+          <img src="/images/about-hero.png" class="as-img" alt="BMG Interiors Craftsmanship" loading="lazy">
+          <div class="about-copy">
+            <div class="lbl">Who We Are</div>
+            <h2 class="t-xl" style="margin:1rem 0">Welcome To<br><em class="gt">BMG Interiors</em></h2>
+            <p class="body-l" style="margin-bottom:1.5rem"><strong>BMG Interiors</strong> is a comprehensive service provider for Residential, Commercial, Hospitality, Building, Bungalows for Interiors Projects. We master excellent and creative interior work services not only for interiors and projects establishment but also for building projects. BMG Interiors is known for creating dynamic spaces that enrich the personal and business lives of their clients and staff.</p>
+            <p class="body-s" style="opacity:0.8; margin-bottom:2rem">The referrals of our distinguished and satisfied customers prove our reputation. Regardless of the types of establishment, size or designs, our services focus mainly on quality. We create best interior work that are suitable for Residential and Commercial establishments either big or smalls.</p>
+            <a href="about.html" class="btn-txt">Read Our Full Story &rarr;</a>
+          </div>
           <div class="as-badge">
             <div class="as-badge-n">38</div>
             <div class="as-badge-l">Years</div>
           </div>
-        </div>
-        <div class="about-copy">
-          <div class="lbl">Who We Are</div>
-          <h2 class="t-xl" style="margin:1rem 0">Welcome To<br><em class="gt">BMG Interiors</em></h2>
-          <p class="body-l" style="margin-bottom:1.5rem"><strong>BMG Interiors</strong> is a comprehensive service provider for Residential, Commercial, Hospitality, Building, Bungalows for Interiors Projects. We master excellent and creative interior work services not only for interiors and projects establishment but also for building projects. BMG Interiors is known for creating dynamic spaces that enrich the personal and business lives of their clients and staff.</p>
-          <p class="body-s" style="opacity:0.8; margin-bottom:2rem">The referrals of our distinguished and satisfied customers prove our reputation. Regardless of the types of establishment, size or designs, our services focus mainly on quality. We create best interior work that are suitable for Residential and Commercial establishments either big or smalls.</p>
-          <a href="about.html" class="btn-txt">Read Our Full Story &rarr;</a>
         </div>
       </div>
     </div>
