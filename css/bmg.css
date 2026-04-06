@@ -322,7 +322,7 @@ em{font-style:italic}
 
 /* -- FLOAT BADGE --------------------------------------------------- */
 .fbadge{padding:1.1rem 1.5rem;border-radius:4px;animation:afloat 5s ease-in-out infinite}
-.fbadge-num{font-family:var(--fh);font-size:2.2rem;font-weight:300;color:var(--brand);line-height:1;display:block}
+.fbadge-num{font-family:var(--fh);font-size:2.2rem;font-weight:700;color:var(--brand);line-height:1;display:block;letter-spacing:-.02em;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1}
 .fbadge-lbl{font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--fg2);margin-top:3px}
 
 /* -- STAT GRID ----------------------------------------------------- */
@@ -330,8 +330,10 @@ em{font-style:italic}
   gap:1px;background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden}
 .stat-cell{background:var(--s1);padding:2.6rem 1.8rem;text-align:center;transition:background .35s,box-shadow .35s}
 .stat-cell:hover{background:var(--s2);box-shadow:inset 0 0 0 1px rgba(255,204,0,.12)}
-.stat-n{font-family:var(--fh);font-size:clamp(2.8rem,5vw,4.4rem);font-weight:300;
-  color:var(--brand);line-height:1}
+.stat-n{font-family:var(--fh);font-size:clamp(2.8rem,5vw,4.4rem);font-weight:700;
+  color:var(--brand);line-height:1;letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;
+  font-feature-settings:'lnum' 1,'tnum' 1}
 .stat-l{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
   color:var(--fg2);margin-top:.5rem}
 
@@ -683,8 +685,10 @@ em{font-style:italic}
 /* -- NUMBERS ROW --------------------------------------------------- */
 .num-row{display:flex;gap:3rem;flex-wrap:wrap}
 .num-item{}
-.num-val{font-family:var(--fh);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;
-  color:var(--brand);line-height:1}
+.num-val{font-family:var(--fh);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;
+  color:var(--brand);line-height:1;letter-spacing:-.02em;
+  font-variant-numeric:lining-nums tabular-nums;
+  font-feature-settings:'lnum' 1,'tnum' 1}
 .num-lbl{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--fg2);margin-top:.4rem}
 
 /* -- MISC UTIL ----------------------------------------------------- */
