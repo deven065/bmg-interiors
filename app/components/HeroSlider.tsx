@@ -7,8 +7,13 @@ import { AnimatePresence, motion } from "framer-motion";
 // Video slide data
 // ---------------------------------------------------------------------------
 const SLIDES = [
-  { src: "/images/slider/1.MP4", label: "Slide 1" },
-  { src: "/images/slider/2.MP4", label: "Slide 2" },
+  { src: "/video.mp4", label: "Slide 1" },
+  { src: "/video.mp4", label: "Slide 2" },
+] as const;
+
+const FALLBACK_SLIDES = [
+  { src: "/video.mp4", label: "Slide 1" },
+  { src: "/video.mp4", label: "Slide 2" },
 ] as const;
 
 const FADE_DURATION_S = 1.3;
@@ -19,10 +24,13 @@ const FADE_EASE = [0.25, 0.1, 0.25, 1.0] as const;
 // ---------------------------------------------------------------------------
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
+  const [useFallbackSrc, setUseFallbackSrc] = useState(false);
 
   const advance = useCallback(() => {
     setCurrent((prev) => (prev + 1) % SLIDES.length);
   }, []);
+
+  const activeSlides = useFallbackSrc ? FALLBACK_SLIDES : SLIDES;
 
   return (
     <section
@@ -42,14 +50,20 @@ export default function HeroSlider() {
           transition={{ duration: FADE_DURATION_S, ease: FADE_EASE }}
         >
           <video
-            key={SLIDES[current].src}
-            src={SLIDES[current].src}
+            key={activeSlides[current].src}
             autoPlay
             muted
             playsInline
+            preload="auto"
+            controls={false}
             onEnded={advance}
+            onError={() => {
+              if (!useFallbackSrc) setUseFallbackSrc(true);
+            }}
             className="absolute inset-0 h-full w-full object-cover"
-          />
+          >
+            <source src={activeSlides[current].src} type="video/mp4" />
+          </video>
 
           {/* Subtle bottom gradient only — keeps nav readable without darkening video */}
           <div

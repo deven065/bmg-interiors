@@ -506,8 +506,8 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const videos = [
-    '/images/slider/1.MP4',
-    '/images/slider/2.MP4',
+    ['/video.mp4'],
+    ['/video.mp4'],
   ];
 
   let currentSlide    = 0;
@@ -516,15 +516,30 @@ function initHeroSlideshow(){
   const DUR_IN  = 0.95;
   const DUR_OUT = 0.75;
 
-  const createSlide = (videoSrc, index) => {
+  const createSlide = (videoSources, index) => {
     const slide = document.createElement('div');
     slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
     const vid = document.createElement('video');
-    vid.src        = videoSrc;
+    let sourceIndex = 0;
+    const setVideoSource = (idx) => {
+      sourceIndex = idx;
+      vid.src = videoSources[sourceIndex];
+      vid.load();
+    };
+
+    setVideoSource(0);
     vid.muted      = true;
+    vid.autoplay   = true;
     vid.playsInline = true;
     vid.preload    = 'auto';
     vid.loop       = false;
+    vid.setAttribute('webkit-playsinline', '');
+    vid.setAttribute('x5-playsinline', '');
+    vid.addEventListener('error', () => {
+      if (sourceIndex < videoSources.length - 1) {
+        setVideoSource(sourceIndex + 1);
+      }
+    });
     vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
     slide.appendChild(vid);
     return slide;
