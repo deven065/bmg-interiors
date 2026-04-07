@@ -92,9 +92,9 @@ body.c-hide #cur,body.c-hide #cur-ring{opacity:0}
   border:1.5px solid rgba(255,204,0,.08);border-top-color:var(--brand);
   animation:aspin 2.2s linear infinite}
 .ld-ring2{inset:-28px;animation-duration:3.8s;animation-direction:reverse;
-  border-top-color:rgba(255,204,0,.45);border-color:rgba(255,204,0,.04)}
+  border-color:rgba(255,204,0,.04);border-top-color:rgba(255,204,0,.45)}
 .ld-ring3{inset:-56px;animation-duration:5.6s;
-  border-top-color:rgba(255,204,0,.2);border-color:rgba(255,204,0,.03)}
+  border-color:rgba(255,204,0,.03);border-top-color:rgba(255,204,0,.2)}
 .ld-logo{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
 .ld-logo img{width:min(300px,70vw);height:auto;display:block;opacity:0;
   transform:translateY(16px) scale(.9);filter:drop-shadow(0 10px 28px rgba(0,0,0,.45))}
@@ -147,9 +147,10 @@ body.c-hide #cur,body.c-hide #cur-ring{opacity:0}
 .lbl   {font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--brand)}
 .body-l{font-size:1.05rem;line-height:1.88;color:var(--fg2)}
 .body-s{font-size:.875rem;line-height:1.78;color:var(--fg2)}
-.gt    {background:linear-gradient(105deg,var(--brand) 0%,#fff8d0 40%,var(--brand) 75%,#fff8d0 100%);
-        background-size:250%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-        background-clip:text;animation:ashimmer 5s linear infinite}
+.gt    {color:var(--brand);text-shadow:0 0 10px rgba(255,204,0,.22);
+  background:linear-gradient(105deg,#d9a900 0%,#ffd24d 35%,#ffcc00 60%,#ffe186 100%);
+  background-size:240%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;animation:ashimmer 4.6s linear infinite}
 .gt-solid{
   background:none;
   background-image:none;
