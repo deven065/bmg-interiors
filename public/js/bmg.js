@@ -731,11 +731,13 @@ function initPortfolio(){
 function initShowcase(){
   const cols = Array.from(document.querySelectorAll('.pw-col'));
   const filterBtns = Array.from(document.querySelectorAll('.pw-filter-btn'));
+  const filterWrap = document.querySelector('.pw-filters');
   const accordion = document.querySelector('.pw-accordion');
   if(!cols.length) return;
   let activeIndex = 0;
   let frame = 0;
   let debounceTimer = 0;
+  let selectedFilter = 'all';
 
   function activate(i){
     if(i < 0 || i >= cols.length) return;
@@ -762,18 +764,21 @@ function initShowcase(){
     syncActive();
   }
 
-  function applyFilter(filterKey, scroll = true){
+  function applyFilter(filterKey, scroll = true, updateButtons = true){
     cols.forEach(col=>{
       const sector = col.dataset.sector || '';
       const match = !filterKey || filterKey === 'all' || sector === filterKey;
       col.classList.toggle('is-muted', !match);
     });
 
-    filterBtns.forEach(btn=>{
-      const isOn = btn.dataset.pwFilter === filterKey;
-      btn.classList.toggle('on', isOn);
-      btn.setAttribute('aria-selected', isOn ? 'true' : 'false');
-    });
+    if(updateButtons){
+      selectedFilter = filterKey;
+      filterBtns.forEach(btn=>{
+        const isOn = btn.dataset.pwFilter === filterKey;
+        btn.classList.toggle('on', isOn);
+        btn.setAttribute('aria-selected', isOn ? 'true' : 'false');
+      });
+    }
 
     clearActive();
 
@@ -786,8 +791,14 @@ function initShowcase(){
 
   if(filterBtns.length){
     filterBtns.forEach(btn=>{
-      btn.addEventListener('click', ()=>applyFilter(btn.dataset.pwFilter || 'all'));
+      const key = btn.dataset.pwFilter || 'all';
+      btn.addEventListener('click', ()=>applyFilter(key));
+      btn.addEventListener('pointerenter', ()=>applyFilter(key, false, false));
     });
+
+    if(filterWrap){
+      filterWrap.addEventListener('pointerleave', ()=>applyFilter(selectedFilter, false, true));
+    }
 
     const initial = filterBtns.find(btn=>btn.classList.contains('on')) || filterBtns[0];
     if(initial){

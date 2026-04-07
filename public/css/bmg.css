@@ -2,7 +2,7 @@
    BMG INTERIORS � MASTER DESIGN SYSTEM  |  brand #ffcc00
    ------------------------------------------------------------------ */
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 /* -- TOKENS -------------------------------------------------------- */
 :root {
@@ -21,8 +21,8 @@
   --fg3:      #8d7d6b;
   --border:   rgba(35,24,11,.10);
   --brgold:   rgba(255,204,0,.22);
-  --fh:       'Playfair Display', Georgia, serif;
-  --fb:       'Lato', system-ui, sans-serif;
+  --fh:       'Poppins', system-ui, sans-serif;
+  --fb:       'Poppins', system-ui, sans-serif;
   --e1:       cubic-bezier(.16,1,.3,1);
   --e2:       cubic-bezier(.4,0,.2,1);
   --e3:       cubic-bezier(.77,0,.175,1);
@@ -162,6 +162,13 @@ body.c-hide #cur,body.c-hide #cur-ring{opacity:0}
 .gt    {background:linear-gradient(105deg,var(--brand) 0%,#fff8d0 40%,var(--brand) 75%,#fff8d0 100%);
         background-size:250%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
         background-clip:text;animation:ashimmer 5s linear infinite}
+.gt-solid{
+  background:none;
+  background-image:none;
+  color:var(--fg);
+  -webkit-text-fill-color:currentColor;
+  animation:none;
+}
 em{font-style:italic}
 
 /* -- LAYOUT -------------------------------------------------------- */
@@ -235,7 +242,7 @@ em{font-style:italic}
 .ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 .nav-mob{position:fixed;inset:0;z-index:999;background:rgba(247,242,234,.95);
   backdrop-filter:blur(28px);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:1.7rem;
+  align-items:center;justify-content:center;gap:1.05rem;
   opacity:0;pointer-events:none}
 .nav-mob.open{opacity:1;pointer-events:all}
 .nav-mob-close{position:absolute;top:1.2rem;right:1.2rem;display:inline-flex;align-items:center;
@@ -244,11 +251,11 @@ em{font-style:italic}
   font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
   font-family:var(--fb);cursor:none;transition:transform .3s var(--e1),border-color .3s,color .3s}
 .nav-mob-close:hover{transform:translateY(-2px);border-color:var(--brand);color:var(--brand)}
-.nav-mob a{font-family:var(--fh);font-size:clamp(1.65rem,4.2vw,3rem);
+.nav-mob a{font-family:var(--fh);font-size:clamp(1.25rem,3vw,2.45rem);
   font-weight:400;color:var(--fg);text-decoration:none;letter-spacing:.03em;
   transition:color .3s,transform .3s var(--e1)}
 .nav-mob a:hover{color:var(--brand);transform:translateY(-1px)}
-.nav-mob a:last-of-type{margin-top:.65rem;color:var(--brand)!important}
+.nav-mob a:last-of-type{margin-top:.32rem;color:var(--brand)!important}
 @media(max-width:920px){.nav-ul,.nav-r{display:none}.ham{display:flex}.nav-logo img{height:52px}.nav.sc .nav-logo img{height:42px}}
 
 /* -- FOOTER -------------------------------------------------------- */
@@ -345,7 +352,7 @@ em{font-style:italic}
 
 /* -- STAT GRID ----------------------------------------------------- */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-  gap:1px;background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden}
+  gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden}
 .stat-cell{background:var(--s1);padding:2.6rem 1.8rem;text-align:center;transition:background .35s,box-shadow .35s}
 .stat-cell:hover{background:var(--s2);box-shadow:inset 0 0 0 1px rgba(255,204,0,.12)}
 .stat-n{font-family:var(--fh);font-size:clamp(2.8rem,5vw,4.4rem);font-weight:700;
@@ -378,17 +385,17 @@ em{font-style:italic}
 /* -- TESTIMONIAL --------------------------------------------------- */
 .testi-sec{position:relative;overflow:hidden;
   background:
-    linear-gradient(to bottom, rgba(247,242,234,.55) 0%, rgba(247,242,234,.2) 40%, rgba(247,242,234,.2) 60%, rgba(247,242,234,.65) 100%),
+    linear-gradient(to bottom, rgba(247,242,234,.34) 0%, rgba(247,242,234,.08) 40%, rgba(247,242,234,.08) 60%, rgba(247,242,234,.42) 100%),
     radial-gradient(circle at center,rgba(255,204,0,.06) 0%,rgba(255,204,0,0) 55%),
     url('/client.png') center/cover no-repeat;
   background-color:var(--bg2)}
 .testi-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(247,242,234,.45),rgba(247,242,234,.05) 50%,rgba(247,242,234,.45));opacity:1}
+  background:linear-gradient(90deg,rgba(247,242,234,.28),rgba(247,242,234,.04) 50%,rgba(247,242,234,.28));opacity:.55}
 .testi-sec .wrap{position:relative;z-index:1}
 .tslide{display:none;flex-direction:column;align-items:center}
 .tslide.on{display:flex;animation:afadein .6s var(--e1)}
-.ttext{font-family:var(--fh);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:300;
-  font-style:italic;line-height:1.62;color:var(--fg);margin-bottom:2rem;text-align:center}
+.ttext{font-family:var(--fh);font-size:clamp(1.05rem,2.1vw,1.45rem);font-weight:400;
+  font-style:normal;line-height:1.72;color:var(--fg);margin-bottom:2rem;text-align:center}
 .tauthor{display:flex;align-items:center;gap:1rem}
 .tav{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
   font-family:var(--fh);font-size:1.2rem;font-weight:400;flex-shrink:0}
@@ -468,16 +475,16 @@ em{font-style:italic}
 .pw-col{position:relative;flex:0 0 82px;overflow:hidden;cursor:none;
   transition:flex .42s cubic-bezier(.22,1,.36,1);border-right:1px solid var(--border);
   will-change:flex-basis;transform:translateZ(0);contain:paint}
-.pw-col.is-muted{opacity:.56}
+.pw-col.is-muted{opacity:1}
 .pw-col:last-child{border-right:none}
 .pw-col.active{flex:1 1 auto}
 /* plain card canvas when inactive */
 .pw-col::before{content:'';position:absolute;inset:0;z-index:1;
-  background:#ededed;transition:opacity .3s;pointer-events:none}
-.pw-col.active::before{opacity:.05}
+  background:#ededed;transition:opacity .3s;pointer-events:none;opacity:0}
+.pw-col.active::before{opacity:0}
 /* background image (revealed only on hover/active) */
-.pw-col-bg{position:absolute;inset:0;z-index:0;transform:translateZ(0) scale(1.02);opacity:0;
-  clip-path:inset(0 0 0 0);filter:blur(3px);
+.pw-col-bg{position:absolute;inset:0;z-index:0;transform:translateZ(0) scale(1);opacity:1;
+  clip-path:inset(0 0 0 0);filter:none;
   transition:opacity .45s var(--e1),filter .55s var(--e1),transform .75s var(--e1)}
 .pw-col.active .pw-col-bg{opacity:1;filter:none;transform:translateZ(0) scale(1);
   animation:pw-reveal .72s cubic-bezier(.22,1,.36,1) both}
@@ -486,9 +493,9 @@ em{font-style:italic}
 .pw-col.active .pw-col-bg img{transform:scale(1);transition-delay:0s}
 /* gradient on active column */
 .pw-col-bg::after{content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.38) 100%);
-  opacity:0;transition:opacity .28s}
-.pw-col.active .pw-col-bg::after{opacity:1}
+  background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.04) 50%,rgba(0,0,0,.24) 100%);
+  opacity:.46;transition:opacity .28s}
+.pw-col.active .pw-col-bg::after{opacity:.46}
 @keyframes pw-reveal{
   0%{opacity:0;clip-path:inset(0 100% 0 0);filter:blur(5px);transform:translateZ(0) scale(1.03)}
   100%{opacity:1;clip-path:inset(0 0 0 0);filter:none;transform:translateZ(0) scale(1)}
@@ -1079,8 +1086,8 @@ em{font-style:italic}
 
 /* -- NAV MOBILE MENU: font scale on small phones -------------- */
 @media (max-width: 360px) {
-  .nav-mob a { font-size: clamp(1.35rem, 7vw, 2rem) }
-  .nav-mob { gap: 1.35rem }
+  .nav-mob a { font-size: clamp(1.12rem, 6vw, 1.7rem) }
+  .nav-mob { gap: .9rem }
 }
 
 /* -- DECO HORIZONTAL LINE: tighter margins on mobile ---------- */

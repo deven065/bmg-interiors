@@ -35,7 +35,7 @@ export default function HeroSlider() {
   return (
     <section
       aria-label="Hero video slider"
-      className="relative h-screen w-full overflow-hidden bg-black"
+      className="relative w-full overflow-hidden bg-black" style={{ height: '100dvh', minHeight: '100dvh', maxHeight: '100dvh' }}
     >
       {/* ------------------------------------------------------------------ */}
       {/* Slides                                                               */}
