@@ -493,7 +493,7 @@ em{font-style:italic}
   transform:scale(1.11);transition:transform 1.05s cubic-bezier(.16,1,.3,1);will-change:transform}
 .pw-col.active .pw-col-bg img{transform:scale(1.02);transition-delay:0s;
   transition:none;backface-visibility:hidden;transform:translateZ(0) scale(1.02);
-  animation:pw-active-zoom 22s linear infinite alternate}
+  animation:pw-active-zoom 28s cubic-bezier(.42,0,.58,1) infinite}
 /* gradient on active column */
 .pw-col-bg::after{content:'';position:absolute;inset:0;
   background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.04) 50%,rgba(0,0,0,.24) 100%);
@@ -505,7 +505,8 @@ em{font-style:italic}
 }
 @keyframes pw-active-zoom{
   0%{transform:translateZ(0) scale(1.02)}
-  100%{transform:translateZ(0) scale(1.06)}
+  50%{transform:translateZ(0) scale(1.05)}
+  100%{transform:translateZ(0) scale(1.02)}
 }
 
 @media (prefers-reduced-motion: reduce){
