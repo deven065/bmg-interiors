@@ -367,6 +367,62 @@ function ensureBlogsMenuLink(){
 
 ensureBlogsMenuLink();
 
+function restrictHeaderMenu() {
+  const wanted = [
+    { href: 'index.html', label: 'Home' },
+    { href: 'portfolio.html', label: 'Portfolio' },
+    { href: 'about.html', label: 'About' },
+    { href: 'blogs.html', label: 'Blogs' },
+    { href: 'contact.html', label: 'Contact' },
+  ];
+
+  const desktopMenu = document.querySelector('.nav-ul');
+  if (desktopMenu) {
+    const byHref = new Map();
+    desktopMenu.querySelectorAll('a[href]').forEach(a => {
+      byHref.set(a.getAttribute('href'), a);
+    });
+
+    desktopMenu.innerHTML = '';
+    wanted.forEach(item => {
+      const li = document.createElement('li');
+      const existing = byHref.get(item.href);
+      const a = existing || document.createElement('a');
+      a.href = item.href;
+      a.textContent = item.label;
+      a.classList.remove('cur');
+      li.appendChild(a);
+      desktopMenu.appendChild(li);
+    });
+  }
+
+  const mobileMenu = document.getElementById('nav-mob');
+  if (mobileMenu) {
+    const byHref = new Map();
+    mobileMenu.querySelectorAll('a[href]').forEach(a => {
+      const text = (a.textContent || '').trim().toLowerCase();
+      if (text.includes('start a project')) return;
+      const href = a.getAttribute('href');
+      if (!byHref.has(href)) byHref.set(href, a);
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(a => a.remove());
+    wanted.forEach(item => {
+      const existing = byHref.get(item.href);
+      const a = existing || document.createElement('a');
+      a.href = item.href;
+      a.textContent = item.label;
+      a.classList.remove('cur');
+      mobileMenu.appendChild(a);
+    });
+  }
+
+  const navRight = document.querySelector('.nav-r');
+  if (navRight) navRight.remove();
+}
+
+restrictHeaderMenu();
+
 const ham   = document.getElementById('ham');
 const mobMenu = document.getElementById('nav-mob');
 const closeMenuBtn = document.getElementById('nav-close');

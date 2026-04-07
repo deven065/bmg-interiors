@@ -11,6 +11,11 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "BMG Interiors | Luxury Interior Design Studio — Mumbai",
   description: "Award-winning luxury interior design studio crafting extraordinary spaces since 1988. Specializing in residential, commercial, and turnkey projects across India.",
+  icons: {
+    icon: "/M.png",
+    apple: "/M.png",
+    shortcut: "/M.png",
+  },
   keywords: ["interior design Mumbai", "luxury interior design", "residential designers India", "commercial interiors", "turnkey interior solutions", "BMG Interiors"],
   openGraph: {
     title: "BMG Interiors | Luxury Interior Design Studio",
