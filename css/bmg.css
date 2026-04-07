@@ -466,8 +466,8 @@ em{font-style:italic}
 .pw-col.active::before{opacity:0}
 /* background image (revealed only on hover/active) */
 .pw-col-bg{position:absolute;inset:0;z-index:0;transform:translateZ(0) scale(1);opacity:1;
-  clip-path:inset(0 0 0 0);filter:none;
-  transition:opacity .45s var(--e1),filter .55s var(--e1),transform .75s var(--e1)}
+  filter:none;
+  transition:opacity .35s linear,transform .55s var(--e1)}
 .pw-col.active .pw-col-bg{opacity:1;filter:none;transform:translateZ(0) scale(1);
   animation:pw-reveal .72s cubic-bezier(.22,1,.36,1) both}
 .pw-col-bg img{width:100%;height:100%;object-fit:cover;object-position:center;
@@ -481,8 +481,8 @@ em{font-style:italic}
   opacity:.46;transition:opacity .28s}
 .pw-col.active .pw-col-bg::after{opacity:.46}
 @keyframes pw-reveal{
-  0%{opacity:0;clip-path:inset(0 100% 0 0);filter:blur(5px);transform:translateZ(0) scale(1.03)}
-  100%{opacity:1;clip-path:inset(0 0 0 0);filter:none;transform:translateZ(0) scale(1)}
+  0%{opacity:0;transform:translateZ(0) scale(1.015)}
+  100%{opacity:1;transform:translateZ(0) scale(1)}
 }
 @keyframes pw-active-zoom{
   0%{transform:translateZ(0) scale(1.02)}
