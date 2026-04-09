@@ -111,9 +111,20 @@ if(cur && ring){
 
 /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
 const wipe = document.getElementById('wipe');
+function wipeOut(){
+  if(!wipe) return;
+  wipe.classList.remove('wipe-in');
+  void wipe.offsetWidth; // force reflow so transition fires
+  wipe.classList.add('wipe-out');
+}
 if(wipe){
   // on load &rarr; wipe out
-  setTimeout(()=>{ wipe.classList.add('wipe-out'); },60);
+  setTimeout(wipeOut, 60);
+
+  // When navigating back/forward, bfcache restores the page with wipe-in still active.
+  // The pageshow event fires on cache restoration (e.persisted === true) — clear it immediately.
+  window.addEventListener('pageshow', e => { if(e.persisted) wipeOut(); });
+
   // intercept clicks
   document.addEventListener('click', e=>{
     const a = e.target.closest('a[href]');
@@ -597,8 +608,10 @@ function initHeroSlideshow(){
 
     setVideoSource(0);
     vid.muted      = true;
+    vid.setAttribute('muted', '');          // iOS Safari requires muted as HTML attribute for autoplay
     vid.autoplay   = true;
     vid.playsInline = true;
+    vid.setAttribute('playsinline', '');    // iOS Safari inline playback
     vid.preload    = 'auto';
     vid.loop       = false;
     vid.setAttribute('webkit-playsinline', '');
@@ -730,6 +743,14 @@ function initHeroSlideshow(){
   /* ── Kick off first slide ── */
   videoEls[0].play().catch(() => {});
   startProgress();
+
+  /* ── Retry play on first user interaction (mobile autoplay policy) ── */
+  const retryPlay = () => {
+    const vid = videoEls[currentSlide];
+    if (vid && vid.paused) { vid.play().catch(() => {}); }
+  };
+  document.addEventListener('touchstart', retryPlay, { once: true, passive: true });
+  document.addEventListener('click',      retryPlay, { once: true });
 }
 
 /* ── LEGACY SECTION ─────────────────────────────────────────────── */
@@ -874,15 +895,37 @@ function initShowcase(){
     }
   }
 
+  /* ── Detect touch-primary device ── */
+  const isTouch = () => window.matchMedia('(hover:none)').matches;
+
   cols.forEach((col,i)=>{
-    col.addEventListener('pointerenter',()=>activate(i));
-    col.addEventListener('pointerleave',()=>clearTimeout(debounceTimer));
+    col.addEventListener('pointerenter',()=>{
+      if(!isTouch()) activate(i);
+    });
+    col.addEventListener('pointerleave',()=>{
+      if(!isTouch()) clearTimeout(debounceTimer);
+    });
     col.addEventListener('focusin',()=>activate(i));
-    col.addEventListener('click',()=>{ location.href='portfolio.html'; });
+
+    col.addEventListener('click',(e)=>{
+      if(isTouch()){
+        /* First tap: expand the column. Second tap on active: navigate. */
+        if(i !== activeIndex){
+          e.preventDefault();
+          /* Cancel any pending debounce so activate runs immediately */
+          cancelAnimationFrame(frame);
+          clearTimeout(debounceTimer);
+          activeIndex = i;
+          cols.forEach((c,idx)=>c.classList.toggle('active', idx === activeIndex));
+          return;
+        }
+      }
+      location.href='portfolio.html';
+    });
   });
 
   if(accordion){
-    accordion.addEventListener('pointerleave', clearActive);
+    accordion.addEventListener('pointerleave', ()=>{ if(!isTouch()) clearActive(); });
   }
 }
 

@@ -564,17 +564,28 @@ em{font-style:italic}
   .pw-head-meta{margin-top:1rem;align-items:flex-start}
   .pw-filters{gap:.4rem}
   .pw-filter-btn{padding:.54rem .92rem;font-size:9px;letter-spacing:.13em}
-  .pw-accordion{height:300px;margin-top:1.8rem}
-  .pw-col{flex-basis:46px}
+  .pw-accordion{height:360px;margin-top:1.8rem}
+  .pw-col{flex-basis:52px;min-width:44px}
   .pw-col-vert{display:none}
   .pw-col-num{width:26px;height:22px;font-size:8px}
   .pw-col.active .pw-col-num{left:1rem}
   .pw-col-card{left:1.1rem;right:1.1rem;bottom:1.4rem}
   .pw-col-card-name{font-size:1.25rem}
-  .pw-col-card-tag,.pw-col-card-desc{display:none}
+  .pw-col-card-tag{display:block;font-size:8px}
+  .pw-col-card-desc{display:none}
   .pw-col-card-rule{display:none}
+  /* tap-hint: show a subtle "+" on inactive cols so users know to tap */
+  .pw-col:not(.active)::after{
+    content:'+';position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);
+    z-index:4;font-size:1rem;color:rgba(255,255,255,.55);pointer-events:none;
+    text-shadow:0 1px 4px rgba(0,0,0,.4)}
 }
 @media(hover:none){.pw-col,.pw-filter-btn{cursor:pointer}}
+/* On touch: active col shows "tap again" hint via cta link */
+@media(hover:none){
+  .pw-col-cta{cursor:pointer}
+  .pw-col:not(.active){transition:flex .3s cubic-bezier(.22,1,.36,1)}
+}
 
 /* -- IMAGE QUALITY ENHANCEMENT ------------------------------------ */
 .pthumb-bg img,.hero-img img,.about-img-bg img,.as-img img,.team-img img{
