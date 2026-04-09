@@ -52,15 +52,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 /* -- CURSOR -------------------------------------------------------- */
 #cur{position:fixed;top:0;left:0;z-index:99999;pointer-events:none;
-  width:9px;height:9px;background:var(--brand);border-radius:50%;
+  width:24px;height:24px;background:url('/M.png') center/contain no-repeat;border-radius:0;
   will-change:transform;
   transition:opacity .3s}
-#cur-ring{position:fixed;top:0;left:0;z-index:99998;pointer-events:none;
-  width:40px;height:40px;border-radius:50%;
-  border:1.5px solid rgba(255,204,0,.5);
-  will-change:transform;
-  transition:border-color .35s,opacity .35s}
-body.c-hover #cur-ring{border-color:var(--brand)}
+#cur-ring{display:none}
 body.c-hide #cur,body.c-hide #cur-ring{opacity:0}
 
 /* -- PAGE WIPE ----------------------------------------------------- */

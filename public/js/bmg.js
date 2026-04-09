@@ -40,74 +40,7 @@ if(cur && ring){
 }
 
 /* ── M.PNG CLICK BURST ──────────────────────────────────────────── */
-(function(){
-  const CSS = `
-    .m-orbit{
-      position:fixed;pointer-events:none;z-index:999999;
-      width:56px;height:56px;transform:translate(-50%,-50%);
-      will-change:transform,opacity;
-    }
-    .m-orbit .m-mark{
-      position:absolute;top:50%;left:50%;width:24px;height:24px;
-      opacity:0;will-change:transform,opacity;
-      filter:drop-shadow(0 0 8px rgba(255,204,0,.48));
-      animation:morbit .82s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    .m-orbit .m-circle{
-      position:absolute;inset:0;border-radius:50%;
-      border:1.6px solid rgba(255,204,0,.78);
-      opacity:0;transform:scale(.36);
-      will-change:transform,opacity;
-      animation:mcircle .82s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    .m-orbit .m-circle-2{
-      border-color:rgba(255,204,0,.38);
-      animation-delay:.08s;
-    }
-    @keyframes morbit{
-      0%   {transform:translate(-50%,-50%) rotate(0deg)   translateY(-13px) rotate(0deg) scale(.55);opacity:0}
-      18%  {opacity:1}
-      84%  {opacity:1}
-      100% {transform:translate(-50%,-50%) rotate(360deg) translateY(-13px) rotate(-360deg) scale(.82);opacity:0}
-    }
-    @keyframes mcircle{
-      0%   {transform:scale(.36);opacity:0}
-      22%  {opacity:1}
-      100% {transform:scale(1.08);opacity:0}
-    }
-  `;
-  const st = document.createElement('style');
-  st.textContent = CSS;
-  document.head.appendChild(st);
-
-  document.addEventListener('click', e=>{
-    const x = e.clientX, y = e.clientY;
-
-    const orbit = document.createElement('div');
-    orbit.className = 'm-orbit';
-    orbit.style.left = x+'px';
-    orbit.style.top = y+'px';
-
-    const circleA = document.createElement('div');
-    circleA.className = 'm-circle';
-    const circleB = document.createElement('div');
-    circleB.className = 'm-circle m-circle-2';
-
-    const img = document.createElement('img');
-    img.className = 'm-mark';
-    img.src = '/M.png';
-    img.alt = '';
-
-    orbit.appendChild(circleA);
-    orbit.appendChild(circleB);
-    orbit.appendChild(img);
-    document.body.appendChild(orbit);
-
-    const cleanup = ()=>{ orbit.remove(); };
-    img.addEventListener('animationend', cleanup, {once:true});
-    setTimeout(cleanup, 950);
-  });
-})();
+// Disabled - click burst removed per user request
 
 /* ── PAGE WIPE TRANSITIONS ──────────────────────────────────────── */
 const wipe = document.getElementById('wipe');
