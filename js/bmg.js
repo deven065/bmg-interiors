@@ -868,22 +868,21 @@
     /* ── Stats ────────────────────────────────────────────── */
     G.from('.stat-cell',{
       scrollTrigger:{trigger:'.stat-grid', start:'top 82%', once:true},
-      y:50, opacity:0, stagger:.1, duration:.78, ease:'power3.out'
+      y:30, opacity:0, stagger:.1, duration:.7, ease:'power2.out'
     });
 
-    /* ── Service cards &ndash; clip from bottom ────────────────── */
+    /* ── Service cards – matching portfolio animation ────────────────── */
     G.from('.svc-card',{
-      scrollTrigger:{trigger:'.fsvc-grid', start:'top 80%', once:true},
-      clipPath:'inset(0 0 100% 0)', opacity:0,
-      stagger:.14, duration:1, ease:'power4.out'
+      scrollTrigger:{trigger:'.fsvc-grid', start:'top 82%', once:true},
+      y:30, opacity:0, stagger:0.12, duration:0.45, ease:'power2.out'
     });
 
     /* ── Portfolio grid (portfolio.html) ─────────────────── */
     if(document.querySelector('.pgrid')){
       G.from('.pi',{
         scrollTrigger:{trigger:'.pgrid', start:'top 90%', once:true},
-        y:60, opacity:0,
-        stagger:{each:.1, from:'start'}, duration:.9, ease:'power3.out'
+        y:30, opacity:0,
+        stagger:{each:.08, from:'start'}, duration:.7, ease:'power2.out'
       });
     }
     /* ── About strip ──────────────────────────────────────── */
@@ -896,16 +895,16 @@
       x:44, opacity:0, stagger:.09, duration:.88, ease:'power3.out', delay:.1
     });
 
-    /* ── Client logos ─────────────────────────────────────── */
+    /* ── Client logos – matching portfolio animation ─────────────────────── */
     G.from('.client-card',{
-      scrollTrigger:{trigger:'.client-grid', start:'top 82%', once:true},
-      opacity:0, scale:.86, stagger:.03, duration:.55, ease:'power2.out'
+      scrollTrigger:{trigger:'.client-grid', start:'top 85%', once:true},
+      y:30, opacity:0, stagger:.04, duration:.45, ease:'power2.out'
     });
 
     /* ── CTA band ─────────────────────────────────────────── */
     G.from('.cta-inner > *',{
       scrollTrigger:{trigger:'.cta-band', start:'top 77%', once:true},
-      y:42, opacity:0, stagger:.1, duration:.88, ease:'power3.out'
+      y:30, opacity:0, stagger:.1, duration:.7, ease:'power2.out'
     });
     G.from('.cstrip-item',{
       scrollTrigger:{trigger:'.cstrip', start:'top 85%', once:true},
@@ -922,6 +921,68 @@
 
     /* ensure all scroll positions are calculated correctly */
     ScrollTrigger.refresh();
+    initProjectCards();
+  }
+
+  function initProjectCards() {
+    const homeCards = document.getElementById('home-proj-cards');
+    if (homeCards) {
+      const projects = [
+        {
+          img: '/images/mehta-residence/photo-1.JPG',
+          title: 'Mehta Residence',
+          tags: ['Residential', 'Luxury Home'],
+          desc: 'A bespoke family home where artisan craftsmanship meets quiet luxury — every detail curated with intention.'
+        },
+        {
+          img: '/images/projects/vertex-hq/photo-1.JPG',
+          title: 'Vertex HQ',
+          tags: ['Commercial', 'Corporate Office'],
+          desc: 'A headquarters crafted to project authority — built around the rhythms of modern business culture.'
+        },
+        {
+          img: '/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg',
+          title: 'Aurum Office',
+          tags: ['Retail', 'Showroom'],
+          desc: 'Gold-toned accents and clean geometry shape a premium retail environment built to elevate customer experience.'
+        },
+        {
+          img: '/images/projects/sky-penthouse/photo-1.jpg',
+          title: 'Sky Penthouse',
+          tags: ['Residential', 'Penthouse'],
+          desc: 'A sky-high residence commanding panoramic views, finished with collector-grade materials throughout.'
+        },
+        {
+          img: '/office - 11.JPG',
+          title: 'Soleil Office',
+          tags: ['Commercial', 'Workplace'],
+          desc: 'Bright, airy workspaces flooded with natural light — a productive sanctuary above the Mumbai skyline.'
+        }
+      ];
+
+      homeCards.innerHTML = projects.map((c, i) => {
+        const delay = Math.min(i * 0.04, 0.28);
+        return `
+          <article class="proj-card" style="--card-index: ${i}; animation: fadeSlideUp 0.45s ${delay}s both ease-out;">
+            <div class="proj-tags">
+              <span class="proj-tag">${c.tags[0]}</span>
+              <span class="proj-tag">${c.tags[1]}</span>
+            </div>
+            <div class="proj-card-media">
+              <img src="${c.img}" alt="${c.title}" loading="lazy" decoding="async">
+              <div class="proj-view">
+                <span>View Project</span>
+                <span class="proj-view-arr">&rarr;</span>
+              </div>
+            </div>
+            <div class="proj-copy">
+              <h3 class="proj-title">${c.title}</h3>
+              <p class="proj-desc">${c.desc}</p>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
   }
 
 })();

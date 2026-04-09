@@ -1278,8 +1278,8 @@
   </div>
 
   <!-- ═══════════════════════ STATS ══════════════════════════ -->
-  <section class="sec" style="padding-block:0">
-    <div data-r>
+  <section class="sec" style="padding-block:0" data-r data-d="1">
+    <div>
       <div class="stat-grid">
         <div class="stat-cell">
           <div class="stat-n"><span data-count="250">0</span><span style="font-size:.6em">+</span></div>
@@ -1304,7 +1304,7 @@
   </div>
 
   <!-- ═══════════════════════ ABOUT STRIP ════════════════════ -->
-  <section class="sec about-sec" id="about" style="overflow:hidden; padding:0">
+  <section class="sec about-sec" id="about" style="overflow:hidden; padding:0" data-r data-d="2">
     <div class="wrap">
       <div class="about-strip">
         <div class="as-img-wrap" data-r>
@@ -1330,7 +1330,7 @@
   </div>
 
   <!-- ═══════════════════════ SERVICES TEASE ═════════════════ -->
-  <section class="sec home-services-sec" style="padding-top:0">
+  <section class="sec home-services-sec" style="padding-top:0" data-r data-d="3">
     <div class="wrap">
       <div class="sh-row">
         <div>
@@ -1399,7 +1399,7 @@
   </div>
 
   <!-- ═══════════════════════ PORTFOLIO TEASE ════════════════ -->
-  <section class="sec" id="projects">
+  <section class="sec" id="projects" data-r data-d="4">
     <div class="wrap">
       <div class="sh-row">
         <div>
@@ -1523,7 +1523,7 @@
   </div>
 
   <!-- ═══════════════════════ TESTIMONIALS ══════════════════= -->
-  <section class="sec testi-sec">
+  <section class="sec testi-sec" data-r data-d="5">
     <div class="wrap">
       <div style="text-align:center;max-width:760px;margin-inline:auto;
         background:rgba(250,247,241,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -1587,7 +1587,7 @@
   </section>
 
   <!-- ═══════════════════════ TRUSTED CLIENTS ══════════════ -->
-  <section class="sec clients-sec">
+  <section class="sec clients-sec" data-r data-d="6">
     <div class="wrap">
       <div class="sh" style="text-align:center;margin-bottom:3.5rem">
         <div class="lbl" data-r>Our Esteemed Clientele</div>
@@ -1649,7 +1649,7 @@
   </section>
 
   <!-- ═══════════════════════ CTA BAND ══════════════════════ -->
-  <section class="sec cta-band ready-sec">
+  <section class="sec cta-band ready-sec" data-r data-d="7">
     <div class="wrap">
       <div class="cta-inner">
         <span class="lbl" style="color:var(--fg)">Ready to Begin?</span>
@@ -1705,6 +1705,23 @@
   </div>
 
   <script src="js/bmg.js"></script>
+  <script>
+    // Homepage sections with same animation as portfolio cards
+    (function() {
+      let sectionIndex = 0;
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const delay = Math.min(sectionIndex * 0.04, 0.28);
+            e.target.style.animation = `fadeSlideUp 0.45s ${delay}s both ease-out`;
+            sectionIndex++;
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('section[data-r]').forEach(el => io.observe(el));
+    })();
+  </script>
   <script>
     // Lightbox Functionality
     const lb = document.getElementById('lb');
