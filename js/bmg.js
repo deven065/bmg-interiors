@@ -4,18 +4,6 @@
 ; (function () {
   'use strict';
 
-  /* ── DISABLE CONTEXT MENU (SITE-WIDE) ─────────────────────────── */
-  document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    // Block keyboard-opened context menu: ContextMenu key or Shift+F10
-    if (e.key === 'ContextMenu' || (e.shiftKey && e.key === 'F10')) {
-      e.preventDefault();
-    }
-  });
-
   /* ── CURSOR ─────────────────────────────────────────────────────── */
   const cur = document.getElementById('cur');
   const ring = document.getElementById('cur-ring');

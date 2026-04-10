@@ -252,7 +252,7 @@
     }
 
     .hero-h1 {
-      margin-bottom: .4rem;
+      flex-shrink: 0;
       max-width: 700px
     }
 
@@ -414,6 +414,24 @@
     @media(max-width:768px) {
       .hero { min-height: 88dvh; padding-bottom: clamp(2rem, 5vw, 3.5rem) }
       .hero-sub { max-width: 100% }
+      .hero-floating-nav {
+        top: 1rem;
+        right: 1rem;
+      }
+      .hero-nav {
+        right: 1rem;
+        bottom: 1.25rem;
+        gap: .75rem;
+      }
+      .hero-nav-btn {
+        width: 42px;
+        height: 42px;
+      }
+      .hero-counter {
+        right: 5.75rem;
+        bottom: 1.5rem;
+      }
+      .hero-bullets { bottom: 1.5rem }
 
       .hero-floating-nav .wrap {
         gap: .75rem;
@@ -436,12 +454,30 @@
     /* phone: stack hero action buttons */
     @media(max-width:540px) {
       .hero {
-        min-height: 100dvh;
+        height: auto;
+        min-height: 100svh;
+        max-height: none;
         align-items: flex-end;
         padding-bottom: 2.25rem
       }
+      .hero-video-wrap {
+        background: #050505;
+      }
+      .hero-video {
+        object-fit: contain;
+        object-position: center center;
+      }
+      .hero .wrap { bottom: 1.5rem }
       .hero-layout {
         gap: 1.25rem
+      }
+      .hero-floating-nav {
+        top: .85rem;
+        right: .85rem;
+      }
+      .hero-menu-btn {
+        width: 42px;
+        height: 42px;
       }
       .hero-content {
         order: 2;
@@ -467,8 +503,18 @@
       }
       .hero-badge1,
       .hero-badge2,
-      #hero-scroll {
+      #hero-scroll,
+      .hero-counter {
         display: none
+      }
+      .hero-nav {
+        right: .85rem;
+        bottom: 1rem;
+      }
+      .hero-bullets {
+        bottom: 1rem;
+        max-width: calc(100% - 5.25rem);
+        overflow-x: auto;
       }
       .hero-acts {
         flex-direction: column;
@@ -484,6 +530,38 @@
         margin-top: .25rem
       }
       .fw-count { font-size: 3.5rem; top: -1rem }
+    }
+
+    @media (min-width:600px) and (max-width:740px) and (max-aspect-ratio:4/5) {
+      .hero {
+        height: auto;
+        min-height: 100svh;
+        max-height: none;
+        padding-bottom: 4rem;
+      }
+
+      .hero .wrap { bottom: 2rem }
+
+      .hero-layout {
+        max-width: 100%;
+        gap: 2rem;
+      }
+
+      .hero-nav {
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .hero-counter {
+        right: 5.75rem;
+        bottom: 1.3rem;
+      }
+
+      .hero-bullets {
+        bottom: 1.3rem;
+        max-width: calc(100% - 10.5rem);
+        overflow-x: auto;
+      }
     }
 
     /* ── HOME FEATURED SERVICES ───────────────────────────── */
@@ -701,6 +779,59 @@
     @media(max-width:480px) {
       .as-img { aspect-ratio: 4/3 }
       .as-badge { right: .25rem; top: auto; bottom: 1rem; transform: none }
+    }
+
+    @media(max-width:640px) {
+      .about-sec {
+        overflow: visible !important;
+      }
+
+      .about-sec::before {
+        animation: none;
+        transform: scale(1);
+      }
+
+      .about-sec .wrap {
+        padding-inline: 0;
+      }
+
+      .as-img-wrap {
+        min-height: 0;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        background: #090909;
+      }
+
+      .as-img {
+        position: relative;
+        inset: auto;
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        min-height: 280px;
+        max-height: 360px;
+      }
+
+      .as-img-wrap::after {
+        inset: 0 0 auto 0;
+        height: min(55vw, 220px);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, .58) 100%);
+      }
+
+      .about-copy {
+        position: relative;
+        right: auto;
+        left: auto;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        padding: 1.5rem 1rem 2rem;
+        background: linear-gradient(180deg, rgba(9, 9, 9, .92) 0%, #090909 100%);
+      }
     }
 
     /* ── FEATURED WORKS LABEL ─────────────────────────────── */

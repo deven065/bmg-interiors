@@ -164,6 +164,17 @@
       }
     }
 
+    @media(max-width:560px) {
+      .feat-meta {
+        gap: 1rem;
+      }
+
+      .feat-meta-item {
+        min-width: 0;
+        flex: 1 1 100%;
+      }
+    }
+
     /* â”€â”€ FULL PORTFOLIO GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .pgrid-full {
       display: grid;
@@ -781,6 +792,44 @@
     }
     @media(max-width: 768px){
       .testi-card-mq { width: 320px; padding: 1.5rem; }
+    }
+
+    @media(max-width: 560px){
+      .proj-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+      }
+
+      .pf-btn {
+        padding: .55rem .95rem;
+        font-size: .76rem;
+        flex: 0 0 auto;
+      }
+
+      .testi-row {
+        gap: 1rem;
+      }
+
+      .testi-card-mq {
+        width: min(84vw, 300px);
+        padding: 1.2rem;
+      }
+
+      .t-quote {
+        font-size: 1.05rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .map-full {
+        height: 320px;
+      }
+    }
+
+    @media(max-width: 420px){
+      .testi-card-mq {
+        width: min(88vw, 280px);
+      }
     }
 
     /* â”€â”€ MAPS SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
