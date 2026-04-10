@@ -155,6 +155,11 @@ if (loader) {
               duration: 0.85, ease: "power4.in",
               stagger: 0.05,
               overwrite: true 
+            }, 0)
+            .to(".ld-ring, .ld-ring2, .ld-ring3, .ld-glow", {
+              opacity: 0,
+              duration: 0.35, ease: "power2.in",
+              overwrite: true
             }, 0);
         } else {
           boot(); // Fallback if GSAP is missing

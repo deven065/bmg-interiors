@@ -426,32 +426,122 @@
     }
 
     /* ── NUM ROW ─────────────────────────────────────────── */
+    .num-sec {
+      background: linear-gradient(160deg, #b87800 0%, #d99a00 30%, #ffcc00 60%, #e8b400 100%);
+      position: relative;
+      overflow: hidden;
+      padding-block: 5.5rem;
+    }
+    .num-sec::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.28) 0%, transparent 55%),
+        radial-gradient(circle at 10% 100%, rgba(180,110,0,.2) 0%, transparent 45%);
+      pointer-events: none;
+    }
+    .num-sec .lbl {
+      color: rgba(255,255,255,.9);
+      letter-spacing: .35em;
+      text-shadow: 0 1px 6px rgba(0,0,0,.2);
+    }
+    .num-sec-title {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .num-sec-title h2 {
+      font-family: var(--fh);
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-weight: 200;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,.2);
+      margin-top: .5rem;
+      line-height: 1.2;
+    }
+    .num-sec-title h2 em {
+      background: none;
+      -webkit-text-fill-color: #1a0a00;
+      color: #1a0a00;
+      animation: none;
+      font-style: italic;
+      font-weight: 300;
+      text-shadow: none;
+    }
     .num-row {
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-      justify-content: center
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.18), 0 4px 16px rgba(0,0,0,.1);
     }
-
     .num-item {
-      text-align: center
+      text-align: center;
+      padding: 3rem 1.5rem 2.5rem;
+      position: relative;
+      border-right: 1px solid rgba(0,0,0,.06);
+      background: #fff;
     }
-
+    .num-item:last-child { border-right: none; }
+    .num-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 3px;
+      background: #ffcc00;
+      border-radius: 3px 3px 0 0;
+    }
+    .num-item::before { display: none; }
     .num-val {
       font-family: var(--fh);
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-size: clamp(2.6rem, 4vw, 4rem);
       font-weight: 200;
-      color: var(--fg);
-      line-height: 1
+      color: #1a0a00;
+      line-height: 1;
+      letter-spacing: -.02em;
     }
-
     .num-lbl {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: .22em;
+      letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--fg2);
-      margin-top: .4rem
+      color: #7a5800;
+      margin-top: .7rem;
+      line-height: 1.5;
+    }
+    /* Tablet: 3 cols, last 2 items centred in row 2 */
+    @media(max-width:900px) {
+      .num-row { grid-template-columns: repeat(3, 1fr); }
+      .num-item:nth-child(3) { border-right: none; }
+      .num-item:nth-child(n+4) { border-top: 1px solid rgba(0,0,0,.06); }
+      .num-item:nth-child(4) { grid-column: 1; border-right: 1px solid rgba(0,0,0,.06); }
+      .num-item:nth-child(5) { grid-column: 2; border-right: none; }
+    }
+    /* Mobile: 2 cols — reset all column placements from tablet breakpoint */
+    @media(max-width:600px) {
+      .num-row { grid-template-columns: repeat(2, 1fr); border-radius: 6px; }
+      .num-item { padding: 2.2rem 1rem 2rem; }
+      /* odd items get right border, even items don't */
+      .num-item:nth-child(odd)  { border-right: 1px solid rgba(0,0,0,.06); }
+      .num-item:nth-child(even) { border-right: none; }
+      /* rows 2+ get a top border */
+      .num-item:nth-child(n+3) { border-top: 1px solid rgba(0,0,0,.06); }
+      /* reset grid-column placements from 900px breakpoint */
+      .num-item:nth-child(3),
+      .num-item:nth-child(4) { grid-column: auto; }
+      /* item 5 spans both columns */
+      .num-item:nth-child(5) { grid-column: 1 / -1; border-right: none; }
+    }
+    @media(max-width:480px) {
+      .num-sec { padding-block: 4rem; }
+      .num-val { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+      .num-lbl { font-size: 8px; }
     }
   </style>
 
@@ -702,15 +792,14 @@
     </div>
   </section>
 
-  <div class="wrap">
-    <div class="divider"></div>
-  </div>
-
   <!-- NUMBERS -->
-  <section class="sec" style="padding-block:5rem;text-align:center">
+  <section class="num-sec" id="numbers" data-r data-d="2">
     <div class="wrap">
-      <div class="lbl" data-r style="text-align:center;display:block;margin-bottom:3rem">By The Numbers</div>
-      <div class="num-row" data-r data-d="1">
+      <div class="num-sec-title">
+        <div class="lbl" data-r style="display:block;margin-bottom:.5rem">By The Numbers</div>
+        <h2 data-r data-d="1">38 Years of<br><em class="gt">Measurable Impact</em></h2>
+      </div>
+      <div class="num-row" data-r data-d="2">
         <div class="num-item">
           <div class="num-val"><span data-count="250">0</span>+</div>
           <div class="num-lbl">Projects Delivered</div>
