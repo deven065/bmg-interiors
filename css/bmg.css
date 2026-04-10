@@ -348,6 +348,9 @@ em{font-style:italic}
   .stat-grid{overflow:visible}
   .stat-cell:last-child{padding-bottom:2.4rem}
 }
+@media(max-width:768px){
+  .stat-grid-wrap{padding-inline:0}
+}
 
 /* -- PILL ---------------------------------------------------------- */
 .pill{display:inline-block;padding:.22rem .75rem;border:1px solid var(--border);
@@ -1255,8 +1258,7 @@ em{font-style:italic}
     width: 100%;
     justify-content: center;
   }
-  .stat-grid { grid-template-columns: 1fr }
-  .wa-float {
+  .stat-grid { grid-template-columns: 1fr 1fr }
     right: .75rem;
     bottom: .75rem;
   }
@@ -1267,18 +1269,13 @@ em{font-style:italic}
   }
   .ftr { padding-top: 4rem }
   .client-grid,
-  .client-grid-full { grid-template-columns: 1fr }
+  .client-grid-full { grid-template-columns: repeat(2,1fr) }
 }
 
 @media (max-width: 560px) {
   .team-grid[style*="280px"] {
     grid-template-columns: 1fr !important;
     justify-content: stretch !important;
-  }
-
-  .stat-grid[style*="grid-template-columns:1fr 1fr"],
-  .stat-grid[style*="grid-template-columns: 1fr 1fr"] {
-    grid-template-columns: 1fr !important;
   }
 }
 
