@@ -783,55 +783,128 @@
 
     @media(max-width:640px) {
       .about-sec {
-        overflow: visible !important;
+        overflow: hidden !important;
       }
 
-      .about-sec::before {
-        animation: none;
-        transform: scale(1);
-      }
-
-      .about-sec .wrap {
-        padding-inline: 0;
-      }
+      .about-sec::before { display: none; }
+      .about-sec::after  { display: none; }
+      .about-sec .wrap::before { display: none; }
+      .about-sec .wrap { padding-inline: 0; }
 
       .as-img-wrap {
+        display: block;
         min-height: 0;
-        overflow: visible;
-        display: flex;
-        flex-direction: column;
+        overflow: hidden;
         background: #090909;
+        border-radius: 0;
+        position: relative;
+      }
+
+      .as-img-wrap::before {
+        content: '';
+        display: block;
+        height: 260px;
+        pointer-events: none;
       }
 
       .as-img {
-        position: relative;
-        inset: auto;
-        display: block;
+        position: absolute;
+        inset: 0;
         width: 100%;
-        height: auto;
-        aspect-ratio: 4 / 5;
-        min-height: 280px;
-        max-height: 360px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 20%;
+        border-radius: 0;
       }
 
       .as-img-wrap::after {
-        inset: 0 0 auto 0;
-        height: min(55vw, 220px);
-        background: linear-gradient(to bottom, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, .58) 100%);
+        position: absolute;
+        inset: 0;
+        height: auto;
+        background: linear-gradient(
+          to top,
+          rgba(4, 4, 4, .97) 0%,
+          rgba(4, 4, 4, .88) 30%,
+          rgba(4, 4, 4, .55) 52%,
+          rgba(4, 4, 4, .12) 72%,
+          transparent 100%
+        );
+        pointer-events: none;
+        z-index: 1;
       }
 
       .about-copy {
         position: relative;
-        right: auto;
-        left: auto;
-        top: auto;
-        bottom: auto;
+        left: auto; right: auto; top: auto; bottom: auto;
         width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
-        padding: 1.5rem 1rem 2rem;
-        background: linear-gradient(180deg, rgba(9, 9, 9, .92) 0%, #090909 100%);
+        padding: 0 1.4rem 2.8rem;
+        background: none;
+        z-index: 2;
       }
+
+      .about-sec .t-xl {
+        font-size: clamp(1.6rem, 7vw, 2.1rem);
+        margin: .5rem 0 .9rem !important;
+      }
+      .about-sec .body-l {
+        font-size: .9rem;
+        line-height: 1.65;
+        margin-bottom: 1rem !important;
+      }
+      .about-sec .body-s {
+        font-size: .84rem;
+        line-height: 1.6;
+        margin-bottom: 1.4rem !important;
+      }
+
+      /* pillar list */
+      .about-pillars {
+        list-style: none;
+        margin: 0 0 1.6rem;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .85rem;
+      }
+      .about-pillars li {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+        font-size: .84rem;
+        line-height: 1.5;
+        color: rgba(240,232,218,.82);
+      }
+      .about-pillars li strong {
+        display: block;
+        font-size: .88rem;
+        font-weight: 700;
+        color: #f7efe2;
+        margin-bottom: .15rem;
+      }
+      .ap-icon {
+        flex-shrink: 0;
+        font-size: .45rem;
+        color: var(--brand);
+        margin-top: .45rem;
+      }
+      .about-cta-mob {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--brand);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255,204,0,.35);
+        padding-bottom: .25rem;
+      }
+
+      .as-badge { display: none; }
     }
 
     /* ── FEATURED WORKS LABEL ─────────────────────────────── */

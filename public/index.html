@@ -955,55 +955,135 @@
 
     @media(max-width:640px) {
       .about-sec {
-        overflow: visible !important;
+        overflow: hidden !important;
       }
 
-      .about-sec::before {
-        animation: none;
-        transform: scale(1);
-      }
-
-      .about-sec .wrap {
-        padding-inline: 0;
-      }
+      /* disable heavy animated layers — perf + they looked black on mobile */
+      .about-sec::before { display: none; }
+      .about-sec::after  { display: none; }
+      .about-sec .wrap::before { display: none; }
+      .about-sec .wrap { padding-inline: 0; }
 
       .as-img-wrap {
-        min-height: 0;
-        overflow: visible;
-        display: flex;
-        flex-direction: column;
-        background: #090909;
-      }
-
-      .as-img {
-        position: relative;
-        inset: auto;
         display: block;
+        min-height: 0;
+        overflow: hidden;
+        background: #090909;
+        border-radius: 0;
+        position: relative;
+      }
+
+      /* spacer block — pushes the copy down so this much image shows above */
+      .as-img-wrap::before {
+        content: '';
+        display: block;
+        height: 260px;
+        pointer-events: none;
+      }
+
+      /* image fills the full height of (spacer + copy) */
+      .as-img {
+        position: absolute;
+        inset: 0;
         width: 100%;
-        height: auto;
-        aspect-ratio: 4 / 5;
-        min-height: 280px;
-        max-height: 360px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 20%;
+        border-radius: 0;
       }
 
+      /* gradient scrim — strong at bottom where text sits, fading to clear at top */
       .as-img-wrap::after {
-        inset: 0 0 auto 0;
-        height: min(55vw, 220px);
-        background: linear-gradient(to bottom, rgba(0, 0, 0, .18) 0%, rgba(0, 0, 0, .58) 100%);
+        position: absolute;
+        inset: 0;
+        height: auto;
+        background: linear-gradient(
+          to top,
+          rgba(4, 4, 4, .97) 0%,
+          rgba(4, 4, 4, .88) 30%,
+          rgba(4, 4, 4, .55) 52%,
+          rgba(4, 4, 4, .12) 72%,
+          transparent 100%
+        );
+        pointer-events: none;
+        z-index: 1;
       }
 
+      /* copy: normal flow so it auto-sizes the container */
       .about-copy {
         position: relative;
-        right: auto;
-        left: auto;
-        top: auto;
-        bottom: auto;
+        left: auto; right: auto; top: auto; bottom: auto;
         width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
-        padding: 1.5rem 1rem 2rem;
-        background: linear-gradient(180deg, rgba(9, 9, 9, .92) 0%, #090909 100%);
+        padding: 0 1.4rem 2.8rem;
+        background: none;
+        z-index: 2;
       }
+
+      /* tighten text so it fits comfortably */
+      .about-sec .t-xl {
+        font-size: clamp(1.6rem, 7vw, 2.1rem);
+        margin: .5rem 0 .9rem !important;
+      }
+      .about-sec .body-l {
+        font-size: .9rem;
+        line-height: 1.65;
+        margin-bottom: 1rem !important;
+      }
+      .about-sec .body-s {
+        font-size: .84rem;
+        line-height: 1.6;
+        margin-bottom: 1.4rem !important;
+      }
+
+      /* pillar list */
+      .about-pillars {
+        list-style: none;
+        margin: 0 0 1.6rem;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .85rem;
+      }
+      .about-pillars li {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+        font-size: .84rem;
+        line-height: 1.5;
+        color: rgba(240,232,218,.82);
+      }
+      .about-pillars li strong {
+        display: block;
+        font-size: .88rem;
+        font-weight: 700;
+        color: #f7efe2;
+        margin-bottom: .15rem;
+      }
+      .ap-icon {
+        flex-shrink: 0;
+        font-size: .45rem;
+        color: var(--brand);
+        margin-top: .45rem;
+      }
+      .about-cta-mob {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--brand);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(255,204,0,.35);
+        padding-bottom: .25rem;
+      }
+
+      /* hide the badge — no room on mobile */
+      .as-badge { display: none; }
     }
 
     /* ── FEATURED WORKS LABEL ─────────────────────────────── */
@@ -1431,13 +1511,26 @@
     <div class="wrap">
       <div class="about-strip">
         <div class="as-img-wrap" data-r>
-          <img src="/images/about-hero.png" class="as-img" alt="BMG Interiors Craftsmanship" loading="lazy">
+          <img src="/images/about-hero.jpg" class="as-img" alt="BMG Interiors Craftsmanship" loading="lazy" decoding="async">
           <div class="about-copy">
             <div class="lbl">Who We Are</div>
             <h2 class="t-xl" style="margin:1rem 0">Welcome To<br><em class="gt">BMG Interiors</em></h2>
-            <p class="body-l" style="margin-bottom:1.5rem"><strong>BMG Interiors</strong> is a comprehensive service provider for Residential, Commercial, Hospitality, Building, Bungalows for Interiors Projects. We master excellent and creative interior work services not only for interiors and projects establishment but also for building projects. BMG Interiors is known for creating dynamic spaces that enrich the personal and business lives of their clients and staff.</p>
-            <p class="body-s" style="opacity:0.8; margin-bottom:2rem">The referrals of our distinguished and satisfied customers prove our reputation. Regardless of the types of establishment, size or designs, our services focus mainly on quality. We create best interior work that are suitable for Residential and Commercial establishments either big or smalls.</p>
-            <a href="about.html" class="btn-txt">Read Our Full Story &rarr;</a>
+            <p class="body-l" style="margin-bottom:1.6rem">Mumbai's trusted studio for luxury residential &amp; commercial interiors — crafting extraordinary spaces since 1988.</p>
+            <ul class="about-pillars">
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>450+ Projects Delivered</strong><br><span>Homes, offices, hotels &amp; retail — every scale, every vision.</span></div>
+              </li>
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>End-to-End Turnkey</strong><br><span>Design, execution &amp; handover — one team, zero compromise.</span></div>
+              </li>
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>15+ Design Awards</strong><br><span>Recognised for excellence in craft, detail &amp; innovation.</span></div>
+              </li>
+            </ul>
+            <a href="about.html" class="btn-txt about-cta-mob">Our Full Story &rarr;</a>
           </div>
         </div>
       </div>

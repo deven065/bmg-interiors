@@ -1139,6 +1139,16 @@ em{font-style:italic}
   .acc-q { font-size: 1.15rem }
 }
 
+/* -- PERFORMANCE: kill expensive animations on mobile --------- */
+@media (max-width: 768px) {
+  .about-sec .wrap::before,
+  .about-sec::before,
+  .about-sec::after { animation: none !important }
+  .hero-sec::before,
+  .hero-sec::after { animation: none !important }
+  [data-r] { transition-duration: .5s !important }
+}
+
 @media (max-width: 768px) {
   html { -webkit-text-size-adjust: 100% }
   .wrap { padding-inline: clamp(1rem, 5vw, 1.5rem) }

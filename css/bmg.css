@@ -938,6 +938,14 @@ em{font-style:italic}
   .deco-hl { margin: 3rem 0 }
 }
 
+/* -- PERFORMANCE: kill expensive animations on mobile --------- */
+@media (max-width: 768px) {
+  .about-sec .wrap::before,
+  .about-sec::before,
+  .about-sec::after { animation: none !important }
+  [data-r] { transition-duration: .5s !important }
+}
+
 /* -- ACCORDION: touch-friendly tap targets --------------------- */
 @media (max-width: 640px) {
   .acc-btn { padding: 1.5rem 0 }

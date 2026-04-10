@@ -533,7 +533,7 @@ function initHeroSlideshow(){
     vid.autoplay   = true;
     vid.playsInline = true;
     vid.setAttribute('playsinline', '');    // iOS Safari inline playback
-    vid.preload    = 'auto';
+    vid.preload    = (window.innerWidth <= 768 || index > 0) ? 'none' : 'auto';
     vid.loop       = false;
     vid.setAttribute('webkit-playsinline', '');
     vid.setAttribute('x5-playsinline', '');
