@@ -240,7 +240,7 @@ em{font-style:italic}
   transition:color .3s,transform .3s var(--e1)}
 .nav-mob a:hover{color:var(--brand);transform:translateY(-1px)}
 .nav-mob a:last-of-type{margin-top:.32rem;color:var(--brand)!important}
-@media(max-width:920px){.nav-ul,.nav-r{display:none}.ham{display:flex}}
+@media(max-width:920px){.nav-ul,.nav-r{display:none}.ham{display:flex}.nav-logo img{height:64px}.nav.sc .nav-logo img{height:52px}}
 
 /* -- FOOTER -------------------------------------------------------- */
 .ftr{background:var(--bg);border-top:1px solid var(--border);padding-top:5.5rem;padding-bottom:2.8rem}
@@ -963,7 +963,7 @@ em{font-style:italic}
 /* -- CLIENTS SECTION ----------------------------------------------- */
 .clients-sec{background:var(--bg2)}
 .client-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
-  background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+  background:var(--border);overflow:hidden}
 .client-card{background:var(--bg);padding:1.6rem 1.2rem;
   display:flex;align-items:center;justify-content:center;text-align:center;
   transition:background .3s var(--e1)}
