@@ -243,6 +243,7 @@
   function initCinematicScroll() {
     if (
       /portfolio\.html$/i.test(location.pathname) ||
+      /contact\.html$/i.test(location.pathname) ||
       /interior-designer-in-mumbai\.html$/i.test(location.pathname) ||
       /2bhk-interior-design-in-mumbai\.html$/i.test(location.pathname) ||
       /interior-design-cost-in-mumbai\.html$/i.test(location.pathname)
