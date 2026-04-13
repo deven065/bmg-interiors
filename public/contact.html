@@ -486,6 +486,219 @@
         height: 780px;
       }
     }
+    /* -- BUDGET ESTIMATOR ---------------------------------- */
+    .budget-sec {
+      background: var(--bg2);
+      padding-block: 6rem;
+    }
+    .budget-card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      box-shadow: 0 40px 100px rgba(0,0,0,.04);
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      align-items: start;
+    }
+    .budget-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    .budget-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 1.2rem;
+    }
+    .sel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+    }
+    .sel-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--fg2);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all .3s var(--e1);
+    }
+    .sel-btn:hover {
+      border-color: var(--brand);
+      color: var(--fg);
+    }
+    .sel-btn.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #000;
+      box-shadow: 0 8px 20px rgba(255,204,0,.25);
+    }
+    .budget-result {
+      background: #19130e;
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      color: #fff;
+      text-align: center;
+      position: sticky;
+      top: 100px;
+    }
+    .res-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 1rem;
+    }
+    .res-val {
+      font-family: var(--fh);
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+    .res-note {
+      font-size: .7rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.6;
+    }
+    #est-sqft {
+      font-size: 1.2rem;
+      font-weight: 500;
+      padding: 1.2rem;
+    }
+    @media(max-width: 900px) {
+      .budget-card {
+        grid-template-columns: 1fr;
+        padding: 3rem 2rem;
+        gap: 3rem;
+      }
+      .budget-result {
+        position: static;
+      }
+    }
+    @media(max-width: 600px) {
+      .sel-grid {
+        grid-template-columns: 1fr;
+      }
+    /* -- BUDGET ESTIMATOR ---------------------------------- */
+    .budget-sec {
+      background: var(--bg2);
+      padding-block: 6rem;
+    }
+    .budget-card {
+      background: var(--s1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      box-shadow: 0 40px 100px rgba(0,0,0,.04);
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 4rem;
+      align-items: start;
+    }
+    .budget-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    .budget-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 1.2rem;
+    }
+    .sel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+    }
+    .sel-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--fg2);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all .3s var(--e1);
+    }
+    .sel-btn:hover {
+      border-color: var(--brand);
+      color: var(--fg);
+    }
+    .sel-btn.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #000;
+      box-shadow: 0 8px 20px rgba(255,204,0,.25);
+    }
+    .budget-result {
+      background: #19130e;
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      color: #fff;
+      text-align: center;
+      position: sticky;
+      top: 100px;
+    }
+    .res-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 1rem;
+    }
+    .res-val {
+      font-family: var(--fh);
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+    .res-note {
+      font-size: .7rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.6;
+    }
+    #est-sqft {
+      font-size: 1.2rem;
+      font-weight: 500;
+      padding: 1.2rem;
+    }
+    @media(max-width: 900px) {
+      .budget-card {
+        grid-template-columns: 1fr;
+        padding: 3rem 2rem;
+        gap: 3rem;
+      }
+      .budget-result {
+        position: static;
+      }
+    }
+    @media(max-width: 600px) {
+      .sel-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -742,6 +955,63 @@
     <div class="divider"></div>
   </div>
 
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- BUDGET ESTIMATOR -->
+  <section class="sec budget-sec">
+    <div class="wrap">
+      <div class="calendly-head" data-r style="margin-bottom:4rem">
+        <span class="lbl">Investment Estimator</span>
+        <h2 style="margin-top:1rem">Get a Quick <em class="gt">Budget Estimate</em></h2>
+        <p>Planning your dream space? Use our interactive tool to get an instant approximate investment figure based on your area and preferred design grade.</p>
+      </div>
+
+      <div class="budget-card" data-r data-d="1">
+        <div class="budget-grid">
+          <!-- Step 1: Sector -->
+          <div class="budget-group">
+            <label>1. Select Your Sector</label>
+            <div class="sel-grid" id="sector-grid">
+              <button class="sel-btn active" data-val="Residential">Residential</button>
+              <button class="sel-btn" data-val="Commercial">Commercial</button>
+              <button class="sel-btn" data-val="Retail">Retail</button>
+            </div>
+          </div>
+          <!-- Step 2: Quality -->
+          <div class="budget-group">
+            <label>2. Choose Interior Grade</label>
+            <div class="sel-grid" id="grade-grid">
+              <button class="sel-btn" data-val="Luxury" data-rate="9000">Luxury</button>
+              <button class="sel-btn active" data-val="Premium" data-rate="4000">Premium</button>
+              <button class="sel-btn" data-val="Affordable" data-rate="2000">Affordable</button>
+            </div>
+          </div>
+          <!-- Step 3: Area -->
+          <div class="budget-group">
+            <label>3. Enter Total Area (Sq.Ft)</label>
+            <div class="ff filled" style="margin-top:0">
+              <input type="number" id="est-sqft" placeholder="e.g. 1200" min="0" step="1" />
+            </div>
+          </div>
+        </div>
+
+        <div class="budget-result">
+          <div class="res-lbl">Estimated Investment</div>
+          <div class="res-val" id="est-total">₹ 0</div>
+          <div style="font-size: 11px; color: var(--brand); margin-bottom: 1rem; font-weight: 500;">Includes: Civil, Furniture, POP, Electricity & Painting</div>
+          <p class="res-note">*This estimate is based on standard material costs and market rates. Final quotes may vary significantly based on your specific design choices, material selection, and site requirements.</p>
+          <a href="#contact-form" class="btn btn-g" style="margin-top:2rem; width:100%; justify-content:center"><span>Get Detailed Quote</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
   <!-- CALENDLY BOOKING SECTION -->
   <section class="sec calendly-sec">
     <div class="wrap">
@@ -804,6 +1074,50 @@
   <div id="bmg-footer"></div>
   <script src="js/footer.js"></script>
   <script src="js/bmg.js"></script>
+  <script>
+    // BUDGET ESTIMATOR LOGIC
+    (function() {
+      const sectorBtns = document.querySelectorAll('#sector-grid .sel-btn');
+      const gradeBtns = document.querySelectorAll('#grade-grid .sel-btn');
+      const sqftInput = document.getElementById('est-sqft');
+      const totalDisplay = document.getElementById('est-total');
+
+      let currentRate = 4000; // Default Premium
+
+      function calculate() {
+        const sqft = parseFloat(sqftInput.value) || 0;
+        const total = sqft * currentRate;
+        
+        // Format as Indian Currency
+        const formatted = new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          maximumFractionDigits: 0
+        }).format(total);
+
+        totalDisplay.innerText = formatted;
+      }
+
+      sectorBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          sectorBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          calculate();
+        });
+      });
+
+      gradeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          gradeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentRate = parseInt(btn.getAttribute('data-rate'));
+          calculate();
+        });
+      });
+
+      sqftInput.addEventListener('input', calculate);
+    })();
+  </script>
 </body>
 
 </html>
