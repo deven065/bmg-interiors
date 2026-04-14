@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Since the project structure has duplicating HTML files in root and public directory, we scan both
-    const dirs = ['.', 'public'];
+    const dirs = ['public'];
     let updatedCount = 0;
 
     dirs.forEach(d => {

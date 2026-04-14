@@ -83,7 +83,7 @@ function getSurroundingHtml(content: string, matchIndex: number, matchLength: nu
 
 // Scan all HTML files and extract all img tags with their data-crm-id and src
 export async function GET() {
-  const dirs = ['.', 'public'];
+  const dirs = ['public'];
   const allImages: ImageEntry[] = [];
   const seen = new Set<string>();
 
@@ -93,9 +93,6 @@ export async function GET() {
 
     const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.html'));
     files.forEach(f => {
-      // Only scan root-level HTML (not public duplicates for deduplication)
-      if (d === 'public') return;
-
       const content = fs.readFileSync(path.join(dirPath, f), 'utf8');
       const imgRegex = /<img[^>]*data-crm-id="(\d+)"[^>]*>/gi;
       let match;
