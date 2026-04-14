@@ -9,6 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bmginteriors.com'),
   title: "BMG Interiors | Luxury Interior Design Studio — Mumbai",
   description: "Award-winning luxury interior design studio crafting extraordinary spaces since 1988. Specializing in residential, commercial, and turnkey projects across India.",
   icons: {

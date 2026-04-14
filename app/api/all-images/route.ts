@@ -88,7 +88,7 @@ export async function GET() {
   const seen = new Set<string>();
 
   dirs.forEach(d => {
-    const dirPath = path.join(process.cwd(), d);
+    const dirPath = path.join(/* turbopackIgnore: true */ process.cwd(), d);
     if (!fs.existsSync(dirPath)) return;
 
     const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.html'));
