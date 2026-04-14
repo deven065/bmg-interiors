@@ -1851,9 +1851,7 @@
   </div>
 
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
-  <a href="index.html" class="hero-float-logo" id="hero-float-logo" aria-label="BMG Interiors Home">
-    <img src="/images/bmg-logo-header.png" alt="BMG Interiors" />
-  </a>
+
 
   <section class="hero" id="home">
     <div class="hero-floating-nav" data-fade="0.2">
@@ -2529,14 +2527,12 @@
     // Nav peek-reveal: hidden over hero, shows after hero scrolls out or on hover near top
     (function () {
       var nav = document.querySelector('.nav');
-      var heroLogo = document.getElementById('hero-float-logo');
       if (!nav) return;
       var hero = document.getElementById('home');
       if (hero) {
         new IntersectionObserver(function (entries) {
           var past = !entries[0].isIntersecting;
           nav.classList.toggle('past-hero', past);
-          if (heroLogo) heroLogo.classList.toggle('past-hero', past);
           if (past) nav.classList.remove('peek');
         }, { threshold: 0.08 }).observe(hero);
       }

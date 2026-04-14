@@ -52,10 +52,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 /* -- CURSOR -------------------------------------------------------- */
 #cur{position:fixed;top:0;left:0;z-index:99999;pointer-events:none;
-  width:24px;height:24px;background:url('/M.png') center/contain no-repeat;border-radius:0;
+  width:8px;height:8px;background:var(--brand);border-radius:50%;
   will-change:transform;
-  transition:opacity .3s}
-#cur-ring{display:none}
+  transition:width .22s var(--e1), height .22s var(--e1), opacity .3s}
+#cur-ring{position:fixed;top:0;left:0;z-index:99998;pointer-events:none;
+  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--brgold);
+  will-change:transform;
+  transition:width .38s var(--e1), height .38s var(--e1), border-color .35s, opacity .35s}
 body.c-hide #cur,body.c-hide #cur-ring{opacity:0}
 
 /* -- PAGE WIPE ----------------------------------------------------- */

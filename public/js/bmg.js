@@ -15,8 +15,8 @@ if(cur && ring){
   (function raf(){
     cs += (ts-cs)*.18;
     rx += (mx-rx)*.1; ry += (my-ry)*.1;
-    cur.style.transform  = 'translate('+(mx-4.5)+'px,'+(my-4.5)+'px) scale('+cs.toFixed(3)+')';
-    ring.style.transform = 'translate('+(rx-20)+'px,'+(ry-20)+'px) scale('+(1+(ts-1)*.4).toFixed(3)+')';
+    cur.style.transform  = 'translate('+(mx-4)+'px,'+(my-4)+'px) scale('+cs.toFixed(3)+')';
+    ring.style.transform = 'translate('+(rx-18)+'px,'+(ry-18)+'px) scale('+(1+(ts-1)*.4).toFixed(3)+')';
     requestAnimationFrame(raf);
   })();
   document.querySelectorAll('a,button,[data-cur]').forEach(el=>{
