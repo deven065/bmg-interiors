@@ -107,7 +107,7 @@
       if (!a) return;
       const h = a.getAttribute('href');
       if (!h || h.startsWith('#') || h.startsWith('mailto') || h.startsWith('tel') ||
-        h.startsWith('http') || a.target === '_blank') return;
+        h.startsWith('http') || a.target === '_blank' || a.hasAttribute('download')) return;
       e.preventDefault();
       wipe.classList.remove('wipe-out');
       wipe.classList.add('wipe-in');
