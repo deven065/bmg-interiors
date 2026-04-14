@@ -7,13 +7,15 @@ import { AnimatePresence, motion } from "framer-motion";
 // Video slide data
 // ---------------------------------------------------------------------------
 const SLIDES = [
-  { src: "/video.mp4", label: "Slide 1" },
-  { src: "/video.mp4", label: "Slide 2" },
+  { src: "/images/slider/1.mp4", label: "Slide 1" },
+  { src: "/images/slider/2.mp4", label: "Slide 2" },
+  { src: "/images/slider/3.mp4", label: "Slide 3" },
 ] as const;
 
 const FALLBACK_SLIDES = [
-  { src: "/video.mp4", label: "Slide 1" },
-  { src: "/video.mp4", label: "Slide 2" },
+  { src: "/images/slider/1.mp4", label: "Slide 1" },
+  { src: "/images/slider/2.mp4", label: "Slide 2" },
+  { src: "/images/slider/3.mp4", label: "Slide 3" },
 ] as const;
 
 const FADE_DURATION_S = 1.3;

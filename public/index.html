@@ -1737,6 +1737,43 @@
       .al-input { min-width: 100%; }
       .app-phone { width: min(185px, 50vw); }
     }
+
+    /* ── Homepage nav: hidden over hero, revealed after / on hover ─ */
+    .nav {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .38s ease,
+                  background .45s var(--e1),
+                  padding .45s var(--e1),
+                  border-color .45s;
+    }
+    .nav.past-hero,
+    .nav.peek {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── Hero floating logo (top-left, visible over video) ───── */
+    .hero-float-logo {
+      position: fixed;
+      top: clamp(.9rem, 2vw, 1.6rem);
+      left: clamp(1rem, 3vw, 2.5rem);
+      z-index: 5;
+      display: block;
+      opacity: 1;
+      pointer-events: all;
+      transition: opacity .38s ease;
+    }
+    .hero-float-logo img {
+      height: 62px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.45));
+    }
+    .hero-float-logo.past-hero {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -1786,6 +1823,22 @@
   </div>
 
   <!-- NAV -->
+  <nav class="nav" id="site-nav">
+    <div class="wrap">
+      <a href="index.html" class="nav-logo"><img src="/images/bmg-logo-header.png" alt="BMG Interiors" /></a>
+      <ul class="nav-ul">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-r">
+        <a href="contact.html" class="btn btn-g"><span>Book Consultation</span></a>
+      </div>
+    </div>
+  </nav>
+
   <!-- MOBILE MENU -->
   <div class="nav-mob" id="nav-mob">
     <button class="nav-mob-close" id="nav-close" aria-label="Close menu">Close</button>
@@ -1798,6 +1851,10 @@
   </div>
 
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
+  <a href="index.html" class="hero-float-logo" id="hero-float-logo" aria-label="BMG Interiors Home">
+    <img src="/images/bmg-logo-header.png" alt="BMG Interiors" />
+  </a>
+
   <section class="hero" id="home">
     <div class="hero-floating-nav" data-fade="0.2">
       <button class="hero-menu-btn" id="ham" aria-label="Open menu">
@@ -2466,6 +2523,29 @@
     lb.onclick = (e) => { if (e.target !== lbImg) closeLB(); };
     lbClose.onclick = closeLB;
     window.onkeydown = (e) => { if (e.key === 'Escape') closeLB(); };
+  </script>
+
+  <script>
+    // Nav peek-reveal: hidden over hero, shows after hero scrolls out or on hover near top
+    (function () {
+      var nav = document.querySelector('.nav');
+      var heroLogo = document.getElementById('hero-float-logo');
+      if (!nav) return;
+      var hero = document.getElementById('home');
+      if (hero) {
+        new IntersectionObserver(function (entries) {
+          var past = !entries[0].isIntersecting;
+          nav.classList.toggle('past-hero', past);
+          if (heroLogo) heroLogo.classList.toggle('past-hero', past);
+          if (past) nav.classList.remove('peek');
+        }, { threshold: 0.08 }).observe(hero);
+      }
+      // Peek when cursor hovers within 80px of the top (only while .sc is active so background is visible)
+      document.addEventListener('mousemove', function (e) {
+        if (nav.classList.contains('past-hero')) return;
+        nav.classList.toggle('peek', nav.classList.contains('sc') && e.clientY < 80);
+      });
+    })();
   </script>
 </body>
 

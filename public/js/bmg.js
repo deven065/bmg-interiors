@@ -511,42 +511,34 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const videos = [
-    ['/video.mp4'],
-    ['/video.mp4'],
+    '/images/slider/1.mp4',
+    '/images/slider/2.mp4',
+    '/images/slider/3.mp4',
   ];
 
   let currentSlide    = 0;
   let isTransitioning = false;
 
-  const DUR_IN  = 0.95;
-  const DUR_OUT = 0.75;
+  const DUR_IN  = 1.2;
+  const DUR_OUT = 1.0;
 
-  const createSlide = (videoSources, index) => {
+  /* ── Build slides ── */
+  const createSlide = (src, index) => {
     const slide = document.createElement('div');
-    slide.className = `hero-slide ${index === 0 ? 'active' : ''}`;
-    const vid = document.createElement('video');
-    let sourceIndex = 0;
-    const setVideoSource = (idx) => {
-      sourceIndex = idx;
-      vid.src = videoSources[sourceIndex];
-      vid.load();
-    };
+    slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
+    // promote each slide to its own GPU layer for tear-free crossfade
+    slide.style.cssText = 'will-change:opacity;';
 
-    setVideoSource(0);
+    const vid = document.createElement('video');
+    vid.src        = src;
     vid.muted      = true;
-    vid.setAttribute('muted', '');          // iOS Safari requires muted as HTML attribute for autoplay
-    vid.autoplay   = true;
+    vid.setAttribute('muted', '');
     vid.playsInline = true;
-    vid.setAttribute('playsinline', '');    // iOS Safari inline playback
-    vid.preload    = (window.innerWidth <= 768 || index > 0) ? 'none' : 'auto';
-    vid.loop       = false;
+    vid.setAttribute('playsinline', '');
     vid.setAttribute('webkit-playsinline', '');
-    vid.setAttribute('x5-playsinline', '');
-    vid.addEventListener('error', () => {
-      if (sourceIndex < videoSources.length - 1) {
-        setVideoSource(sourceIndex + 1);
-      }
-    });
+    vid.loop       = false;
+    // preload all videos so they're buffered before transition
+    vid.preload    = 'auto';
     vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
     slide.appendChild(vid);
     return slide;
@@ -556,8 +548,6 @@ function initHeroSlideshow(){
   const slides   = Array.from(container.querySelectorAll('.hero-slide'));
   const videoEls = slides.map(s => s.querySelector('video'));
 
-  // No force3D — GPU compositing hints degrade video sharpness
-
   /* ── UI references ── */
   const progressEl = document.getElementById('hero-progress');
   const bulletsEl  = document.getElementById('hero-bullets');
@@ -566,7 +556,7 @@ function initHeroSlideshow(){
 
   if (totalEl) totalEl.textContent = String(videos.length).padStart(2, '0');
 
-  /* ── Progress bar — driven by video timeupdate ── */
+  /* ── Progress bar ── */
   let progressRAF = null;
   const updateProgress = () => {
     if (!progressEl) return;
@@ -584,6 +574,30 @@ function initHeroSlideshow(){
   const stopProgress = () => {
     if (progressRAF) { cancelAnimationFrame(progressRAF); progressRAF = null; }
     if (progressEl)  progressEl.style.cssText = 'transition:none;width:0%';
+  };
+
+  /* ── Pre-buffer a video so it's ready to play instantly ── */
+  const primeVideo = (vid) => {
+    return new Promise(resolve => {
+      if (vid.readyState >= 3) { resolve(); return; } // HAVE_FUTURE_DATA
+      const onReady = () => { vid.removeEventListener('canplay', onReady); resolve(); };
+      vid.addEventListener('canplay', onReady);
+      // safety: don't wait more than 1.5s
+      setTimeout(resolve, 1500);
+      if (vid.preload !== 'auto') { vid.preload = 'auto'; vid.load(); }
+    });
+  };
+
+  /* ── Prefetch next slide starting from 80% through current video ── */
+  let prefetchDone = [];
+  const prefetchNext = () => {
+    const next = (currentSlide + 1) % videos.length;
+    if (prefetchDone[next]) return;
+    prefetchDone[next] = true;
+    const v = videoEls[next];
+    v.preload = 'auto';
+    // silent play+immediate pause to force buffer fill on some browsers
+    v.play().then(() => v.pause()).catch(() => {});
   };
 
   /* ── Slide transition ── */
@@ -607,32 +621,39 @@ function initHeroSlideshow(){
         b.classList.toggle('active', idx === nextIndex));
     }
 
-    incoming.classList.add('active');
+    // Wait for next video to be buffered before starting crossfade
     inVid.currentTime = 0;
-    inVid.play().catch(() => {});
+    primeVideo(inVid).then(() => {
+      inVid.play().catch(() => {});
+      incoming.classList.add('active');
 
-    // Pure opacity crossfade — no transform so GPU never blurs the video
-    gsap.set(incoming, { opacity: 0, zIndex: 2 });
-    gsap.set(outgoing, { zIndex: 1 });
+      gsap.set(incoming, { opacity: 0, zIndex: 2 });
+      gsap.set(outgoing, { zIndex: 1 });
 
-    gsap.timeline({
-      onComplete: () => {
-        outgoing.classList.remove('active');
-        outVid.pause();
-        gsap.set(outgoing, { clearProps: 'all' });
-        gsap.set(incoming, { clearProps: 'opacity,zIndex' });
-        currentSlide    = nextIndex;
-        isTransitioning = false;
-        startProgress();
-        if (curNumEl) curNumEl.textContent = String(nextIndex + 1).padStart(2, '0');
-      }
-    })
-    .to(incoming, { opacity: 1, duration: DUR_IN,  ease: 'power2.out' }, 0)
-    .to(outgoing, { opacity: 0, duration: DUR_OUT, ease: 'power1.in'  }, 0);
+      gsap.timeline({
+        onComplete: () => {
+          outgoing.classList.remove('active');
+          outVid.pause();
+          outVid.currentTime = 0;
+          gsap.set(outgoing, { clearProps: 'all' });
+          gsap.set(incoming, { clearProps: 'opacity,zIndex' });
+          currentSlide    = nextIndex;
+          isTransitioning = false;
+          startProgress();
+          if (curNumEl) curNumEl.textContent = String(nextIndex + 1).padStart(2, '0');
+        }
+      })
+      .to(incoming, { opacity: 1, duration: DUR_IN,  ease: 'power2.inOut' }, 0)
+      .to(outgoing, { opacity: 0, duration: DUR_OUT, ease: 'power2.inOut' }, 0);
+    });
   };
 
-  /* ── Video ended → advance to next ── */
+  /* ── Video timeupdate → prefetch next at 80% ── */
   videoEls.forEach((vid, i) => {
+    vid.addEventListener('timeupdate', () => {
+      if (i !== currentSlide || !vid.duration) return;
+      if (vid.currentTime / vid.duration >= 0.80) prefetchNext();
+    });
     vid.addEventListener('ended', () => {
       if (i === currentSlide) changeSlide(1);
     });
@@ -645,9 +666,7 @@ function initHeroSlideshow(){
       btn.className = 'hero-bullet' + (i === 0 ? ' active' : '');
       btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
       btn.addEventListener('click', () => {
-        if (!isTransitioning && i !== currentSlide) {
-          changeSlide(i > currentSlide ? 1 : -1, i);
-        }
+        if (!isTransitioning && i !== currentSlide) changeSlide(0, i);
       });
       bulletsEl.appendChild(btn);
     });
@@ -655,7 +674,6 @@ function initHeroSlideshow(){
 
   const btnPrev = document.getElementById('hero-prev');
   const btnNext = document.getElementById('hero-next');
-
   if (btnPrev) btnPrev.onclick = () => changeSlide(-1);
   if (btnNext) btnNext.onclick = () => changeSlide(1);
 
@@ -666,11 +684,15 @@ function initHeroSlideshow(){
     else { vid.play().catch(() => {}); startProgress(); }
   });
 
-  /* ── Kick off first slide ── */
-  videoEls[0].play().catch(() => {});
-  startProgress();
+  /* ── Kick off: wait for first video to be ready ── */
+  primeVideo(videoEls[0]).then(() => {
+    videoEls[0].play().catch(() => {});
+    startProgress();
+    // pre-buffer slide 2 immediately after slide 1 starts
+    setTimeout(() => { prefetchDone[1] = true; primeVideo(videoEls[1]); }, 500);
+  });
 
-  /* ── Retry play on first user interaction (mobile autoplay policy) ── */
+  /* ── Retry on first user interaction (mobile autoplay policy) ── */
   const retryPlay = () => {
     const vid = videoEls[currentSlide];
     if (vid && vid.paused) { vid.play().catch(() => {}); }
