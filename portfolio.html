@@ -357,7 +357,196 @@
       box-shadow: 0 6px 20px rgba(255, 204, 0, 0.3);
     }
 
+    /* â”€â”€ PORTFOLIO STACK CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .proj-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10vh;
+      margin-top: 2rem;
+      padding-bottom: 6rem;
+    }
 
+    .proj-card {
+      position: sticky;
+      top: calc(100px + (var(--card-index, 0) * 12px));
+      min-height: 76vh;
+      width: 100%;
+      overflow: hidden;
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 204, 0, .18);
+      border-radius: 0;
+      box-shadow: 0 -15px 30px -10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+      transition: transform .36s var(--e1), border-color .32s, box-shadow .36s var(--e1);
+      z-index: calc(10 + var(--card-index, 0));
+      contain: layout paint;
+      backface-visibility: hidden;
+    }
+
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(0deg, rgba(0, 0, 0, .72) 0%, rgba(0, 0, 0, .18) 35%, rgba(0, 0, 0, 0) 60%);
+      pointer-events: none;
+    }
+
+    .proj-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(21, 35, 35, .24);
+      box-shadow: 0 20px 36px rgba(0, 0, 0, .18)
+    }
+
+    .proj-tags {
+      position: absolute;
+      top: clamp(1rem, 2vw, 1.8rem);
+      left: clamp(1rem, 2vw, 1.8rem);
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      max-width: 70%;
+    }
+
+    .proj-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #f4f4f4;
+      border: 1px solid rgba(255, 255, 255, .44);
+      border-radius: 999px;
+      padding: .22rem .58rem;
+      background: rgba(0, 0, 0, .33);
+      white-space: nowrap
+    }
+
+    .proj-card-media {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 0;
+      overflow: hidden;
+      cursor: none;
+      min-height: 100%
+    }
+
+    .proj-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .55s var(--e1);
+      transform: translateZ(0);
+    }
+
+    .proj-card:hover .proj-card-media img { transform: none }
+
+    .proj-view {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 4;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 47, 47, .25);
+      background: rgba(243, 238, 226, .92);
+      color: #213333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 .95rem 0 1rem;
+      font-size: .86rem;
+      font-weight: 600
+    }
+
+    .proj-view-arr {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(24, 48, 48, .12);
+      border: 1px solid rgba(24, 48, 48, .35);
+      display: grid;
+      place-items: center;
+      color: #183030;
+      font-size: 1rem;
+      transition: transform .3s var(--e1), background .3s
+    }
+
+    .proj-card:hover .proj-view-arr { transform: translateX(2px); background: rgba(24, 48, 48, .2) }
+
+    .proj-copy {
+      position: absolute;
+      left: clamp(1rem, 2.6vw, 2.4rem);
+      right: clamp(1rem, 2.6vw, 2.4rem);
+      bottom: clamp(4.6rem, 8vw, 7rem);
+      z-index: 3;
+      max-width: min(56ch, 64vw);
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+    }
+
+    .proj-title {
+      font-family: var(--fh);
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: #fff;
+      letter-spacing: -0.02em;
+      text-shadow: 0 8px 28px rgba(0, 0, 0, .5);
+    }
+
+    .proj-desc {
+      font-family: var(--fb);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(245, 245, 245, .9);
+      max-width: 48ch;
+      font-weight: 400;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, .42);
+    }
+
+    #legacy-pgrid { display: none }
+
+    @media(max-width:980px) {
+      .proj-card {
+        min-height: calc(100vh - 120px);
+        margin-left: 0 !important;
+        margin-top: 0 !important
+      }
+
+      .proj-tags {
+        top: 1rem;
+        left: 1rem;
+        max-width: calc(100% - 2rem);
+      }
+
+      .proj-card-media {
+        min-height: 100%
+      }
+
+      .proj-copy {
+        left: 1rem;
+        right: 1rem;
+        bottom: 4.2rem;
+        max-width: 100%;
+        gap: .75rem;
+      }
+
+      .proj-title { font-size: clamp(1.75rem, 7vw, 2.4rem) }
+      .proj-desc { font-size: .98rem; max-width: 90% }
+    }
+
+    @media(max-width:560px) {
+      .proj-card { min-height: 72vh }
+      .proj-copy { bottom: 4rem }
+      .proj-title { font-size: 1.45rem }
+      .proj-desc { font-size: .92rem; max-width: 100% }
+      .proj-view { height: 42px; font-size: .82rem }
+    }
 
     /* â”€â”€ PROCESS STRIP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     .pstrips {
@@ -698,8 +887,7 @@
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
-      filter: invert(90%) hue-rotate(180deg) brightness(.85) contrast(.9) grayscale(.2)
+      display: block
     }
 
     .map-header {
@@ -1171,29 +1359,31 @@
           Craftspeople</em></h2>
       <div class="team-grid" style="grid-template-columns:repeat(3,280px);justify-content:center" data-scroll>
         <div class="team-member">
-          <div class="team-avatar" style="background:rgba(255,204,0,.08);color:var(--brand);font-family:var(--fh);font-size:3.5rem;display:grid;place-items:center">
-            MG
-          </div>
-          <div class="team-name">Manoj Gadhiya</div>
-          <div class="team-role">Founder</div>
-          <div class="team-bio">The visionary founder with 38 years of experience, setting the standard for luxury design in Mumbai.</div>
-        </div>
-        <div class="team-member">
           <div class="team-avatar">
             <img src="images/team/bharat.png" alt="Bharat Gadhiya — Co-founder, BMG Interiors" loading="lazy"
               decoding="async">
           </div>
           <div class="team-name">Bharat Gadhiya</div>
           <div class="team-role">Co-founder</div>
-          <div class="team-bio">Co-founder with 18 years of experience, specializing in high-end residential and hospitality projects.</div>
+          <div class="team-bio">Visionary behind BMG Interiors — crafting luxury spaces with precision, artistry and a
+            passion for timeless design.</div>
         </div>
         <div class="team-member">
           <div class="team-avatar" style="overflow:hidden;background:#1a1400">
             <img src="/images/team/Pratik.jpeg" alt="Pratik Gupta" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block">
           </div>
           <div class="team-name">Pratik Gupta</div>
-          <div class="team-role">Site Engineer & Designer</div>
-          <div class="team-bio">Bringing 5 years of technical expertise and design flair to every construction site.</div>
+          <div class="team-role">Senior Designer</div>
+          <div class="team-bio">Bringing creative vision to life through meticulous space planning and refined material
+            selection.</div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar" style="overflow:hidden;background:#0d1117">
+            <img src="/images/team/Deven.jpeg" alt="Deven Rikame" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block">
+          </div>
+          <div class="team-name">Deven Rikame</div>
+          <div class="team-role">Software Developer</div>
+          <div class="team-bio">Engineering seamless digital experiences and innovative technology solutions that enhance our studio's design workflow.</div>
         </div>
       </div>
     </div>
@@ -1236,11 +1426,11 @@
     <div class="wrap">
       <div class="map-header">
         <div class="lbl" data-r>Visit Our Studio</div>
-        <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">Byculla &<br><em class="gt">Kandivali</em></h2>
+        <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">Located in<br><em class="gt">Byculla &amp; Kandivali,
+            Mumbai</em></h2>
       </div>
       <div class="map-info-row" data-scroll>
         <div class="map-info-item">
-          <div class="map-info-label">Address</div>
           <div class="map-info-value">Byculla &amp; Kandivali (E), Mumbai</div>
         </div>
         <div class="map-info-item">

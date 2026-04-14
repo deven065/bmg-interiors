@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vertex HQ | BMG Interiors — Corporate Excellence</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/bmg.css">
+  <style>
+    .proj-hero { height: 75vh; position: relative; overflow: hidden; background: #000; margin-top: 80px; }
+    .proj-hero-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; filter: contrast(1.05); }
+    .proj-header { position: absolute; bottom: 10%; left: 0; width: 100%; z-index: 2; color: #fff; }
+    .proj-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; margin-top: 3rem; }
+    .pm-item .lbl { color: var(--brgold); margin-bottom: 0.5rem; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .2em;}
+    .pm-item .val { font-family: var(--fh); font-size: 1.4rem; font-weight: 300; }
+    .proj-content { padding-block: 7rem; background: var(--bg); }
+    .proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 4rem; }
+    .pg-item { border-radius: 4px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); background: #eee; aspect-ratio: 4/3;}
+    .pg-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    
+    @media(max-width: 768px) {
+      .proj-meta { grid-template-columns: 1fr; gap: 1.5rem; }
+      .proj-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 380px) {
+      .proj-hero { min-height: 60svh; height: auto; }
+      .proj-header { bottom: 6%; }
+      .pm-item .val { font-size: 1.15rem; }
+    }
+
+    @media (min-width: 600px) and (max-width: 740px) and (max-aspect-ratio: 4/5) {
+      .proj-hero {
+        height: 62svh;
+        min-height: 440px;
+      }
+
+      .proj-header { bottom: 6%; }
+
+      .proj-meta {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.25rem;
+      }
+
+      .proj-content .wrap > div:first-child {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+      }
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11093753162"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-11093753162');
+  </script></head>
+<body>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <div id="wipe"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="wrap">
+      <a href="index.html" class="nav-logo">
+        <img src="/images/bmg-logo-header.png" alt="BMG Interiors" width="300" height="110" loading="eager">
+      </a>
+      <ul class="nav-ul">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html" class="cur">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-r">
+        <a href="contact.html" class="btn btn-g"><span>Start a Project</span><span class="btn-arr" style="display:inline-flex; align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px; transform:translateY(1px);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span></a>
+      </div>
+      <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="nav-mob" id="nav-mob">
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="about.html">About</a>
+    <a href="clients.html">Clients</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html" style="color:var(--brand)">Start a Project</a>
+  </div>
+
+  <section class="proj-hero">
+    <img src="/images/projects/vertex-hq/photo-1.JPG" class="proj-hero-img" alt="Vertex HQ">
+    <div class="proj-header">
+      <div class="wrap">
+        <div class="lbl" style="margin-bottom:1rem; color: #fff; opacity: 0.7;">Commercial Interior &bull; Mumbai</div>
+        <h1 class="t-xl" style="font-size:clamp(3rem,8vw,5.5rem); color: #fff;">Vertex <em class="gt" style="color:var(--brand)">HQ</em></h1>
+        
+        <div class="proj-meta">
+          <div class="pm-item"><div class="lbl">Sector</div><div class="val">Corporate Office</div></div>
+          <div class="pm-item"><div class="lbl">Area</div><div class="val">8,500 Sq. Ft.</div></div>
+          <div class="pm-item"><div class="lbl">Year</div><div class="val">2023</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proj-content">
+    <div class="wrap">
+      <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: start;">
+        <div data-r>
+          <h2 class="t-md" style="margin-bottom:2rem">The Vision</h2>
+          <p class="body-l">Vertex HQ was designed to project authority and innovation. We focused on open layouts that encourage collaboration while maintaining the prestige expected of a modern corporate headquarters in Mumbai.</p>
+        </div>
+        <div data-r data-d="1">
+          <p class="body-s" style="opacity:0.8; margin-bottom:1.5rem">From the gold-toned metal accents to the custom-made ergonomic workstations, every square foot was engineered for performance and luxury. The office features distinct zones for focus, client engagement, and restorative breaks.</p>
+          <div class="divider" style="margin-block:2.5rem"></div>
+          <p class="body-s">Materials include Italian marble flooring, acoustic fabric wall panels, and programmable lighting systems that adjust to the natural circadian rhythms of the team.</p>
+        </div>
+      </div>
+
+      <div class="proj-grid">
+        <div class="pg-item" data-r><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ Lobby"></div>
+        <div class="pg-item" data-r data-d="1"><img src="/images/projects/vertex-hq/2.jpg" alt="Vertex HQ Workspace"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec cta-band">
+    <div class="wrap">
+      <div class="cta-inner" style="text-align: center">
+        <h2 class="t-lg" style="margin-bottom:2rem">Inspired by this project?</h2>
+        <a href="contact.html" class="btn btn-g btn-xl"><span>Talk to Us</span></a>
+      </div>
+    </div>
+  </section>
+
+  <div id="bmg-footer"></div>
+  <script src="js/footer.js"></script>
+  <script src="js/bmg.js"></script>
+</body>
+</html>

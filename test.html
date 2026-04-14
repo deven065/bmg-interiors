@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Portfolio | BMG Interiors — Luxury Interior Design Projects</title>
+  <meta name="description"
+    content="Explore 450+ award-winning interior design projects by BMG Interiors — luxury residences, corporate offices, hospitality and retail spaces across India." />
+  <meta name="keywords"
+    content="interior design portfolio, luxury residential projects Mumbai, office design India, hotel interiors, retail space design" />
+  <link rel="canonical" href="https://bmginteriors.com/portfolio.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bmginteriors.com/portfolio.html" />
+  <meta property="og:title" content="Portfolio | BMG Interiors — Luxury Interior Design" />
+  <meta property="og:description"
+    content="450+ award-winning interior design projects for luxury residences, commercial offices, and hospitality spaces." />
+  <meta property="og:image" content="https://bmginteriors.com/images/og-image.jpg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://bmginteriors.com/portfolio.html" />
+  <meta name="twitter:title" content="BMG Interiors Portfolio" />
+  <meta name="twitter:description" content="450+ extraordinary spaces crafted with precision and artistry." />
+  <meta name="twitter:image" content="https://bmginteriors.com/images/og-image.jpg" />
+  <link rel="stylesheet" href="css/bmg.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "BMG Interiors",
+  "image": "https://bmginteriors.in/images/bmg-logo.png",
+  "description": "Award-winning luxury interior design studio in Mumbai. 450+ projects completed with 40+ design awards.",
+  "url": "https://bmginteriors.in",
+  "telephone": "+919920100053",
+  "email": "info@bmginteriors.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Mumbai",
+    "addressRegion": "Maharashtra",
+    "addressCountry": "IN"
+  },
+  "priceRange": "&#8377;&#8377;&#8377;&#8377;",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "150"
+  }
+}
+</script>
+  <style>
+    /* â”€â”€ FEATURED PROJECT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .feat-proj {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-bottom: 7rem
+    }
+
+    .feat-img {
+      aspect-ratio: 1.1/1;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .55)
+    }
+
+    .feat-img-bg {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden
+    }
+
+    .feat-img-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom right, transparent calc(50% - .7px), rgba(255, 204, 0, .16) calc(50% - .7px), rgba(255, 204, 0, .16) calc(50% + .7px), transparent calc(50% + .7px)),
+        linear-gradient(to bottom left, transparent calc(50% - .7px), rgba(255, 204, 0, .16) calc(50% - .7px), rgba(255, 204, 0, .16) calc(50% + .7px), transparent calc(50% + .7px)),
+        linear-gradient(to bottom, transparent 70%, rgba(255, 204, 0, .1) 70% calc(70% + 1px), transparent calc(70% + 1px));
+      z-index: 1
+    }
+
+    .feat-img-bg::after {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      inset: 8% 8% 5% 8%;
+      border: 1px solid rgba(255, 204, 0, .2);
+      border-radius: 2px;
+      background-image: linear-gradient(rgba(255, 204, 0, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 204, 0, .06) 1px, transparent 1px);
+      background-size: 60px 60px
+    }
+
+    .feat-num {
+      font-family: var(--fh);
+      font-size: 7rem;
+      font-weight: 300;
+      color: rgba(255, 204, 0, .06);
+      line-height: 1;
+      margin-bottom: .5rem
+    }
+
+    .feat-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1.4rem
+    }
+
+    .feat-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--brand);
+      border-radius: 50%
+    }
+
+    .feat-title {
+      font-family: var(--fh);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1.2rem
+    }
+
+    .feat-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border)
+    }
+
+    .feat-meta-item {
+      flex: 0 0 auto;
+      min-width: 150px
+    }
+
+    .fmt-l {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      margin-bottom: .3rem
+    }
+
+    .fmt-v {
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--fg)
+    }
+
+    @media(max-width:860px) {
+      .feat-proj {
+        grid-template-columns: 1fr;
+        gap: 3rem
+      }
+    }
+
+    /* â”€â”€ FULL PORTFOLIO GRID â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .pgrid-full {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem
+    }
+
+    .pif {
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: none;
+      transition: opacity .45s var(--e1), transform .5s var(--e1)
+    }
+
+    .pif.hide {
+      opacity: 0;
+      transform: scale(.94);
+      pointer-events: none
+    }
+
+    .pif-thumb {
+      aspect-ratio: 4/3;
+      width: 100%;
+      overflow: hidden;
+      position: relative
+    }
+
+    .pif-bg {
+      width: 100%;
+      height: 100%;
+      transition: transform .7s var(--e1);
+      position: relative;
+      overflow: hidden
+    }
+
+    .pif-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom right, transparent calc(50% - .5px), rgba(255, 204, 0, .14) calc(50% - .5px), rgba(255, 204, 0, .14) calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(to bottom left, transparent calc(50% - .5px), rgba(255, 204, 0, .14) calc(50% - .5px), rgba(255, 204, 0, .14) calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(to bottom, transparent 68%, rgba(255, 204, 0, .08) 68% calc(68% + 1px), transparent calc(68% + 1px))
+    }
+
+    .pif-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image: linear-gradient(rgba(255, 204, 0, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 204, 0, .05) 1px, transparent 1px);
+      background-size: 45px 45px;
+      mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, black 20%, transparent 100%);
+      pointer-events: none
+    }
+
+    .pif {
+      cursor: pointer;
+    }
+
+    .pif:hover .pif-bg {
+      transform: scale(1.07)
+    }
+
+    /* â”€â”€ LIGHTBOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .lb {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      inset: 0;
+      background: rgba(0, 0, 0, .96);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      opacity: 0;
+      transition: opacity .4s ease;
+      backdrop-filter: blur(8px)
+    }
+
+    .lb.on {
+      display: flex;
+      opacity: 1;
+    }
+
+    .lb-img {
+      max-width: 90%;
+      max-height: 85%;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .8);
+      transform: scale(.95);
+      transition: transform .4s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .lb.on .lb-img {
+      transform: scale(1);
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 2rem;
+      right: 2.5rem;
+      color: #fff;
+      font-size: 3.5rem;
+      font-weight: 200;
+      line-height: 1;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      transition: transform .3s, color .3s;
+      z-index: 2001;
+    }
+
+    .lb-close:hover {
+      color: var(--brand);
+      transform: rotate(90deg);
+    }
+
+    .lb-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      opacity: .6;
+    }
+
+    @media(max-width:760px) {
+      .pgrid-full {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:500px) {
+      .pgrid-full {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* â”€â”€ PORTFOLIO STACK CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .proj-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 70vh;
+      margin-top: 1rem;
+      padding-bottom: 4rem;
+    }
+
+    .proj-card {
+      display: grid;
+      grid-template-columns: 170px minmax(260px, 420px) 1fr;
+      gap: 1.25rem;
+      align-items: stretch;
+      background: #ece7db;
+      border: 1px solid rgba(21, 35, 35, .14);
+      border-radius: 6px;
+      padding: .85rem;
+      min-height: 290px;
+      position: sticky;
+      top: calc(100px + (var(--card-index, 0) * 12px));
+      box-shadow: 0 -15px 30px -10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.05);
+      transition: transform .36s var(--e1), border-color .32s, box-shadow .36s var(--e1);
+      z-index: calc(10 + var(--card-index, 0));
+    }
+
+    .proj-card:nth-child(3n+2) { margin-left: 1.2rem }
+    .proj-card:nth-child(3n+3) { margin-left: 2.4rem }
+    .proj-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(21, 35, 35, .24);
+      box-shadow: 0 20px 36px rgba(0, 0, 0, .18)
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      align-content: flex-start;
+      padding-top: .3rem;
+      position: sticky;
+      top: 108px;
+      align-self: start
+    }
+
+    .proj-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #243434;
+      border: 1px solid rgba(34, 49, 49, .24);
+      border-radius: 999px;
+      padding: .22rem .58rem;
+      background: rgba(255, 255, 255, .45);
+      white-space: nowrap
+    }
+
+    .proj-card-media {
+      position: relative;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: none;
+      min-height: 255px
+    }
+
+    .proj-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .75s var(--e1)
+    }
+
+    .proj-card:hover .proj-card-media img { transform: scale(1.05) }
+
+    .proj-view {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 47, 47, .25);
+      background: rgba(243, 238, 226, .92);
+      color: #213333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 .95rem 0 1rem;
+      font-size: .86rem;
+      font-weight: 600
+    }
+
+    .proj-view-arr {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(24, 48, 48, .12);
+      border: 1px solid rgba(24, 48, 48, .35);
+      display: grid;
+      place-items: center;
+      color: #183030;
+      font-size: 1rem;
+      transition: transform .3s var(--e1), background .3s
+    }
+
+    .proj-card:hover .proj-view-arr { transform: translateX(2px); background: rgba(24, 48, 48, .2) }
+
+    .proj-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .8rem;
+      padding: .15rem .2rem .2rem .25rem
+    }
+
+    .proj-title {
+      font-family: var(--fb);
+      font-size: clamp(1.55rem, 2.2vw, 2.15rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: #1d2f2f
+    }
+
+    .proj-desc {
+      font-size: .96rem;
+      line-height: 1.62;
+      color: #405454;
+      max-width: 48ch
+    }
+
+    #legacy-pgrid { display: none }
+
+    @media(max-width:980px) {
+      .proj-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        margin-left: 0 !important;
+        margin-top: 0 !important
+      }
+
+      .proj-tags {
+        order: 1;
+        padding-top: 0;
+        position: static
+      }
+
+      .proj-card-media {
+        order: 2;
+        min-height: 265px
+      }
+
+      .proj-copy {
+        order: 3
+      }
+    }
+
+    @media(max-width:560px) {
+      .proj-card { padding: .7rem }
+      .proj-card-media { min-height: 235px }
+      .proj-title { font-size: 1.45rem }
+      .proj-desc { font-size: .92rem }
+      .proj-view { height: 42px; font-size: .82rem }
+    }
+
+    /* â”€â”€ PROCESS STRIP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .pstrips {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .pstrip-item {
+      background: var(--s1);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: background .35s
+    }
+
+    .pstrip-item:hover {
+      background: var(--s2)
+    }
+
+    .pstrip-n {
+      font-family: var(--fh);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--brand);
+      line-height: 1
+    }
+
+    .pstrip-l {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      margin-top: .5rem
+    }
+
+    @media(max-width:760px) {
+      .pstrips {
+        grid-template-columns: repeat(3, 1fr)
+      }
+    }
+
+    @media(max-width:480px) {
+      .pstrips {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    /* â”€â”€ TESTIMONIALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem
+    }
+
+    .testi-card {
+      background: var(--s1);
+      padding: 2rem;
+      border-radius: 3px;
+      border-left: 3px solid var(--brand);
+      transition: transform .4s var(--e1), box-shadow .4s var(--e1);
+    }
+
+    .testi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .3)
+    }
+
+    .testi-stars {
+      display: flex;
+      gap: .3rem;
+      margin-bottom: 1rem;
+      color: var(--brand);
+      font-size: .9rem
+    }
+
+    .testi-quote {
+      font-size: .95rem;
+      font-style: italic;
+      color: var(--fg);
+      line-height: 1.6;
+      margin-bottom: 1.5rem
+    }
+
+    .testi-author {
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: .2rem
+    }
+
+    .testi-role {
+      font-size: .85rem;
+      color: var(--fg2)
+    }
+
+    @media(max-width:960px) {
+      .testimonials {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(max-width:640px) {
+      .testimonials {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* â”€â”€ TEAM SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 2rem
+    }
+
+    .team-member {
+      text-align: center
+    }
+
+    .team-avatar {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: var(--s1);
+      margin-bottom: 1.2rem;
+      overflow: hidden
+    }
+
+    .team-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      border-radius: 50%;
+      border: 2px solid var(--brand)
+    }
+
+    .team-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: .3rem
+    }
+
+    .team-role {
+      font-size: .85rem;
+      color: var(--brand);
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .team-bio {
+      font-size: .9rem;
+      color: var(--fg2);
+      margin-top: .7rem;
+      line-height: 1.5
+    }
+
+    @media(max-width:960px) {
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(max-width:640px) {
+      .team-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* â”€â”€ SCROLL ANIMATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    [data-scroll] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease
+    }
+
+    [data-scroll].visible {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* â”€â”€ MAPS SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    .map-info-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem
+    }
+
+    .map-info-item {
+      background: var(--s1);
+      padding: 1.5rem;
+      border-radius: 3px;
+      border-left: 3px solid var(--brand)
+    }
+
+    .map-info-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--fg2);
+      margin-bottom: .5rem
+    }
+
+    .map-info-value {
+      font-size: 1rem;
+      color: var(--fg);
+      font-weight: 600;
+      line-height: 1.6
+    }
+
+    .map-info-value a {
+      color: var(--brand);
+      text-decoration: none;
+      transition: opacity .3s
+    }
+
+    .map-info-value a:hover {
+      opacity: .8
+    }
+
+    .map-full {
+      width: 100%;
+      height: 420px;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .map-full iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      filter: invert(90%) hue-rotate(180deg) brightness(.85) contrast(.9) grayscale(.2)
+    }
+
+    .map-header {
+      margin-bottom: 2rem
+    }
+
+    .map-header .lbl {
+      display: block;
+      margin-bottom: .5rem
+    }
+
+    @media(max-width:760px) {
+      .map-info-row {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:500px) {
+      .map-info-row {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11093753162"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-11093753162');
+  </script></head>
+
+<body>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+  <div id="wipe"></div>
+
+  <nav class="nav">
+    <div class="wrap">
+      <a href="index.html" class="nav-logo"><img src="images/bmg-logo-header.png" alt="BMG Interiors" width="300" height="110"
+          loading="eager"></a>
+      <ul class="nav-ul">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html" class="cur">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-r">
+        <a href="contact.html" class="btn btn-g"><span>Start a Project</span><span class="btn-arr" style="display:inline-flex; align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px; transform:translateY(1px);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span></a>
+      </div>
+      <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav-mob" id="nav-mob">
+    <a href="services.html">Services</a><a href="portfolio.html">Portfolio</a>
+    <a href="about.html">About</a><a href="clients.html">Clients</a><a href="contact.html">Contact</a>
+    <a href="contact.html" style="color:var(--brand)">Start a Project</a>
+  </div>
+
+  <!-- PAGE HERO -->
+  <section class="phero">
+    <div class="phero-bg"></div>
+    <div class="phero-grid" id="hero-pg"></div>
+    <div class="phero-rule"></div>
+    <div class="gspot" style="width:500px;height:500px;top:5%;right:8%;opacity:.65"></div>
+    <div class="wrap">
+      <div class="phero-ey" data-fade="0">
+        <div class="phero-ey-line"></div><span class="lbl">Our Work</span>
+      </div>
+      <h1 class="t-disp" data-words="Selected|Projects" data-wd="0.1"></h1>
+      <p class="phero-sub" data-fade="0.7">450+ extraordinary spaces crafted across luxury residential, commercial and
+        hospitality sectors. Every project a story of craft, precision and obsession.</p>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:2.5rem" data-fade="0.9">
+        <div class="num-item">
+          <div class="num-val">450<span style="font-size:.6em">+</span></div>
+          <div class="num-lbl">Total Projects</div>
+        </div>
+        <div class="num-item">
+          <div class="num-val">38<span style="font-size:.6em">+</span></div>
+          <div class="num-lbl">Years</div>
+        </div>
+        <div class="num-item">
+          <div class="num-val">40<span style="font-size:.6em">+</span></div>
+          <div class="num-lbl">Awards Won</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="mqband">
+    <div class="mqtrack"
+      data-mq='["Residential","Commercial","Hospitality","Retail","Turnkey","Award-Winning","450+ Projects","Mumbai Studio","Est. 1988"]'>
+    </div>
+  </div>
+
+  <!-- FEATURED PROJECT -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sh">
+        <div class="lbl" data-r>Featured Project</div>
+      </div>
+      <div class="feat-proj">
+        <div data-r>
+          <div class="feat-img">
+            <div class="feat-img-bg">
+              <img src="2_IMG-20210809-WA0006_watermark_Thu_02092021_125857.jpg"
+                alt="The Mehta Residence — Byculla, Mumbai"
+                style="width:100%;height:100%;object-fit:cover;display:block;" loading="eager">
+            </div>
+            <div class="pover"
+              style="opacity:0;position:absolute;inset:0;background:none;display:flex;align-items:center;justify-content:center">
+              <span class="pill-g" style="padding:.5rem 1.2rem;font-size:10px">Residential</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="feat-num" data-r>01</div>
+          <div class="feat-tag" data-r data-d="1">
+            <div class="feat-dot"></div>
+            <span class="lbl">Flagship Residence</span>
+          </div>
+          <h2 class="feat-title" data-r data-d="2">The Mehta Residence<br><em>Byculla, Mumbai</em></h2>
+          <p class="body-l" data-r data-d="3">A 4,200 sq.ft masterpiece layering rich Italian marble, hand-woven
+            textiles and bespoke joinery into a home that breathes luxury and warmth simultaneously.</p>
+          <div class="feat-meta" data-r data-d="4">
+            <div class="feat-meta-item">
+              <div class="fmt-l">Category</div>
+              <div class="fmt-v">Luxury Residential</div>
+            </div>
+            <div class="feat-meta-item">
+              <div class="fmt-l">Area</div>
+              <div class="fmt-v">4,200 sq.ft</div>
+            </div>
+            <div class="feat-meta-item">
+              <div class="fmt-l">Duration</div>
+              <div class="fmt-v">18 months</div>
+            </div>
+            <div class="feat-meta-item">
+              <div class="fmt-l">Year</div>
+              <div class="fmt-v">2025</div>
+            </div>
+          </div>
+          <a href="contact.html" class="btn btn-g" data-r data-d="5"><span>Discuss Your Project</span><span class="btn-arr" style="display:inline-flex; align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px; transform:translateY(1px);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- FULL PORTFOLIO -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sh-row">
+        <div>
+          <div class="lbl" data-r>All Projects</div>
+          <h2 class="t-xl" data-r data-d="2" style="margin-top:.9rem">450+ Spaces<br><em class="gt">Transformed</em>
+          </h2>
+        </div>
+      </div>
+      <div style="margin-bottom: 2rem;"></div>
+      <div class="proj-cards" id="proj-cards"></div>
+      <div class="pgrid-full" id="legacy-pgrid" aria-hidden="true">
+        <div class="pif" data-r>
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/1.jpg" alt="The Mehta Residence interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/2.jpg" alt="Vertex HQ interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg"
+                alt="Aurum's Office — Corporate Interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/3.jpg" alt="Sky Penthouse interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/4.jpg" alt="Soleil Boutique retail store"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="3">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/5.jpg" alt="The Kapoor Villa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r>
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/6.JPG" alt="Nexus Workspace interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/7.JPG" alt="The Ivory Spa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/8.jpg" alt="Regal Apartments interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r>
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/9.jpg" alt="Aura Showroom interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/10.JPG" alt="Zen Corporate Hub interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/11.JPG" alt="Elara Suites interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r>
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/12.JPG" alt="Oasis Wellness interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="1">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/13.JPG" alt="Heritage Villa interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pif" data-r data-d="2">
+          <div class="pif-thumb">
+            <div class="pif-bg">
+              <img src="/images/projects/14.JPG" alt="Skyline Offices interior"
+                style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="lb" class="lb">
+    <div class="lb-close">&times;</div>
+    <div class="lb-hint">Click outside or press Escape to close</div>
+    <img src="" alt="" class="lb-img" id="lb-img">
+  </div>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- STATS STRIP -->
+  <section class="sec" style="padding-block:4rem">
+    <div class="wrap">
+      <div class="pstrips" data-r>
+        <div class="pstrip-item">
+          <div class="pstrip-n"><span data-count="450">0</span>+</div>
+          <div class="pstrip-l">Projects</div>
+        </div>
+        <div class="pstrip-item">
+          <div class="pstrip-n"><span data-count="38">0</span>+</div>
+          <div class="pstrip-l">Years</div>
+        </div>
+        <div class="pstrip-item">
+          <div class="pstrip-n"><span data-count="98">0</span>%</div>
+          <div class="pstrip-l">Satisfaction</div>
+        </div>
+        <div class="pstrip-item">
+          <div class="pstrip-n"><span data-count="40">0</span>+</div>
+          <div class="pstrip-l">Awards</div>
+        </div>
+        <div class="pstrip-item">
+          <div class="pstrip-n">&#8377;1Cr+</div>
+          <div class="pstrip-l">Avg. Value</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sh">
+        <div class="lbl" data-r>Client Success Stories</div>
+      </div>
+      <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">Loved by<br><em class="gt">450+ Clients</em></h2>
+      <div class="testimonials" data-scroll>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-quote">"I would say we were blessed to have BMG team as an interior designer for our home.
+            Since our child was very small we couldn't give much time but BMG team handled it end to end — even
+            collaborating with the builders till possession. The process till handover was very smooth. Highly recommend
+            for high quality material and unique design."</p>
+          <div class="testi-author">Vishal Chauhan</div>
+          <div class="testi-role">Residential Client &bull; Google Review</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-quote">"We had an excellent experience with BMG Interiors. From the very first consultation,
+            it was clear they truly understood our vision. Their creativity and attention to detail were exceptional.
+            Mr. Bharat perfectly selected materials, colour schemes and furniture choices. The result was beyond our
+            expectations. Thank you very much Bharat and his team."</p>
+          <div class="testi-author">Payal Ladiwal</div>
+          <div class="testi-role">Residential Client &bull; Google Review</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testi-quote">"BMG Interiors helped us with room planning for our new flat in Navi Mumbai. They
+            maximized space and ensured a good flow between rooms. The 3D visualizations they shared really helped us
+            picture everything before execution."</p>
+          <div class="testi-author">Saujanya Sinha</div>
+          <div class="testi-role">Residential Client &bull; Google Review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- TEAM SECTION -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="sh">
+        <div class="lbl" data-r>Meet Our Experts</div>
+      </div>
+      <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">Visionary Designers<br><em class="gt">&
+          Craftspeople</em></h2>
+      <div class="team-grid" style="grid-template-columns:repeat(3,280px);justify-content:center" data-scroll>
+        <div class="team-member">
+          <div class="team-avatar" style="background:rgba(255,204,0,.08);color:var(--brand);font-family:var(--fh);font-size:3.5rem;display:grid;place-items:center">
+            MG
+          </div>
+          <div class="team-name">Manoj Gadhiya</div>
+          <div class="team-role">Founder</div>
+          <div class="team-bio">The visionary founder with 38 years of experience, setting the standard for luxury design in Mumbai.</div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar">
+            <img src="images/team/bharat.png" alt="Bharat Gadhiya — Co-founder, BMG Interiors" loading="lazy"
+              decoding="async">
+          </div>
+          <div class="team-name">Bharat Gadhiya</div>
+          <div class="team-role">Co-founder</div>
+          <div class="team-bio">Co-founder with 18 years of experience, specializing in high-end residential and hospitality projects.</div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar" style="overflow:hidden;background:#1a1400">
+            <img src="/images/team/Pratik.jpeg" alt="Pratik Gupta" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block">
+          </div>
+          <div class="team-name">Pratik Gupta</div>
+          <div class="team-role">Site Engineer & Designer</div>
+          <div class="team-bio">Bringing 5 years of technical expertise and design flair to every construction site.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="divider"></div>
+  </div>
+
+  <!-- CTA BAND -->
+  <section class="sec cta-band">
+    <div class="wrap">
+      <div class="cta-inner">
+        <span class="lbl">Start Your Project</span>
+        <h2 class="t-xl" data-r data-d="1" style="margin:1.2rem 0 1rem">Your Vision.<br><em class="gt">Our
+            Obsession.</em></h2>
+        <p data-r data-d="2">Every project begins with a conversation. Let&apos;s talk about what you want to create.
+        </p>
+        <div class="cta-btns" data-r data-d="3">
+          <a href="contact.html" class="btn btn-g btn-xl"><span>Book a Consultation</span><span class="btn-arr" style="display:inline-flex; align-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px; transform:translateY(1px);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span></a>
+          <a href="services.html" class="btn btn-o btn-xl"><span>Our Services</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION MAP -->
+  <section class="sec" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="map-header">
+        <div class="lbl" data-r>Visit Our Studio</div>
+        <h2 class="t-xl" data-r data-d="1" style="margin-top:.9rem">Located in<br><em class="gt">Byculla,
+            Mumbai</em></h2>
+      </div>
+      <div class="map-info-row" data-scroll>
+        <div class="map-info-item">
+          <div class="map-info-label">Address</div>
+          <div class="map-info-value">71, Mustafa Bazar, Victoria Road,<br>Byculla, Mumbai 400010</div>
+        </div>
+        <div class="map-info-item">
+          <div class="map-info-label">Contact</div>
+          <div class="map-info-value"><a href="tel:+919920100053">+91 99201 00053</a><br><a
+              href="mailto:info@bmginteriors.com">info@bmginteriors.com</a></div>
+        </div>
+        <div class="map-info-item">
+          <div class="map-info-label">Hours</div>
+          <div class="map-info-value">Mon–Fri: 10am – 7pm &bull; Sat: 10am – 6pm<br>Sun: By Appointment &bull; Public Holidays: Closed</div>
+        </div>
+      </div>
+    </div>
+    <div class="map-full">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.592451111703!2d72.86526011076492!3d19.212994981944945!2m3!1f0!2f0!3f0!3m3!1m2!1s0x3be7b7521b042105%3A0xe977f76b07add286!2sBMG%20Interiors!5e0!3m2!1sen!2sin!4v1772789616337!5m2!1sen!2sin"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="bmg-footer"></div>
+  <script src="js/footer.js"></script>
+  <script src="js/bmg.js"></script>
+  <script>
+    // Lightbox Functionality
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lb-img');
+    const lbClose = document.querySelector('.lb-close');
+
+    // Build stacked project cards from existing portfolio images
+    const projCards = document.getElementById('proj-cards');
+    const legacyGrid = document.getElementById('legacy-pgrid');
+    if (projCards && legacyGrid) {
+      const categories = [
+        ['Residential', 'Luxury Home'],
+        ['Commercial', 'Corporate Office'],
+        ['Commercial', 'Workplace'],
+        ['Residential', 'Penthouse'],
+        ['Retail', 'Showroom'],
+        ['Residential', 'Villa'],
+        ['Commercial', 'Workspace'],
+        ['Hospitality', 'Wellness'],
+        ['Residential', 'Apartment'],
+        ['Retail', 'Boutique'],
+        ['Commercial', 'Corporate Hub'],
+        ['Hospitality', 'Suites'],
+        ['Wellness', 'Spa'],
+        ['Residential', 'Heritage'],
+        ['Commercial', 'Office Tower']
+      ];
+
+      const descriptions = [
+        'A refined luxury residence with layered textures, bespoke finishes, and a calm architectural rhythm.',
+        'An executive workspace crafted for clarity, authority, and high-performance daily operations.',
+        'A modern corporate interior balancing agile layouts with premium material detailing.',
+        'A skyline penthouse designed around expansive views, elegant lighting, and timeless comfort.',
+        'A premium retail environment engineered to elevate product storytelling and customer flow.',
+        'A private villa blending artisanal craftsmanship with contemporary luxury living.',
+        'A smart workspace concept uniting efficiency, wellness, and brand-forward identity.',
+        'A restorative spa interior with tactile finishes, gentle lighting, and a serene guest journey.',
+        'A contemporary apartment transformed through intelligent planning and custom furniture.',
+        'A boutique concept with high-impact visual merchandising and polished customer touchpoints.',
+        'A corporate hub designed for modern teams, seamless collaboration, and executive presence.',
+        'A high-end suite experience with soft palettes, layered textures, and hospitality precision.',
+        'A wellness-focused destination balancing warmth, acoustics, and premium relaxation zones.',
+        'A heritage-inspired home where timeless architectural cues meet modern functionality.',
+        'A future-ready office tower floor with strong brand character and flexible planning.'
+      ];
+
+      const cards = Array.from(legacyGrid.querySelectorAll('img')).map((img, i) => {
+        const alt = (img.alt || `Project ${i + 1}`).replace(/\s+interior$/i, '').replace(/['\u2019]s/g, '');
+        const title = alt.includes('—') ? alt.split('—')[0].trim() : alt;
+        const tags = categories[i % categories.length];
+        const desc = descriptions[i % descriptions.length];
+        return `
+          <article class="proj-card" style="--card-index: ${i};">
+            <div class="proj-tags">
+              <span class="proj-tag">${tags[0]}</span>
+              <span class="proj-tag">${tags[1]}</span>
+            </div>
+            <div class="proj-card-media" data-lb="true">
+              <img src="${img.src}" alt="${img.alt}" loading="lazy" decoding="async" fetchpriority="low">
+              <div class="proj-view">
+                <span>View Project</span>
+                <span class="proj-view-arr">&rarr;</span>
+              </div>
+            </div>
+            <div class="proj-copy">
+              <h3 class="proj-title">${title}</h3>
+              <p class="proj-desc">${desc}</p>
+            </div>
+          </article>
+        `;
+      });
+      projCards.innerHTML = cards.join('');
+      legacyGrid.innerHTML = '';
+      legacyGrid.remove();
+    }
+
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.proj-card-media, .pif');
+      if (!trigger) return;
+      const img = trigger.querySelector('img');
+      if (img) {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lb.classList.add('on');
+      }
+    });
+
+    const closeLB = () => lb.classList.remove('on');
+    lb.onclick = (e) => { if (e.target !== lbImg) closeLB(); };
+    lbClose.onclick = closeLB;
+    window.onkeydown = (e) => { if (e.key === 'Escape') closeLB(); };
+
+    // Scroll reveal animations for testimonials and team sections
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          scrollObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('[data-scroll]').forEach(el => {
+      scrollObserver.observe(el);
+    });
+  </script>
+</body>
+
+</html>

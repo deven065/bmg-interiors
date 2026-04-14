@@ -258,7 +258,17 @@
       border-radius: 50%;
       overflow: hidden;
       margin-bottom: 1.2rem;
-      position: relative
+      position: relative;
+      background: var(--s1);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      transition: border-color 0.4s, background 0.4s;
+    }
+
+    .team-card:hover .team-av {
+      border-color: var(--brand);
+      background: var(--s2);
     }
 
     .team-av-bg {
@@ -491,6 +501,7 @@
       position: relative;
       border-right: 1px solid rgba(0, 0, 0, .06);
       background: #fff;
+      transition: background .25s;
     }
 
     .num-item:last-child {
@@ -507,10 +518,6 @@
       height: 3px;
       background: #ffcc00;
       border-radius: 3px 3px 0 0;
-    }
-
-    .num-item::before {
-      display: none;
     }
 
     .num-val {
@@ -530,6 +537,11 @@
       color: #7a5800;
       margin-top: .7rem;
       line-height: 1.5;
+    }
+
+    /* remove the old ::before accent line */
+    .num-item::before {
+      display: none;
     }
 
     /* Tablet: 3 cols, last 2 items centred in row 2 */

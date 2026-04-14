@@ -59,7 +59,9 @@
   <style>
     /* ── HOME HERO ────────────────────────────────────────── */
     .hero {
+      height: 100dvh;
       min-height: 100dvh;
+      max-height: 100dvh;
       display: flex;
       align-items: flex-end;
       position: relative;
@@ -182,29 +184,144 @@
       transform: translateY(-6.5px) rotate(-45deg);
     }
 
-    .hero-video-wrap {
+    .hero-slideshow {
       position: absolute;
       inset: 0;
       z-index: 0;
-      overflow: hidden
+      overflow: hidden;
+      background: #000;
     }
 
-    .hero-video {
-      width: 100%;
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hero-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
+    }
+
+    .hero-strip {
+      flex: 1;
       height: 100%;
-      object-fit: cover;
-      object-position: center;
-      filter: saturate(1) contrast(1.02) brightness(.75)
+      overflow: hidden;
+      /* background-size/position set inline per-strip via JS */
+      /* No transform — strips are static decoration; slide-level GSAP drives motion */
+      backface-visibility: hidden;
     }
 
-    .hero-video-wrap::after {
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide { transition: opacity 0.5s ease !important; will-change: auto; }
+    }
+
+    /* Ken Burns disabled for video slides — scaling blurs video content */
+
+    /* ── Progress timer bar ──────────────────────────────────────── */
+    .hero-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: rgba(255, 204, 0, 0.85);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── Bullet navigation ───────────────────────────────────────── */
+    .hero-bullets {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .hero-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+      transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .hero-bullet.active {
+      width: 22px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.9);
+      border-color: transparent;
+    }
+    .hero-bullet:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ── Slide counter ───────────────────────────────────────────── */
+    .hero-counter {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 8.5rem;
+      z-index: 10;
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+    .hero-counter .hc-cur {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .hero-slideshow::after {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(180deg, rgba(6,6,6,.18) 0%, rgba(6,6,6,.1) 50%, rgba(6,6,6,.72) 100%),
-        linear-gradient(90deg, rgba(6,6,6,.55) 0%, rgba(6,6,6,.1) 60%, transparent 100%);
-      pointer-events: none
+      background: linear-gradient(180deg, transparent 55%, rgba(6,6,6,.50) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero-nav {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 5;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .hero-nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .hero-nav-btn:hover {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #000;
+      transform: translateY(-2px);
     }
 
     .hero-bg {
@@ -252,7 +369,7 @@
     }
 
     .hero-h1 {
-      flex-shrink: 0;
+      margin-bottom: .4rem;
       max-width: 700px
     }
 
@@ -460,13 +577,6 @@
         align-items: flex-end;
         padding-bottom: 2.25rem
       }
-      .hero-video-wrap {
-        background: #050505;
-      }
-      .hero-video {
-        object-fit: contain;
-        object-position: center center;
-      }
       .hero .wrap { bottom: 1.5rem }
       .hero-layout {
         gap: 1.25rem
@@ -618,7 +728,9 @@
 
     .about-sec .wrap {
       position: relative;
-      z-index: 2
+      z-index: 2;
+      max-width: 100%;
+      padding-inline: 0
     }
 
     .about-sec .wrap::before {
@@ -639,22 +751,42 @@
     }
 
     .about-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
       position: relative;
       z-index: 1
     }
 
+    .as-img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      min-height: 580px
+    }
+
+    .as-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .48);
+      pointer-events: none;
+      z-index: 1
+    }
+
     .about-copy {
-      background: rgba(8, 8, 8, .46);
-      border: 1px solid rgba(255, 204, 0, .16);
-      box-shadow: 0 22px 52px rgba(0, 0, 0, .4);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      padding: clamp(1.1rem, 2.4vw, 1.9rem);
-      border-radius: 2px
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 52%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(1.5rem, 3vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
+      z-index: 2;
+      background: none;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none
     }
 
     .about-copy > * {
@@ -717,11 +849,12 @@
     }
 
     .as-img {
-      aspect-ratio: 1.2/1;
-      position: relative;
-      border-radius: 2px;
-      overflow: hidden;
-      box-shadow: 28px 28px 60px rgba(0, 0, 0, .5)
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0
     }
 
     .as-img-bg {
@@ -756,29 +889,136 @@
 
     .as-badge {
       position: absolute;
-      right: -2.5rem;
-      top: 50%;
-      transform: translateY(-50%)
+      left: 2.5rem;
+      bottom: 2.5rem;
+      z-index: 2;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(255, 204, 0, .12);
+      border: 1.5px solid rgba(255, 204, 0, .55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.45)
+    }
+
+    .as-badge-n {
+      font-family: var(--fh);
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #ffcc00;
+      line-height: 1
+    }
+
+    .as-badge-l {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255, 204, 0, .85)
+    }
+
+    /* pillar list — global styles (desktop + mobile) */
+    .about-pillars {
+      list-style: none;
+      margin: 0 0 1.8rem;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .about-pillars li {
+      display: flex;
+      align-items: flex-start;
+      gap: .85rem;
+      font-size: .95rem;
+      line-height: 1.55;
+      color: rgba(240,232,218,.82);
+    }
+    .about-pillars li strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f7efe2;
+      margin-bottom: .18rem;
+    }
+    .ap-icon {
+      flex-shrink: 0;
+      font-size: .5rem;
+      color: var(--brand);
+      margin-top: .52rem;
+    }
+    .about-cta-mob {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--brand);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,204,0,.35);
+      padding-bottom: .28rem;
     }
 
     @media(max-width:900px) {
-      .about-strip {
-        grid-template-columns: 1fr;
-        gap: 3.5rem
-      }
+      .as-img-wrap { min-height: 520px }
 
       .about-copy {
-        margin-top: -1rem
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        padding: 3rem 1.5rem 1.8rem;
+        background: linear-gradient(to top, rgba(4,4,4,.95) 0%, rgba(4,4,4,.80) 55%, transparent 100%);
+        justify-content: flex-end
       }
 
       .as-badge {
-        right: .5rem
+        left: 1rem;
+        bottom: 1rem;
+        right: auto;
+        top: auto;
+        width: 90px;
+        height: 90px
       }
     }
 
     @media(max-width:480px) {
-      .as-img { aspect-ratio: 4/3 }
-      .as-badge { right: .25rem; top: auto; bottom: 1rem; transform: none }
+      .as-img-wrap { min-height: 460px }
+      .as-badge { left: .75rem; bottom: .75rem; width: 80px; height: 80px }
+    }
+
+    /* ── DESKTOP-ONLY: less congested about section ─────── */
+    @media(min-width:901px) {
+      .as-img-wrap { min-height: 660px }
+      .about-copy {
+        width: 46%;
+        padding: clamp(3rem, 5vw, 5.5rem) clamp(3rem, 5vw, 5rem);
+        gap: 0
+      }
+      .about-sec .t-xl {
+        font-size: clamp(2.4rem, 3.6vw, 3.6rem);
+        margin: 1.4rem 0 1.6rem !important
+      }
+      .about-sec .body-l {
+        line-height: 1.8;
+        margin-bottom: 2.2rem !important
+      }
+      .about-pillars {
+        gap: 1.5rem;
+        margin-bottom: 2.4rem
+      }
+      .about-pillars li { font-size: 1rem; line-height: 1.65 }
+      .about-pillars li strong { font-size: 1.05rem; margin-bottom: .3rem }
     }
 
     @media(max-width:640px) {
@@ -786,6 +1026,7 @@
         overflow: hidden !important;
       }
 
+      /* disable heavy animated layers — perf + they looked black on mobile */
       .about-sec::before { display: none; }
       .about-sec::after  { display: none; }
       .about-sec .wrap::before { display: none; }
@@ -800,6 +1041,7 @@
         position: relative;
       }
 
+      /* spacer block — pushes the copy down so this much image shows above */
       .as-img-wrap::before {
         content: '';
         display: block;
@@ -807,6 +1049,7 @@
         pointer-events: none;
       }
 
+      /* image fills the full height of (spacer + copy) */
       .as-img {
         position: absolute;
         inset: 0;
@@ -817,6 +1060,7 @@
         border-radius: 0;
       }
 
+      /* gradient scrim — strong at bottom where text sits, fading to clear at top */
       .as-img-wrap::after {
         position: absolute;
         inset: 0;
@@ -833,6 +1077,7 @@
         z-index: 1;
       }
 
+      /* copy: normal flow so it auto-sizes the container */
       .about-copy {
         position: relative;
         left: auto; right: auto; top: auto; bottom: auto;
@@ -845,6 +1090,7 @@
         z-index: 2;
       }
 
+      /* tighten text so it fits comfortably */
       .about-sec .t-xl {
         font-size: clamp(1.6rem, 7vw, 2.1rem);
         margin: .5rem 0 .9rem !important;
@@ -860,50 +1106,17 @@
         margin-bottom: 1.4rem !important;
       }
 
-      /* pillar list */
+      /* pillar list — mobile tweaks */
       .about-pillars {
-        list-style: none;
-        margin: 0 0 1.6rem;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
         gap: .85rem;
+        margin-bottom: 1.4rem;
       }
-      .about-pillars li {
-        display: flex;
-        align-items: flex-start;
-        gap: .75rem;
-        font-size: .84rem;
-        line-height: 1.5;
-        color: rgba(240,232,218,.82);
-      }
-      .about-pillars li strong {
-        display: block;
-        font-size: .88rem;
-        font-weight: 700;
-        color: #f7efe2;
-        margin-bottom: .15rem;
-      }
-      .ap-icon {
-        flex-shrink: 0;
-        font-size: .45rem;
-        color: var(--brand);
-        margin-top: .45rem;
-      }
-      .about-cta-mob {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .18em;
-        text-transform: uppercase;
-        color: var(--brand);
-        text-decoration: none;
-        border-bottom: 1px solid rgba(255,204,0,.35);
-        padding-bottom: .25rem;
-      }
+      .about-pillars li { font-size: .84rem; }
+      .about-pillars li strong { font-size: .88rem; }
 
+      .about-cta-mob { font-size: 10px; }
+
+      /* hide the badge — no room on mobile */
       .as-badge { display: none; }
     }
 
@@ -948,19 +1161,19 @@
     }
     .hbtn:hover .hbtn-arr { transform: translateX(6px); }
 
-    /* Portfolio — outlined with sweeping shimmer */
+    /* Portfolio — white outline before hover for readability */
     .hbtn-port {
-      color: var(--fg);
+      color: #ffffff;
       background: transparent;
-      border: 1px solid rgba(255, 204, 0, .32);
+      border: 1px solid rgba(255, 255, 255, .32);
       transition: color .36s var(--e1), border-color .36s, transform .42s var(--e1), box-shadow .42s var(--e1);
     }
-    /* shimmer beam that loops */
+    /* shimmer beam that loops — white shimmer for the white button */
     .hbtn-port::before {
       content: '';
       position: absolute;
       top: 0; left: -80%; width: 55%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,204,0,.22), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
       transform: skewX(-18deg);
       animation: hbtn-sweep 2.8s ease-in-out infinite;
     }
@@ -1072,7 +1285,116 @@
       .hero-content::before { display: none; }
     }
 
-    /* ── APP LAUNCH SECTION (LUXURY) ─────────────────────────────── */
+    /* ─────────────────────────────────────────────────────────────
+       LEGACY STRIP  –  compact "38 years" highlight
+    ───────────────────────────────────────────────────────────── */
+    .legacy-sec {
+      background: #080808;
+      border-top: 1px solid rgba(255,204,0,.12);
+      border-bottom: 1px solid rgba(255,204,0,.12);
+      padding: 3rem clamp(1.5rem, 5vw, 5rem);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Ghost number watermark */
+    .legacy-sec::before {
+      content: '38';
+      position: absolute;
+      right: clamp(1rem, 4vw, 4rem);
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--fh);
+      font-size: clamp(8rem, 18vw, 16rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: rgba(255,204,0,.045);
+      pointer-events: none;
+      user-select: none;
+    }
+    .legacy-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: clamp(1.5rem, 4vw, 5rem);
+      position: relative;
+      z-index: 1;
+    }
+    /* Big gold year number on the left */
+    .legacy-num {
+      font-family: var(--fh);
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--brand);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .legacy-num sup {
+      font-size: 0.38em;
+      vertical-align: super;
+      opacity: .75;
+    }
+    /* Thin vertical gold rule */
+    .legacy-rule {
+      width: 1px;
+      height: 3.5rem;
+      background: linear-gradient(180deg, transparent, rgba(255,204,0,.5) 40%, rgba(255,204,0,.5) 60%, transparent);
+      flex-shrink: 0;
+    }
+    /* Text block */
+    .legacy-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .legacy-copy strong {
+      font-family: var(--fh);
+      font-size: clamp(1.1rem, 2vw, 1.55rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .legacy-copy p {
+      font-family: var(--fb);
+      font-size: clamp(0.78rem, 1.2vw, 0.88rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.42);
+      line-height: 1.6;
+      margin: 0;
+      max-width: 420px;
+    }
+    /* Push CTA to the far right */
+    .legacy-cta {
+      margin-left: auto;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--fb);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #000;
+      background: var(--brand);
+      text-decoration: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 2px;
+      transition: opacity .25s, transform .25s;
+    }
+    .legacy-cta:hover { opacity: .88; transform: translateY(-1px); }
+    .legacy-cta svg { transition: transform .25s; }
+    .legacy-cta:hover svg { transform: translateX(3px); }
+    @media(max-width: 700px) {
+      .legacy-inner { flex-wrap: wrap; gap: 1rem; }
+      .legacy-rule  { display: none; }
+      .legacy-cta   { margin-left: 0; }
+    }
+
+    /* ── APP LAUNCH SECTION (LUXURY) ───────────────────────────── */
     .app-launch-sec {
       background: #0a0908;
       position: relative;
@@ -1104,6 +1426,7 @@
       align-items: center;
       position: relative; z-index: 1;
     }
+    /* ── COPY (RIGHT) ── */
     .app-launch-copy { position: relative; }
     .al-eyebrow {
       display: inline-flex; align-items: center; gap: .6rem;
@@ -1111,7 +1434,8 @@
     }
     .al-dot {
       width: 8px; height: 8px; border-radius: 50%;
-      background: #ffcc00; flex-shrink: 0;
+      background: #ffcc00;
+      flex-shrink: 0;
       animation: alPulse 2s ease-in-out infinite;
     }
     @keyframes alPulse {
@@ -1127,8 +1451,10 @@
     .al-title {
       font-family: var(--fh);
       font-size: clamp(2rem, 3.8vw, 3.6rem);
-      font-weight: 700; color: #f0ebe3;
-      line-height: 1.1; letter-spacing: -.022em;
+      font-weight: 700;
+      color: #f0ebe3;
+      line-height: 1.1;
+      letter-spacing: -.022em;
       margin: 0 0 1.5rem;
     }
     .al-title span { display: block; }
@@ -1136,8 +1462,10 @@
       font-family: var(--fb);
       font-size: .945rem; line-height: 1.78;
       color: rgba(230,218,202,.52);
-      max-width: 400px; margin-bottom: 2.6rem;
+      max-width: 400px;
+      margin-bottom: 2.6rem;
     }
+    /* Features */
     .al-features {
       list-style: none; padding: 0;
       margin: 0 0 2.8rem;
@@ -1148,7 +1476,8 @@
       width: 34px; height: 34px; border-radius: 9px;
       background: rgba(255,204,0,.08);
       border: 1px solid rgba(255,204,0,.22);
-      display: grid; place-items: center; flex-shrink: 0; margin-top: .1rem;
+      display: grid; place-items: center; flex-shrink: 0;
+      margin-top: .1rem;
     }
     .al-feat-ico svg { width: 14px; height: 14px; stroke: #ffcc00; fill: none; stroke-width: 2; }
     .al-feat-text strong {
@@ -1160,11 +1489,13 @@
       font-family: var(--fb); font-size: .82rem;
       color: rgba(230,218,202,.44); line-height: 1.5;
     }
+    /* CTAs */
     .al-cta-group { display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2rem; }
     .al-cta-btns { display: flex; gap: .85rem; flex-wrap: wrap; align-items: center; }
     .al-btn-primary {
       display: inline-flex; align-items: center; gap: .6rem;
-      padding: .92rem 2.2rem; border-radius: 3px;
+      padding: .92rem 2.2rem;
+      border-radius: 3px;
       background: #ffcc00; color: #0a0908;
       font-family: var(--fb); font-size: 11px; font-weight: 700;
       letter-spacing: .18em; text-transform: uppercase;
@@ -1180,17 +1511,22 @@
     .al-btn-primary:hover svg { transform: translateX(4px); }
     .al-btn-secondary {
       display: inline-flex; align-items: center;
-      padding: .88rem 1.8rem; border-radius: 3px;
+      padding: .88rem 1.8rem;
+      border-radius: 3px;
       background: transparent; color: rgba(230,218,202,.65);
       font-family: var(--fb); font-size: 11px; font-weight: 600;
       letter-spacing: .15em; text-transform: uppercase;
       text-decoration: none; border: 1px solid rgba(230,218,202,.18);
       transition: border-color .3s, color .3s, transform .35s var(--e1);
     }
-    .al-btn-secondary:hover { border-color: rgba(255,204,0,.5); color: #ffcc00; transform: translateY(-2px); }
+    .al-btn-secondary:hover {
+      border-color: rgba(255,204,0,.5); color: #ffcc00; transform: translateY(-2px);
+    }
+    /* Lead form */
     .al-form {
       display: flex; gap: .7rem; flex-wrap: wrap;
-      padding: 1.5rem; border-radius: 12px;
+      padding: 1.5rem;
+      border-radius: 12px;
       background: rgba(255,255,255,.025);
       border: 1px solid rgba(255,204,0,.14);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -1203,23 +1539,29 @@
     }
     .al-input {
       flex: 1; min-width: 130px;
-      padding: .72rem 1rem; border-radius: 6px;
+      padding: .72rem 1rem;
+      border-radius: 6px;
       border: 1px solid rgba(255,204,0,.18);
       background: rgba(255,255,255,.04);
-      color: #f0ebe3; font-family: var(--fb); font-size: .875rem;
-      outline: none; transition: border-color .3s;
+      color: #f0ebe3;
+      font-family: var(--fb); font-size: .875rem;
+      outline: none;
+      transition: border-color .3s;
     }
     .al-input::placeholder { color: rgba(230,218,202,.28); }
     .al-input:focus { border-color: rgba(255,204,0,.52); }
     .al-form-btn {
-      padding: .72rem 1.4rem; border-radius: 6px;
+      padding: .72rem 1.4rem;
+      border-radius: 6px;
       background: #ffcc00; color: #0a0908;
       font-family: var(--fb); font-size: 11px; font-weight: 700;
       letter-spacing: .14em; text-transform: uppercase;
-      border: none; cursor: pointer; white-space: nowrap;
+      border: none; cursor: pointer;
+      white-space: nowrap;
       transition: background .3s, transform .3s;
     }
     .al-form-btn:hover { background: #ffdd33; transform: translateY(-1px); }
+    /* Exclusivity line */
     .al-exclusive {
       display: flex; align-items: center; gap: .55rem;
       font-family: var(--fb); font-size: .8rem;
@@ -1230,16 +1572,24 @@
       width: 18px; height: 1px;
       background: rgba(255,204,0,.38); flex-shrink: 0;
     }
+    /* ── PHONE MOCKUP (LEFT) ── */
     .app-phone-wrap {
       display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 1; padding: 2.5rem 1.5rem;
+      position: relative; z-index: 1;
+      padding: 2.5rem 1.5rem;
     }
     .app-phone {
-      width: min(240px, 46vw); aspect-ratio: 9/19.5;
-      border-radius: 40px; border: 1.5px solid rgba(255,204,0,.28);
-      background: #141210; position: relative;
+      width: min(240px, 46vw);
+      aspect-ratio: 9/19.5;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255,204,0,.28);
+      background: #141210;
+      position: relative;
       transform: rotate(-5deg);
-      box-shadow: 0 0 0 7px rgba(255,204,0,.04), 0 50px 100px rgba(0,0,0,.78), 0 0 80px rgba(255,204,0,.07) inset;
+      box-shadow:
+        0 0 0 7px rgba(255,204,0,.04),
+        0 50px 100px rgba(0,0,0,.78),
+        0 0 80px rgba(255,204,0,.07) inset;
       animation: phoneFloat 5s ease-in-out infinite;
     }
     @keyframes phoneFloat {
@@ -1253,46 +1603,94 @@
       background: rgba(255,204,0,.18); z-index: 2;
     }
     .ap-screen {
-      position: absolute; inset: 18px 8px 12px;
-      border-radius: 30px; overflow: hidden;
-      background: #0f0d0b; display: flex; flex-direction: column;
+      position: absolute;
+      inset: 18px 8px 12px;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #0f0d0b;
+      display: flex; flex-direction: column;
     }
     .ap-status {
       display: flex; justify-content: space-between; align-items: center;
       padding: 8px 14px 0; flex-shrink: 0;
     }
-    .ap-status-time { font-family: var(--fb); font-size: 8px; font-weight: 700; color: rgba(240,235,226,.65); }
+    .ap-status-time {
+      font-family: var(--fb); font-size: 8px; font-weight: 700;
+      color: rgba(240,235,226,.65);
+    }
     .ap-status-icon {
       width: 14px; height: 7px;
-      border: 1px solid rgba(240,235,226,.35); border-radius: 2px; position: relative;
+      border: 1px solid rgba(240,235,226,.35); border-radius: 2px;
+      position: relative;
     }
     .ap-status-icon::after {
       content: ''; position: absolute;
       left: 1px; top: 1px; bottom: 1px; width: 65%;
       background: rgba(255,204,0,.75); border-radius: 1px;
     }
-    .ap-app-header { padding: 10px 14px 8px; flex-shrink: 0; border-bottom: 1px solid rgba(255,204,0,.08); }
-    .ap-greeting { font-family: var(--fb); font-size: 7.5px; color: rgba(240,235,226,.4); margin-bottom: 2px; }
-    .ap-project-label-top { font-family: var(--fh); font-size: 11px; font-weight: 700; color: #f0ebe3; }
-    .ap-body { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
-    .ap-card { border-radius: 10px; border: 1px solid rgba(255,204,0,.14); background: rgba(255,204,0,.05); overflow: hidden; }
+    .ap-app-header {
+      padding: 10px 14px 8px; flex-shrink: 0;
+      border-bottom: 1px solid rgba(255,204,0,.08);
+    }
+    .ap-greeting {
+      font-family: var(--fb); font-size: 7.5px;
+      color: rgba(240,235,226,.4); margin-bottom: 2px;
+    }
+    .ap-project-label-top {
+      font-family: var(--fh); font-size: 11px; font-weight: 700;
+      color: #f0ebe3;
+    }
+    .ap-body {
+      flex: 1; padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      overflow: hidden;
+    }
+    .ap-card {
+      border-radius: 10px;
+      border: 1px solid rgba(255,204,0,.14);
+      background: rgba(255,204,0,.05);
+      overflow: hidden;
+    }
     .ap-card-img {
       width: 100%; height: 52px;
-      background: linear-gradient(135deg, #1e180f, #2c2014 50%, #1a1309);
+      background: linear-gradient(135deg, #1e180f 0%, #2c2014 50%, #1a1309);
       display: grid; place-items: center;
+      position: relative;
     }
-    .ap-card-img-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; width: 80%; height: 68%; }
+    .ap-card-img-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 2px; width: 80%; height: 68%;
+    }
     .ap-card-img-cell { border-radius: 2px; background: rgba(255,204,0,.12); }
     .ap-card-img-cell:nth-child(1) { background: rgba(255,204,0,.24); }
     .ap-card-img-cell:nth-child(3) { background: rgba(255,204,0,.17); }
     .ap-card-info { padding: 8px 10px; }
-    .ap-room-label { font-family: var(--fb); font-size: 7px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #ffcc00; margin-bottom: 2px; }
-    .ap-room-name { font-family: var(--fh); font-size: 10px; font-weight: 700; color: #f0ebe3; margin-bottom: 7px; }
-    .ap-prog-row { display: flex; justify-content: space-between; font-family: var(--fb); font-size: 7px; color: rgba(240,235,226,.42); margin-bottom: 4px; }
-    .ap-prog-track { width: 100%; height: 4px; border-radius: 4px; background: rgba(255,204,0,.1); overflow: hidden; }
-    .ap-prog-fill { height: 100%; width: 70%; border-radius: 4px; background: linear-gradient(90deg, #cc9900, #ffcc00); position: relative; }
+    .ap-room-label {
+      font-family: var(--fb); font-size: 7px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: #ffcc00; margin-bottom: 2px;
+    }
+    .ap-room-name {
+      font-family: var(--fh); font-size: 10px; font-weight: 700;
+      color: #f0ebe3; margin-bottom: 7px;
+    }
+    .ap-prog-row {
+      display: flex; justify-content: space-between;
+      font-family: var(--fb); font-size: 7px;
+      color: rgba(240,235,226,.42); margin-bottom: 4px;
+    }
+    .ap-prog-track {
+      width: 100%; height: 4px; border-radius: 4px;
+      background: rgba(255,204,0,.1); overflow: hidden;
+    }
+    .ap-prog-fill {
+      height: 100%; width: 70%; border-radius: 4px;
+      background: linear-gradient(90deg, #cc9900, #ffcc00);
+      position: relative;
+    }
     .ap-prog-fill::after {
-      content: ''; position: absolute; inset: 0;
+      content: '';
+      position: absolute; inset: 0;
       background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.38) 50%, transparent 100%);
       animation: progShimmer 2.2s ease-in-out infinite;
     }
@@ -1302,10 +1700,24 @@
       100% { transform: translateX(200%); opacity: 0; }
     }
     .ap-updates { display: flex; flex-direction: column; gap: 5px; }
-    .ap-update { display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 6px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,204,0,.07); }
-    .ap-update-dot { width: 5px; height: 5px; border-radius: 50%; background: #ffcc00; flex-shrink: 0; }
-    .ap-update-text { font-family: var(--fb); font-size: 7.5px; color: rgba(240,235,226,.52); flex: 1; }
-    .ap-update-time { font-family: var(--fb); font-size: 6.5px; color: rgba(255,204,0,.48); }
+    .ap-update {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 8px; border-radius: 6px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,204,0,.07);
+    }
+    .ap-update-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #ffcc00; flex-shrink: 0;
+    }
+    .ap-update-text {
+      font-family: var(--fb); font-size: 7.5px;
+      color: rgba(240,235,226,.52); flex: 1;
+    }
+    .ap-update-time {
+      font-family: var(--fb); font-size: 6.5px;
+      color: rgba(255,204,0,.48);
+    }
     .ap-phone-glow {
       position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%);
       width: 180%; height: 45%;
@@ -1324,6 +1736,43 @@
       .al-form { flex-direction: column; }
       .al-input { min-width: 100%; }
       .app-phone { width: min(185px, 50vw); }
+    }
+
+    /* ── Homepage nav: hidden over hero, revealed after / on hover ─ */
+    .nav {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .38s ease,
+                  background .45s var(--e1),
+                  padding .45s var(--e1),
+                  border-color .45s;
+    }
+    .nav.past-hero,
+    .nav.peek {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── Hero floating logo (top-left, visible over video) ───── */
+    .hero-float-logo {
+      position: fixed;
+      top: clamp(.9rem, 2vw, 1.6rem);
+      left: clamp(1rem, 3vw, 2.5rem);
+      z-index: 5;
+      display: block;
+      opacity: 1;
+      pointer-events: all;
+      transition: opacity .38s ease;
+    }
+    .hero-float-logo img {
+      height: 62px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.45));
+    }
+    .hero-float-logo.past-hero {
+      opacity: 0;
+      pointer-events: none;
     }
   </style>
 
@@ -1351,15 +1800,18 @@
 
   <!-- LOADER -->
   <div id="loader">
+    <div class="ld-curtain-up"></div>
+    <div class="ld-curtain-dn"></div>
     <div class="ld-glow"></div>
     <div class="ld-logo-wrap">
       <div class="ld-ring"></div>
       <div class="ld-ring ld-ring2"></div>
       <div class="ld-ring ld-ring3"></div>
-      <div class="ld-logo"><img src="/images/bmg-logo.png" alt="BMG Interiors" width="300" height="110" loading="eager"
-          decoding="sync"></div>
+      <div class="ld-logo">
+        <img src="/images/bmg-logo-original.png" alt="BMG Interiors" width="300" height="110" loading="eager" decoding="sync">
+      </div>
     </div>
-    <p class="ld-tag">Luxury Interiors &middot; Mumbai</p>
+    <p class="ld-tag">Bespoke Design &bull; Est. 1988</p>
     <div class="ld-bottom">
       <div class="ld-bar-wrap">
         <div class="ld-bar"></div>
@@ -1371,6 +1823,22 @@
   </div>
 
   <!-- NAV -->
+  <nav class="nav" id="site-nav">
+    <div class="wrap">
+      <a href="index.html" class="nav-logo"><img src="/images/bmg-logo-header.png" alt="BMG Interiors" /></a>
+      <ul class="nav-ul">
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-r">
+        <a href="contact.html" class="btn btn-g"><span>Book Consultation</span></a>
+      </div>
+    </div>
+  </nav>
+
   <!-- MOBILE MENU -->
   <div class="nav-mob" id="nav-mob">
     <button class="nav-mob-close" id="nav-close" aria-label="Close menu">Close</button>
@@ -1383,6 +1851,10 @@
   </div>
 
   <!-- ═══════════════════════ HERO ═══════════════════════════ -->
+  <a href="index.html" class="hero-float-logo" id="hero-float-logo" aria-label="BMG Interiors Home">
+    <img src="/images/bmg-logo-header.png" alt="BMG Interiors" />
+  </a>
+
   <section class="hero" id="home">
     <div class="hero-floating-nav" data-fade="0.2">
       <button class="hero-menu-btn" id="ham" aria-label="Open menu">
@@ -1390,28 +1862,120 @@
       </button>
     </div>
 
-    <div class="hero-video-wrap">
-      <video class="hero-video" autoplay muted loop playsinline preload="auto">
-        <source src="/video.mp4" type="video/mp4">
-      </video>
+    <div class="hero-slideshow" id="hero-slideshow"></div>
+    <div class="hero-nav">
+      <button class="hero-nav-btn" id="hero-prev" aria-label="Previous image">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button class="hero-nav-btn" id="hero-next" aria-label="Next image">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
-    <div class="hero-bg"></div>
-    <div class="hero-pg" id="hero-pg"></div>
-    <div class="gspot" style="width:600px;height:600px;top:10%;right:5%;opacity:.7"></div>
 
+    <!-- Slider Revolution style UI -->
+    <div class="hero-progress" id="hero-progress"></div>
+    <div class="hero-bullets"  id="hero-bullets"></div>
+    <div class="hero-counter"  aria-hidden="true">
+      <span class="hc-cur" id="hero-cur">01</span>
+      <span>—</span>
+      <span id="hero-total">10</span>
+    </div>
 
+    <div class="wrap">
+      <div class="hero-layout">
+
+      </div>
+    </div>
 
   </section>
 
+  <!-- MARQUEE -->
+  <div class="mqband">
+    <div class="mqtrack"
+      data-mq='["Luxury Residential","Premium Commercial","Turnkey Projects","Custom Furniture","Space Planning","Award-Winning Design","Est. 1988","Mumbai Studio","450+ Projects"]'>
+    </div>
+  </div>
 
+  <!-- ═══════════════════════ LEGACY STRIP ══════════════════════════ -->
+  <div class="legacy-sec" id="legacy" aria-label="38 years in the industry">
+    <div class="legacy-inner">
 
+      <span class="legacy-num">38<sup>+</sup></span>
+
+      <span class="legacy-rule" aria-hidden="true"></span>
+
+      <div class="legacy-copy">
+        <strong>Years in the Industry</strong>
+        <p>Crafting extraordinary interiors across Mumbai since 1988 — trusted by 150+ clients.</p>
+      </div>
+
+      <a href="about.html" class="legacy-cta">
+        Our Story
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ STATS ══════════════════════════ -->
+  <section class="sec" style="padding-block:0" data-r data-d="1">
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-n"><span data-count="250">0</span><span style="font-size:.6em">+</span></div>
+          <div class="stat-l">Projects Delivered</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n"><span data-count="38">0</span><span style="font-size:.6em">+</span></div>
+          <div class="stat-l">Years of Craft</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n"><span data-count="98">0</span><span style="font-size:.6em">%</span></div>
+          <div class="stat-l">Client Satisfaction</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-n"><span data-count="15">0</span><span style="font-size:.6em">+</span></div>
+          <div class="stat-l">Design Awards</div>
+        </div>
+      </div>
+  </section>
+
+  <!-- ═══════════════════════ ABOUT STRIP ════════════════════ -->
+  <section class="sec about-sec" id="about" style="overflow:hidden; padding:0" data-r data-d="2">
+    <div class="wrap">
+      <div class="about-strip">
+        <div class="as-img-wrap" data-r>
+          <img src="/images/about-hero.jpg" class="as-img" alt="BMG Interiors Craftsmanship" loading="lazy" decoding="async">
+          <div class="about-copy">
+            <div class="lbl">Who We Are</div>
+            <h2 class="t-xl" style="margin:1rem 0">Welcome To<br><em class="gt">BMG Interiors</em></h2>
+            <p class="body-l" style="margin-bottom:1.6rem">Mumbai's trusted studio for luxury residential &amp; commercial interiors — crafting extraordinary spaces since 1988.</p>
+            <ul class="about-pillars">
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>450+ Projects Delivered</strong><br><span>Homes, offices, hotels &amp; retail — every scale, every vision.</span></div>
+              </li>
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>End-to-End Turnkey</strong><br><span>Design, execution &amp; handover — one team, zero compromise.</span></div>
+              </li>
+              <li>
+                <span class="ap-icon">&#9632;</span>
+                <div><strong>15+ Design Awards</strong><br><span>Recognised for excellence in craft, detail &amp; innovation.</span></div>
+              </li>
+            </ul>
+            <a href="about.html" class="btn-txt about-cta-mob">Our Full Story &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="wrap" style="padding-block:1.5rem">
     <div class="divider"></div>
   </div>
 
   <!-- ═══════════════════════ SERVICES TEASE ═════════════════ -->
-  <section class="sec home-services-sec" style="padding-top:0">
+  <section class="sec home-services-sec" style="padding-top:0" data-r data-d="3">
     <div class="wrap">
       <div class="sh-row">
         <div>
@@ -1480,7 +2044,7 @@
   </div>
 
   <!-- ═══════════════════════ PORTFOLIO TEASE ════════════════ -->
-  <section class="sec" id="projects">
+  <section class="sec" id="projects" data-r data-d="4">
     <div class="wrap">
       <div class="sh-row">
         <div>
@@ -1504,9 +2068,99 @@
       </div>
 
     </div><!-- /.wrap -->
-      <div class="proj-cards" id="home-proj-cards">
-        <!-- Projects rendered via JS to match portfolio behavior -->
-      </div>
+    <div class="pw-accordion" data-r>
+
+        <!-- 01 Mehta Residence -->
+        <div class="pw-col active" data-sector="residential">
+          <div class="pw-col-bg"><picture><source type="image/webp" srcset="/images/mehta-residence/photo-1.webp"><img src="/images/mehta-residence/photo-1.JPG" alt="Mehta Residence" loading="eager" fetchpriority="high" decoding="async"></picture></div>
+          <div class="pw-col-num">01</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Residential</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">MEHTA RESIDENCE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Luxury Residential &middot; Mumbai</div>
+            <div class="pw-col-card-name">Mehta Residence</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A bespoke family home where artisan craftsmanship meets quiet luxury — every detail curated with intention.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+          </div>
+        </div>
+
+        <!-- 02 Vertex HQ -->
+        <div class="pw-col" data-sector="commercial">
+          <div class="pw-col-bg"><picture><source type="image/webp" srcset="/images/projects/vertex-hq/photo-1.webp"><img src="/images/projects/vertex-hq/photo-1.JPG" alt="Vertex HQ" loading="lazy" decoding="async"></picture></div>
+          <div class="pw-col-num">02</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Commercial</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">VERTEX HQ</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Corporate Office &middot; Mumbai</div>
+            <div class="pw-col-card-name">Vertex HQ</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A headquarters crafted to project authority — built around the rhythms of modern business culture.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+          </div>
+        </div>
+
+        <!-- 03 Aurum Office -->
+        <div class="pw-col" data-sector="retail">
+          <div class="pw-col-bg"><picture><source type="image/webp" srcset="/images/projects/aurum-office/photo-1.webp"><img src="/2_IMG-20220923-WA0026_watermark_Fri_23092022_140659.jpg" alt="Aurum Office" loading="lazy" decoding="async"></picture></div>
+          <div class="pw-col-num">03</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Retail</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">AURUM OFFICE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Retail Interior &middot; Mumbai</div>
+            <div class="pw-col-card-name">Aurum Office</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">Gold-toned accents and clean geometry shape a premium retail environment built to elevate customer experience.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+          </div>
+        </div>
+
+        <!-- 04 Sky Penthouse -->
+        <div class="pw-col" data-sector="residential">
+          <div class="pw-col-bg"><picture><source type="image/webp" srcset="/images/projects/sky-penthouse/photo-1.webp"><img src="/images/projects/sky-penthouse/photo-1.jpg" alt="Sky Penthouse" loading="lazy" decoding="async"></picture></div>
+          <div class="pw-col-num">04</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Residential</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">SKY PENTHOUSE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Penthouse Residential &middot; Mumbai</div>
+            <div class="pw-col-card-name">Sky Penthouse</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">A sky-high residence commanding panoramic views, finished with collector-grade materials throughout.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+          </div>
+        </div>
+
+        <!-- 05 Soleil Office -->
+        <div class="pw-col" data-sector="commercial">
+          <div class="pw-col-bg"><picture><source type="image/webp" srcset="/images/projects/soleil-office/photo-1.webp"><img src="/office%20-%2011.JPG" alt="Soleil Office" loading="lazy" decoding="async"></picture></div>
+          <div class="pw-col-num">05</div>
+          <div class="pw-col-vert">
+            <span class="pw-col-cat">Commercial</span>
+            <span class="pw-col-slash">/</span>
+            <span class="pw-col-name">SOLEIL OFFICE</span>
+          </div>
+          <div class="pw-col-card">
+            <div class="pw-col-card-tag">Corporate Interior &middot; Mumbai</div>
+            <div class="pw-col-card-name">Soleil Office</div>
+            <div class="pw-col-card-rule"></div>
+            <p class="pw-col-card-desc">Bright, airy workspaces flooded with natural light — a productive sanctuary above the Mumbai skyline.</p>
+            <a href="portfolio.html" class="pw-col-cta">ALL PROJECTS &#8599;</a>
+          </div>
+        </div>
+
+    </div><!-- /.pw-accordion -->
   </section>
 
   <div class="wrap">
@@ -1514,7 +2168,7 @@
   </div>
 
   <!-- ═══════════════════════ TESTIMONIALS ══════════════════= -->
-  <section class="sec testi-sec">
+  <section class="sec testi-sec" data-r data-d="5">
     <div class="wrap">
       <div style="text-align:center;max-width:760px;margin-inline:auto;
         background:rgba(250,247,241,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -1578,7 +2232,7 @@
   </section>
 
   <!-- ═══════════════════════ TRUSTED CLIENTS ══════════════ -->
-  <section class="sec clients-sec">
+  <section class="sec clients-sec" data-r data-d="6">
     <div class="wrap">
       <div class="sh" style="text-align:center;margin-bottom:3.5rem">
         <div class="lbl" data-r>Our Esteemed Clientele</div>
@@ -1633,87 +2287,6 @@
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgXAZf6h4R53DonCh-gmCItZNmghZSRKtKLA&s"
               alt="Tanna Infra Developers" loading="lazy" style="object-fit:contain" /></div>
         </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/spice-telecom-logo.jpg" alt="Spice Telecom"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/gsi.webp" alt="Gemological Science Intl."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/shree-raj-chem-logo.jpg" alt="Shree Raj Chem"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/oren.png" alt="Oren Kitchenworld"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://dynamic.exportersindia.com/company_logo/2811795.jpg" alt="Chaudhary Properties"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/canara-bank-logo.png" alt="Canara Bank"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/central-bank-of-india-logo.jpg"
-              alt="Central Bank of India" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tpl-plastech-logo.jpg" alt="TPL Plastech Limited"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/godrej-logo.svg" alt="Godrej" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Qan1iJmsrshyK7_jNLyY9GmajgsZcpNiQ&s"
-              alt="Oheya" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/aec.png" alt="AEC Pvt. Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/shari.png" alt="Shari Academy"
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/ecplaza.png" alt="Ecplaza" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Mz4SGMY2RJZdwPMjAHsUveyE28N5tLO5Bg&s"
-              alt="B&amp;M Buildcon" loading="lazy" style="object-fit:contain;background:#fff;padding:6px" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo"
-              src="https://imgcdn.houssed.com/assets/Files/Developer/FirmLogos/0b5016fb08a168e27315a5f010161934.webp"
-              alt="Khatri Constructions" loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/fairfield-logo.jpg" alt="Fairfield" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/dmart-logo.png" alt="D-Mart" loading="lazy"
-              style="object-fit:contain;transform:scale(1.5)" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/clients/hind.png" alt="Hind Rectifiers Ltd."
-              loading="lazy" style="object-fit:contain" /></div>
-        </div>
-        <div class="client-card">
-          <div class="cl-logo-wrap"><img class="cl-logo" src="/images/tax2win-logo.jpg" alt="Tax2Win" loading="lazy"
-              style="object-fit:contain" /></div>
-        </div>
-      </div>
     </div>
     <div class="wrap">
       <div style="text-align:center;margin-top:3rem" data-r data-d="4">
@@ -1723,7 +2296,7 @@
   </section>
 
   <!-- ═══════════════════════ APP LAUNCH ═══════════════════════ -->
-  <section class="sec app-launch-sec" data-r>
+  <section class="sec app-launch-sec" data-r data-d="7">
     <div class="wrap">
       <div class="app-launch-inner">
 
@@ -1840,7 +2413,7 @@
   </section>
 
   <!-- ═══════════════════════ CTA BAND ══════════════════════ -->
-  <section class="sec cta-band ready-sec">
+  <section class="sec cta-band ready-sec" data-r data-d="8">
     <div class="wrap">
       <div class="cta-inner">
         <span class="lbl" style="color:var(--fg)">Ready to Begin?</span>
@@ -1889,6 +2462,7 @@
   <script src="js/footer.js"></script>
 
 
+  <div id="lb" class="lb">
     <div class="lb-close">&times;</div>
     <div class="lb-hint">Click outside or press Escape to close</div>
     <img src="" alt="" class="lb-img" id="lb-img">
@@ -1912,26 +2486,66 @@
     }
   </script>
   <script>
+    // Homepage sections with same animation as portfolio cards
+    (function() {
+      let sectionIndex = 0;
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const delay = Math.min(sectionIndex * 0.04, 0.28);
+            e.target.style.animation = `fadeSlideUp 0.45s ${delay}s both ease-out`;
+            sectionIndex++;
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('section[data-r]').forEach(el => io.observe(el));
+    })();
+  </script>
+  <script>
     // Lightbox Functionality
     const lb = document.getElementById('lb');
     const lbImg = document.getElementById('lb-img');
     const lbClose = document.querySelector('.lb-close');
 
-    document.addEventListener('click', (e) => {
-      const trigger = e.target.closest('.proj-card-media, .pi, .pif');
-      if (!trigger) return;
-      const img = trigger.querySelector('img');
-      if (img) {
-        lbImg.src = img.src;
-        lbImg.alt = img.alt;
-        lb.classList.add('on');
-      }
+    document.querySelectorAll('.pi').forEach(pi => {
+      pi.addEventListener('click', (e) => {
+        const img = pi.querySelector('img');
+        if (img) {
+          lbImg.src = img.src;
+          lbImg.alt = img.alt;
+          lb.classList.add('on');
+        }
+      });
     });
 
     const closeLB = () => lb.classList.remove('on');
     lb.onclick = (e) => { if (e.target !== lbImg) closeLB(); };
     lbClose.onclick = closeLB;
     window.onkeydown = (e) => { if (e.key === 'Escape') closeLB(); };
+  </script>
+
+  <script>
+    // Nav peek-reveal: hidden over hero, shows after hero scrolls out or on hover near top
+    (function () {
+      var nav = document.querySelector('.nav');
+      var heroLogo = document.getElementById('hero-float-logo');
+      if (!nav) return;
+      var hero = document.getElementById('home');
+      if (hero) {
+        new IntersectionObserver(function (entries) {
+          var past = !entries[0].isIntersecting;
+          nav.classList.toggle('past-hero', past);
+          if (heroLogo) heroLogo.classList.toggle('past-hero', past);
+          if (past) nav.classList.remove('peek');
+        }, { threshold: 0.08 }).observe(hero);
+      }
+      // Peek when cursor hovers within 80px of the top (only while .sc is active so background is visible)
+      document.addEventListener('mousemove', function (e) {
+        if (nav.classList.contains('past-hero')) return;
+        nav.classList.toggle('peek', nav.classList.contains('sc') && e.clientY < 80);
+      });
+    })();
   </script>
 </body>
 
