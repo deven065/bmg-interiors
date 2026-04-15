@@ -9,13 +9,13 @@ import { AnimatePresence, motion } from "framer-motion";
 const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? "";
 
 const SLIDES = [
-  { src: `${CDN}/images/slider/1.mp4`, label: "Slide 1" },
+  { src: `${CDN}/images/slider/1.MP4`, label: "Slide 1" },
   { src: `${CDN}/images/slider/2.mp4`, label: "Slide 2" },
   { src: `${CDN}/images/slider/3.mp4`, label: "Slide 3" },
 ] as const;
 
 const FALLBACK_SLIDES = [
-  { src: `/images/slider/1.mp4`, label: "Slide 1" },
+  { src: `/images/slider/1.MP4`, label: "Slide 1" },
   { src: `/images/slider/2.mp4`, label: "Slide 2" },
   { src: `/images/slider/3.mp4`, label: "Slide 3" },
 ] as const;

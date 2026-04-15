@@ -512,7 +512,7 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const videos = [
-    CDN_URL + '/images/slider/1.mp4',
+    CDN_URL + '/images/slider/1.MP4',
     CDN_URL + '/images/slider/2.mp4',
     CDN_URL + '/images/slider/3.mp4',
   ];
