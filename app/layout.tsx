@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "BMG Interiors",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: `${process.env.NEXT_PUBLIC_CDN_URL ?? ""}/images/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "BMG Interiors Portfolio",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "BMG Interiors | Luxury Interior Design Studio",
     description: "Award-winning luxury interior design studio crafting extraordinary spaces since 1988.",
-    images: ["/images/og-image.jpg"],
+    images: [`${process.env.NEXT_PUBLIC_CDN_URL ?? ""}/images/og-image.jpg`],
   },
   robots: {
     index: true,

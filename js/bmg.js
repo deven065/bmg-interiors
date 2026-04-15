@@ -4,6 +4,8 @@
 ;(function(){
 'use strict';
 
+const CDN_URL = window.BMG_CDN_URL || '';
+
 /* ── CURSOR ─────────────────────────────────────────────────────── */
 const cur  = document.getElementById('cur');
 const ring = document.getElementById('cur-ring');
@@ -511,9 +513,9 @@ function initHeroSlideshow(){
   if(!container) return;
 
   const videos = [
-    '/images/slider/1.mp4',
-    '/images/slider/2.mp4',
-    '/images/slider/3.mp4',
+    CDN_URL + '/images/slider/1.mp4',
+    CDN_URL + '/images/slider/2.mp4',
+    CDN_URL + '/images/slider/3.mp4',
   ];
 
   let currentSlide    = 0;
