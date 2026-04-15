@@ -80,15 +80,15 @@ if (loader) {
   }
 
   // Entrance Timeline — minimal delay for instant feel
-  const entranceTl = G ? G.timeline({ delay: 0.1 }) : null;
+  const entranceTl = G ? G.timeline({ delay: 0 }) : null;
   if (entranceTl && logoImg) {
     entranceTl
       .to(logoImg, { 
         opacity: 1, scale: 1, y: 0, 
-        duration: 1.2, ease: "power4.out" 
+        duration: 0.4, ease: "power3.out" 
       })
-      .to(tag, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.7")
-      .to(bottom, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.8");
+      .to(tag, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.2")
+      .to(bottom, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.5");
     
     // Smooth breathing float
     G.to(logoImg, { y: -4, duration: 2, ease: "sine.inOut", repeat: -1, yoyo: true });
