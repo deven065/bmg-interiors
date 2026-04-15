@@ -96,7 +96,7 @@ if (loader) {
 
   let done = false, finished = false, doneAt = null;
   const start = performance.now();
-  const minDuration = 2400; // Total duration
+  const minDuration = 1200; // Total duration
   const HOLD = 90; 
 
   // Very gentle ease-in to ensure we see the 0% -> 1% transition
@@ -112,8 +112,8 @@ if (loader) {
     else setTimeout(() => { done = true; }, minDuration - elapsed);
   };
 
-  if (document.readyState === 'complete') setTimeout(markDone, 200);
-  else window.addEventListener('load', () => setTimeout(markDone, 120), { once: true });
+  if (document.readyState === 'complete') setTimeout(markDone, 80);
+  else window.addEventListener('load', () => setTimeout(markDone, 80), { once: true });
   
   // Safety timeout
   setTimeout(() => { done = true; }, 8000);
@@ -128,7 +128,7 @@ if (loader) {
 
     if (done) {
       if (doneAt === null) doneAt = elapsed;
-      const t = Math.min(1, (elapsed - doneAt) / 450); 
+      const t = Math.min(1, (elapsed - doneAt) / 200); 
       const fromPct = easeIn(Math.min(1, doneAt / minDuration)) * HOLD;
       pct = fromPct + (100 - fromPct) * smooth(t);
       
@@ -144,30 +144,29 @@ if (loader) {
           
           const exitTl = G.timeline({
             onStart: () => {
-              // Trigger boot slightly after curtains start moving to sync with visibility
-              setTimeout(boot, 450); 
+              setTimeout(boot, 200); 
             }
           });
 
           exitTl
-            .to(".ld-curtain-up", { xPercent: -100, duration: 1.5, ease: "expo.inOut" }, 0)
-            .to(".ld-curtain-dn", { xPercent: 100, duration: 1.5, ease: "expo.inOut" }, 0.05)
+            .to(".ld-curtain-up", { xPercent: -100, duration: 0.7, ease: "expo.inOut" }, 0)
+            .to(".ld-curtain-dn", { xPercent: 100, duration: 0.7, ease: "expo.inOut" }, 0.03)
             .to([logoImg, tag, bottom], { 
-              opacity: 0, y: -60, scale: 0.9, 
-              duration: 0.85, ease: "power4.in",
-              stagger: 0.05,
+              opacity: 0, y: -30, scale: 0.95, 
+              duration: 0.35, ease: "power3.in",
+              stagger: 0.03,
               overwrite: true 
             }, 0)
             .to(".ld-ring, .ld-ring2, .ld-ring3, .ld-glow", {
               opacity: 0,
-              duration: 0.35, ease: "power2.in",
+              duration: 0.2, ease: "power2.in",
               overwrite: true
             }, 0);
         } else {
           boot(); // Fallback if GSAP is missing
         }
         
-        setTimeout(() => { loader.style.display = 'none'; }, 1300);
+        setTimeout(() => { loader.style.display = 'none'; }, 650);
         return;
       }
     } else {
