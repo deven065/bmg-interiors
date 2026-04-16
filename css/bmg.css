@@ -52,9 +52,10 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 /* -- CURSOR -------------------------------------------------------- */
 #cur{position:fixed;top:0;left:0;z-index:99999;pointer-events:none;
-  width:8px;height:8px;background:var(--brand);border-radius:50%;
+  width:32px;height:32px;
+  background:url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/M.png') center/contain no-repeat;
   will-change:transform;
-  transition:width .22s var(--e1), height .22s var(--e1), opacity .3s}
+  transition:width .22s var(--e1), height .22s var(--e1), opacity .3s, transform .22s var(--e1)}
 #cur-ring{position:fixed;top:0;left:0;z-index:99998;pointer-events:none;
   width:36px;height:36px;border-radius:50%;border:1.5px solid var(--brgold);
   will-change:transform;
