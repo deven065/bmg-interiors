@@ -5,6 +5,39 @@
 'use strict';
 
 const CDN_URL = window.BMG_CDN_URL || '';
+let appBooted = false;
+
+function safeRun(name, fn){
+  try { fn(); }
+  catch (err) { console.error(`[BMG] ${name} failed`, err); }
+}
+
+function boot(){
+  if(appBooted) return;
+  appBooted = true;
+
+  const runInits = () => {
+    safeRun('initHero', initHero);
+    safeRun('initGSAP', initGSAP);
+    safeRun('initReveal', initReveal);
+    safeRun('initCounters', initCounters);
+    safeRun('initMarquees', initMarquees);
+    safeRun('initPortfolio', initPortfolio);
+    safeRun('initShowcase', initShowcase);
+    safeRun('initTestimonials', initTestimonials);
+    safeRun('initAccordions', initAccordions);
+    safeRun('initForms', initForms);
+    safeRun('initMagnetic', initMagnetic);
+    safeRun('initParallax', initParallax);
+    safeRun('initCTA', initCTA);
+    safeRun('initHeroSlideshow', initHeroSlideshow);
+    safeRun('initLegacy', initLegacy);
+  };
+
+  initCinematicScroll().catch(() => {}).finally(runInits);
+  // Also listen for footer load which contains the CTA modal
+  window.addEventListener('footerLoaded', () => safeRun('initCTA', initCTA));
+}
 
 /* ── CURSOR ─────────────────────────────────────────────────────── */
 const cur  = document.getElementById('cur');
@@ -185,28 +218,8 @@ if (loader) {
   else boot();
 }
 
-function boot(){
-  // Initialize Cinematic Scroll first, and then everything else
-  initCinematicScroll().then(() => {
-    initHero();   // must be before GSAP to create .line-inner elements
-    initGSAP();   
-    initReveal();
-    initCounters();
-    initMarquees();
-    initPortfolio();
-    initShowcase();
-    initTestimonials();
-    initAccordions();
-    initForms();
-    initMagnetic();
-    initParallax();
-    initCTA();
-    initHeroSlideshow();
-    initLegacy();
-  });
-  // Also listen for footer load which contains the CTA modal
-  window.addEventListener('footerLoaded', initCTA);
-}
+// Loader/timeline/network edge-case guard: ensure app initializes.
+setTimeout(boot, 3500);
 
 /* ── SUPER SMOOTH SCROLL (LENIS) ────────────────────────────────── */
 function initCinematicScroll(){
@@ -511,11 +524,29 @@ function initHeroSlideshow(){
   const container = document.getElementById('hero-slideshow');
   if(!container) return;
 
-  const videos = [
-    CDN_URL + '/images/slider/1.MP4',
-    CDN_URL + '/images/slider/2.mp4',
-    CDN_URL + '/images/slider/3.mp4',
+  const fallbackImages = [
+    'https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/mehta-residence/photo-1.JPG',
+    'https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/projects/vertex-hq/photo-1.JPG',
+    'https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/projects/aurum-office/photo-1.webp'
   ];
+
+  const vProbe = document.createElement('video');
+  const canPlayHevc =
+    !!(vProbe.canPlayType('video/mp4; codecs="hvc1"') || vProbe.canPlayType('video/mp4; codecs="hev1"'));
+
+  const buildSources = (name) => {
+    const localFirst = [`/videos/slider/${name}.mp4`, `/videos/slider/${name}.MP4`];
+    const roots = CDN_URL ? [CDN_URL] : [];
+    const paths = [
+      `/images/slider/${name}.MP4`,
+      `/images/slider/${name}.mp4`,
+      `/videos/slider/${name}.MP4`,
+      `/videos/slider/${name}.mp4`
+    ];
+    return [...localFirst, ...roots.flatMap(root => paths.map(p => `${root}${p}`))];
+  };
+
+  const videos = [buildSources('1'), buildSources('2'), buildSources('3')];
 
   let currentSlide    = 0;
   let isTransitioning = false;
@@ -524,16 +555,42 @@ function initHeroSlideshow(){
   const DUR_OUT = 1.0;
 
   /* ── Build slides ── */
-  const createSlide = (src, index) => {
+  const applySourceFallback = (vid, sources, onExhausted) => {
+    let idx = 0;
+    const tryNext = () => {
+      if (idx >= sources.length) {
+        if (onExhausted) onExhausted();
+        return;
+      }
+      vid.src = sources[idx++];
+      vid.load();
+    };
+    vid.addEventListener('error', tryNext);
+    tryNext();
+  };
+
+  const createSlide = (sources, index) => {
     const slide = document.createElement('div');
     slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
     // promote each slide to its own GPU layer for tear-free crossfade
     slide.style.cssText = 'will-change:opacity;';
 
+    const fallback = document.createElement('div');
+    fallback.style.cssText = 'position:absolute;inset:0;background:center/cover no-repeat;display:none;';
+    fallback.style.backgroundImage = `url('${fallbackImages[index] || fallbackImages[0]}')`;
+    slide.appendChild(fallback);
+
     const vid = document.createElement('video');
-    vid.src        = src;
+    const showFallback = () => {
+      fallback.style.display = 'block';
+      vid.style.display = 'none';
+    };
+    applySourceFallback(vid, sources, showFallback);
     vid.muted      = true;
+    vid.defaultMuted = true;
+    vid.autoplay   = true;
     vid.setAttribute('muted', '');
+    vid.setAttribute('autoplay', '');
     vid.playsInline = true;
     vid.setAttribute('playsinline', '');
     vid.setAttribute('webkit-playsinline', '');
@@ -541,11 +598,17 @@ function initHeroSlideshow(){
     // preload all videos so they're buffered before transition
     vid.preload    = 'auto';
     vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+    vid.addEventListener('error', showFallback);
+    if (!canPlayHevc) {
+      setTimeout(() => {
+        if (vid.readyState < 2) showFallback();
+      }, 1800);
+    }
     slide.appendChild(vid);
     return slide;
   };
 
-  videos.forEach((src, i) => container.appendChild(createSlide(src, i)));
+  videos.forEach((sources, i) => container.appendChild(createSlide(sources, i)));
   const slides   = Array.from(container.querySelectorAll('.hero-slide'));
   const videoEls = slides.map(s => s.querySelector('video'));
 
@@ -591,6 +654,7 @@ function initHeroSlideshow(){
 
   /* ── Prefetch next slide starting from 80% through current video ── */
   let prefetchDone = [];
+  let fallbackTicker = null;
   const prefetchNext = () => {
     const next = (currentSlide + 1) % videos.length;
     if (prefetchDone[next]) return;
@@ -628,24 +692,40 @@ function initHeroSlideshow(){
       inVid.play().catch(() => {});
       incoming.classList.add('active');
 
-      gsap.set(incoming, { opacity: 0, zIndex: 2 });
-      gsap.set(outgoing, { zIndex: 1 });
+      if (window.gsap) {
+        gsap.set(incoming, { opacity: 0, zIndex: 2 });
+        gsap.set(outgoing, { zIndex: 1 });
 
-      gsap.timeline({
-        onComplete: () => {
+        gsap.timeline({
+          onComplete: () => {
+            outgoing.classList.remove('active');
+            outVid.pause();
+            outVid.currentTime = 0;
+            gsap.set(outgoing, { clearProps: 'all' });
+            gsap.set(incoming, { clearProps: 'opacity,zIndex' });
+            currentSlide    = nextIndex;
+            isTransitioning = false;
+            startProgress();
+            if (curNumEl) curNumEl.textContent = String(nextIndex + 1).padStart(2, '0');
+          }
+        })
+        .to(incoming, { opacity: 1, duration: DUR_IN,  ease: 'power2.inOut' }, 0)
+        .to(outgoing, { opacity: 0, duration: DUR_OUT, ease: 'power2.inOut' }, 0);
+      } else {
+        incoming.style.opacity = '1';
+        outgoing.style.opacity = '0';
+        setTimeout(() => {
           outgoing.classList.remove('active');
           outVid.pause();
           outVid.currentTime = 0;
-          gsap.set(outgoing, { clearProps: 'all' });
-          gsap.set(incoming, { clearProps: 'opacity,zIndex' });
+          incoming.style.opacity = '';
+          outgoing.style.opacity = '';
           currentSlide    = nextIndex;
           isTransitioning = false;
           startProgress();
           if (curNumEl) curNumEl.textContent = String(nextIndex + 1).padStart(2, '0');
-        }
-      })
-      .to(incoming, { opacity: 1, duration: DUR_IN,  ease: 'power2.inOut' }, 0)
-      .to(outgoing, { opacity: 0, duration: DUR_OUT, ease: 'power2.inOut' }, 0);
+        }, Math.max(DUR_IN, DUR_OUT) * 1000);
+      }
     });
   };
 
@@ -691,6 +771,12 @@ function initHeroSlideshow(){
     startProgress();
     // pre-buffer slide 2 immediately after slide 1 starts
     setTimeout(() => { prefetchDone[1] = true; primeVideo(videoEls[1]); }, 500);
+
+    // If videos cannot decode (e.g., HEVC on some Linux builds), keep slideshow moving via timed crossfades.
+    fallbackTicker = setInterval(() => {
+      const v = videoEls[currentSlide];
+      if (!v || !v.duration || v.paused) changeSlide(1);
+    }, 6500);
   });
 
   /* ── Retry on first user interaction (mobile autoplay policy) ── */

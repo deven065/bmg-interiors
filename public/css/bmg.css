@@ -312,12 +312,12 @@ em{font-style:italic}
   border-top:1px solid var(--brgold);border-bottom:1px solid var(--brgold)}
 .ready-sec{position:relative;overflow:hidden;
   background:
-    linear-gradient(to bottom, rgba(247,242,234,.58) 0%, rgba(247,242,234,.18) 35%, rgba(247,242,234,.18) 65%, rgba(247,242,234,.62) 100%),
-    radial-gradient(circle at center,rgba(255,204,0,.05) 0%,rgba(255,204,0,0) 55%),
+    linear-gradient(to bottom, rgba(20,13,7,.2) 0%, rgba(20,13,7,.06) 35%, rgba(20,13,7,.1) 65%, rgba(20,13,7,.26) 100%),
+    radial-gradient(circle at center,rgba(255,204,0,.06) 0%,rgba(255,204,0,0) 58%),
     url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/ready.png') center/cover no-repeat;
   background-color:var(--bg2)}
 .ready-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(247,242,234,.42),rgba(247,242,234,.04) 50%,rgba(247,242,234,.42));opacity:1}
+  background:linear-gradient(90deg,rgba(20,13,7,.2),rgba(20,13,7,.03) 50%,rgba(20,13,7,.2));opacity:.38}
 .ready-sec .wrap{position:relative;z-index:1}
 .cta-inner{max-width:800px;margin-inline:auto;text-align:center}
 .cta-inner .lbl{display:block;margin-bottom:1.2rem}
@@ -402,27 +402,44 @@ em{font-style:italic}
 /* -- TESTIMONIAL --------------------------------------------------- */
 .testi-sec{position:relative;overflow:hidden;
   background:
-    linear-gradient(to bottom, rgba(247,242,234,.34) 0%, rgba(247,242,234,.08) 40%, rgba(247,242,234,.08) 60%, rgba(247,242,234,.42) 100%),
-    radial-gradient(circle at center,rgba(255,204,0,.06) 0%,rgba(255,204,0,0) 55%),
-    url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/client.png') center/cover no-repeat;
+    linear-gradient(to bottom, rgba(20,13,7,.36) 0%, rgba(20,13,7,.12) 38%, rgba(20,13,7,.2) 70%, rgba(20,13,7,.44) 100%),
+    radial-gradient(circle at 70% 36%,rgba(255,204,0,.14) 0%,rgba(255,204,0,0) 52%),
+    url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/real-estate-hero.jpg') center/cover no-repeat;
   background-color:var(--bg2)}
 .testi-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(247,242,234,.28),rgba(247,242,234,.04) 50%,rgba(247,242,234,.28));opacity:.55}
+  background:linear-gradient(102deg,rgba(16,10,5,.45) 0%,rgba(16,10,5,.15) 44%,rgba(16,10,5,.36) 100%);opacity:.52}
 .testi-sec .wrap{position:relative;z-index:1}
+.testi-shell{position:relative;max-width:1040px;margin-inline:auto;padding:clamp(2.1rem,4vw,4.2rem) clamp(1.1rem,2.9vw,2.1rem)}
+.testi-shell::before{content:'';position:absolute;left:0;top:clamp(2.5rem,5vw,4.1rem);bottom:clamp(2.6rem,5vw,4.4rem);width:1px;
+  background:linear-gradient(180deg,rgba(255,204,0,.08) 0%,rgba(255,204,0,.9) 48%,rgba(255,204,0,.08) 100%)}
+.testi-head{max-width:740px;padding-left:clamp(1.3rem,3.4vw,2.2rem)}
+.testi-head .lbl{color:rgba(255,204,0,.95)}
+.testi-head .t-xl{color:#fff;text-shadow:0 12px 35px rgba(0,0,0,.45)}
+.testi-quote-mark{font-family:var(--fh);font-size:clamp(3.2rem,7.5vw,7rem);line-height:.65;color:rgba(255,204,0,.9);
+  margin:0 0 .6rem;padding-left:clamp(1.3rem,3.4vw,2.2rem);text-shadow:0 10px 24px rgba(0,0,0,.35)}
 .tslide{display:none;flex-direction:column;align-items:center}
 .tslide.on{display:flex;animation:afadein .6s var(--e1)}
 .ttext{font-family:var(--fh);font-size:clamp(1.05rem,2.1vw,1.45rem);font-weight:400;
-  font-style:normal;line-height:1.72;color:var(--fg);margin-bottom:2rem;text-align:center}
-.tauthor{display:flex;align-items:center;gap:1rem}
+  font-style:normal;line-height:1.72;color:rgba(255,255,255,.93);margin-bottom:2rem;text-align:left;
+  max-width:760px;padding-left:clamp(1.3rem,3.4vw,2.2rem);text-shadow:0 10px 28px rgba(0,0,0,.4)}
+.tauthor{display:flex;align-items:center;gap:1rem;align-self:flex-start;padding-left:clamp(1.3rem,3.4vw,2.2rem)}
 .tav{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
-  font-family:var(--fh);font-size:1.2rem;font-weight:400;flex-shrink:0}
-.tname{font-size:.9rem;font-weight:600}
-.trole{font-size:.8rem;color:var(--fg2)}
-.tdots{display:flex;justify-content:center;gap:.65rem;margin-top:2.8rem}
-.tdot{width:6px;height:6px;border-radius:100px;background:rgba(35,24,11,.14);
+  font-family:var(--fh);font-size:1.2rem;font-weight:400;flex-shrink:0;
+  border:1px solid rgba(255,204,0,.6);background:rgba(20,13,7,.45);color:var(--brand);backdrop-filter:blur(6px)}
+.tname{font-size:.95rem;font-weight:600;color:#fff}
+.trole{font-size:.8rem;color:rgba(255,255,255,.72)}
+.tdots{display:flex;justify-content:flex-start;gap:.65rem;margin-top:2.4rem;padding-left:clamp(1.3rem,3.4vw,2.2rem)}
+.tdot{width:6px;height:6px;border-radius:100px;background:rgba(255,255,255,.35);
   cursor:none;transition:width .4s var(--e1),background .3s}
 .tdot.on{width:26px;background:var(--brand)}
 @media(max-width:920px){.tdot{padding:10px;box-sizing:content-box}}
+@media(max-width:720px){
+  .testi-shell{padding-inline:0}
+  .testi-shell::before{left:10px}
+  .testi-head,.ttext,.tauthor,.tdots,.testi-quote-mark{padding-left:1.6rem}
+  .testi-head .t-xl{font-size:clamp(2rem,8vw,2.5rem)}
+  .ttext{text-align:left;line-height:1.65}
+}
 
 /* -- FORM ---------------------------------------------------------- */
 .ff{position:relative;margin-bottom:1.5rem}
