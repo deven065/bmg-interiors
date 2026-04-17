@@ -534,19 +534,11 @@ function initHeroSlideshow(){
   const canPlayHevc =
     !!(vProbe.canPlayType('video/mp4; codecs="hvc1"') || vProbe.canPlayType('video/mp4; codecs="hev1"'));
 
-  const buildSources = (name) => {
-    const localFirst = [`/videos/slider/${name}.mp4`, `/videos/slider/${name}.MP4`];
-    const roots = CDN_URL ? [CDN_URL] : [];
-    const paths = [
-      `/images/slider/${name}.MP4`,
-      `/images/slider/${name}.mp4`,
-      `/videos/slider/${name}.MP4`,
-      `/videos/slider/${name}.mp4`
-    ];
-    return [...localFirst, ...roots.flatMap(root => paths.map(p => `${root}${p}`))];
-  };
-
-  const videos = [buildSources('1'), buildSources('2'), buildSources('3')];
+  const videos = [
+    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/4.mp4'],
+    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/3.mp4'],
+    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/2.mp4']
+  ];
 
   let currentSlide    = 0;
   let isTransitioning = false;

@@ -294,6 +294,41 @@
       z-index: 2;
     }
 
+    @media (max-width: 900px) and (orientation: portrait) {
+      .hero {
+        min-height: 62svh;
+      }
+
+      .hero .hero-slideshow {
+        display: block !important;
+      }
+
+      .hero .hero-slide video {
+        object-fit: contain !important;
+        background: #000;
+      }
+
+      .hero-nav {
+        right: 1rem;
+        bottom: 1rem;
+        gap: .65rem;
+      }
+
+      .hero-nav-btn {
+        width: 42px;
+        height: 42px;
+      }
+
+      .hero-bullets {
+        bottom: 1rem;
+      }
+
+      .hero-counter {
+        bottom: 1.2rem;
+        right: 6rem;
+      }
+    }
+
     .hero-nav {
       position: absolute;
       bottom: 2.5rem;
