@@ -530,10 +530,6 @@ function initHeroSlideshow(){
     'https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/projects/aurum-office/photo-1.webp'
   ];
 
-  const vProbe = document.createElement('video');
-  const canPlayHevc =
-    !!(vProbe.canPlayType('video/mp4; codecs="hvc1"') || vProbe.canPlayType('video/mp4; codecs="hev1"'));
-
   const videos = [
     ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/4.mp4'],
     ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/3.mp4'],
@@ -568,16 +564,24 @@ function initHeroSlideshow(){
     slide.style.cssText = 'will-change:opacity;';
 
     const fallback = document.createElement('div');
-    fallback.style.cssText = 'position:absolute;inset:0;background:center/cover no-repeat;display:none;';
+    fallback.style.cssText = 'position:absolute;inset:0;background:center/cover no-repeat;display:block;opacity:1;transition:opacity .35s ease;';
     fallback.style.backgroundImage = `url('${fallbackImages[index] || fallbackImages[0]}')`;
     slide.appendChild(fallback);
 
     const vid = document.createElement('video');
+    const revealVideo = () => {
+      fallback.style.opacity = '0';
+      vid.style.opacity = '1';
+      setTimeout(() => {
+        fallback.style.display = 'none';
+      }, 400);
+    };
     const showFallback = () => {
       fallback.style.display = 'block';
-      vid.style.display = 'none';
+      fallback.style.opacity = '1';
+      vid.style.opacity = '0';
+      fallback.style.display = 'block';
     };
-    applySourceFallback(vid, sources, showFallback);
     vid.muted      = true;
     vid.defaultMuted = true;
     vid.autoplay   = true;
@@ -589,13 +593,12 @@ function initHeroSlideshow(){
     vid.loop       = false;
     // preload all videos so they're buffered before transition
     vid.preload    = 'auto';
-    vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
-    vid.addEventListener('error', showFallback);
-    if (!canPlayHevc) {
-      setTimeout(() => {
-        if (vid.readyState < 2) showFallback();
-      }, 1800);
-    }
+    vid.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .35s ease;';
+    vid.addEventListener('canplay', revealVideo, { once: true });
+    vid.addEventListener('loadeddata', revealVideo, { once: true });
+    vid.addEventListener('playing', revealVideo);
+    applySourceFallback(vid, sources, showFallback);
+    if (vid.readyState >= 2) revealVideo();
     slide.appendChild(vid);
     return slide;
   };
@@ -759,10 +762,24 @@ function initHeroSlideshow(){
 
   /* ── Kick off: wait for first video to be ready ── */
   primeVideo(videoEls[0]).then(() => {
-    videoEls[0].play().catch(() => {});
-    startProgress();
-    // pre-buffer slide 2 immediately after slide 1 starts
-    setTimeout(() => { prefetchDone[1] = true; primeVideo(videoEls[1]); }, 500);
+    const firstVid = videoEls[0];
+    firstVid.play().then(() => {
+      startProgress();
+      // pre-buffer slide 2 immediately after slide 1 starts
+      setTimeout(() => {
+        if (videoEls[1]) {
+          prefetchDone[1] = true;
+          primeVideo(videoEls[1]);
+        }
+      }, 500);
+    }).catch(() => {
+      // If first video can't begin (decode/autoplay issue), move to next slide quickly.
+      if (slides.length > 1) {
+        setTimeout(() => {
+          if (!isTransitioning && firstVid.paused && currentSlide === 0) changeSlide(1);
+        }, 1200);
+      }
+    });
 
     // If videos cannot decode (e.g., HEVC on some Linux builds), keep slideshow moving via timed crossfades.
     fallbackTicker = setInterval(() => {
@@ -774,7 +791,11 @@ function initHeroSlideshow(){
   /* ── Retry on first user interaction (mobile autoplay policy) ── */
   const retryPlay = () => {
     const vid = videoEls[currentSlide];
-    if (vid && vid.paused) { vid.play().catch(() => {}); }
+    if (vid && vid.paused) {
+      vid.play().then(() => {
+        if (!progressRAF) startProgress();
+      }).catch(() => {});
+    }
   };
   document.addEventListener('touchstart', retryPlay, { once: true, passive: true });
   document.addEventListener('click',      retryPlay, { once: true });

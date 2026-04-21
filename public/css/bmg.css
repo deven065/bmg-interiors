@@ -404,7 +404,7 @@ em{font-style:italic}
   background:
     linear-gradient(to bottom, rgba(20,13,7,.36) 0%, rgba(20,13,7,.12) 38%, rgba(20,13,7,.2) 70%, rgba(20,13,7,.44) 100%),
     radial-gradient(circle at 70% 36%,rgba(255,204,0,.14) 0%,rgba(255,204,0,0) 52%),
-    url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/real-estate-hero.jpg') center/cover no-repeat;
+    url('https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/still-life-foam-roller.jpg') center/cover no-repeat;
   background-color:var(--bg2)}
 .testi-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(102deg,rgba(16,10,5,.45) 0%,rgba(16,10,5,.15) 44%,rgba(16,10,5,.36) 100%);opacity:.52}

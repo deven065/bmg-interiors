@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 // ---------------------------------------------------------------------------
@@ -20,6 +20,18 @@ const FALLBACK_SLIDES = [
   { src: `/images/slider/3.mp4`, label: "Slide 3" },
 ] as const;
 
+const POSTERS = [
+  `${CDN}/images/mehta-residence/photo-1.JPG`,
+  `${CDN}/images/projects/vertex-hq/photo-1.JPG`,
+  `${CDN}/images/projects/aurum-office/photo-1.webp`,
+] as const;
+
+const FALLBACK_POSTERS = [
+  `/images/mehta-residence/photo-1.JPG`,
+  `/images/projects/vertex-hq/photo-1.JPG`,
+  `/images/projects/aurum-office/photo-1.webp`,
+] as const;
+
 const FADE_DURATION_S = 1.3;
 const FADE_EASE = [0.25, 0.1, 0.25, 1.0] as const;
 
@@ -29,12 +41,18 @@ const FADE_EASE = [0.25, 0.1, 0.25, 1.0] as const;
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [useFallbackSrc, setUseFallbackSrc] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   const advance = useCallback(() => {
     setCurrent((prev) => (prev + 1) % SLIDES.length);
   }, []);
 
   const activeSlides = useFallbackSrc ? FALLBACK_SLIDES : SLIDES;
+  const activePosters = useFallbackSrc ? FALLBACK_POSTERS : POSTERS;
+
+  useEffect(() => {
+    setIsVideoReady(false);
+  }, [current, useFallbackSrc]);
 
   return (
     <section
@@ -53,6 +71,15 @@ export default function HeroSlider() {
           exit={{ opacity: 0 }}
           transition={{ duration: FADE_DURATION_S, ease: FADE_EASE }}
         >
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-center bg-cover transition-opacity duration-500"
+            style={{
+              opacity: isVideoReady ? 0 : 1,
+              backgroundImage: `url('${activePosters[current]}')`,
+            }}
+          />
+
           <video
             key={activeSlides[current].src}
             autoPlay
@@ -61,10 +88,17 @@ export default function HeroSlider() {
             preload="auto"
             controls={false}
             onEnded={advance}
+            onLoadedData={() => setIsVideoReady(true)}
+            onPlaying={() => setIsVideoReady(true)}
             onError={() => {
-              if (!useFallbackSrc) setUseFallbackSrc(true);
+              if (!useFallbackSrc) {
+                setUseFallbackSrc(true);
+                return;
+              }
+              advance();
             }}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+            style={{ opacity: isVideoReady ? 1 : 0 }}
           >
             <source src={activeSlides[current].src} type="video/mp4" />
           </video>
@@ -90,6 +124,7 @@ export default function HeroSlider() {
         {SLIDES.map((slide, i) => (
           <button
             key={slide.src}
+            type="button"
             onClick={() => setCurrent(i)}
             aria-label={`Go to slide ${i + 1}: ${slide.label}`}
             aria-current={i === current ? "true" : undefined}
