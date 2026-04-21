@@ -532,8 +532,8 @@ function initHeroSlideshow(){
 
   const videos = [
     ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/4.mp4'],
-    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/3.mp4'],
-    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/2.mp4']
+    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/vecteezy_a-large-house-with-a-swimming-pool-in-the-middle-of-it_50766843.mp4'],
+    ['https://pub-3c8161b71644435fa8e9341666f0af9f.r2.dev/images/slider/vecteezy_modern-villa-with-pool-and-terrace-at-dusk_73433660.mp4']
   ];
 
   let currentSlide    = 0;
