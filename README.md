@@ -23,7 +23,7 @@ BMG Interiors was founded on the belief that great design transforms not just sp
 
 - **Luxury Residential:** Private villas, penthouses, and apartments transformed into personal sanctuaries.
 - **Premium Commercial:** Corporate offices, retail stores, and hospitality spaces crafted to inspire and convert.
-- **Turnkey Execution:** End-to-end management from concept to handover, ensuring zero stress and 100% delight.
+- **Retail Design:** Captivating retail environments designed to elevate brand identity, optimize customer flow, and drive business growth.
 - **Space Planning & Custom Furniture:** Optimizing flow and creating bespoke pieces tailored to unique environments.
 
 ---
