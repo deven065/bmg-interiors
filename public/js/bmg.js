@@ -886,7 +886,7 @@ function initShowcase(){
       frame = requestAnimationFrame(()=>{
         cols.forEach((col,index)=>col.classList.toggle('active', index === activeIndex));
       });
-    }, 140);
+    }, 220);
   }
 
   function syncActive(){
